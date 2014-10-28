@@ -1,0 +1,32 @@
+{
+  "name": "pex-random",
+  "version": "0.0.1",
+  "description": "Random value generators (float, vec3, etc)",
+  "keywords": [
+    "pex",
+    "random",
+    "geometry"
+  ],
+  "author": {
+    "name": "Marcin Ignac",
+    "email": "marcin.ignac@gmail.com",
+    "url": "http://marcinignac.com"
+  },
+  "main": "index.js",
+  "peerDependencies": {
+    "pex-geom": "0.x.x"
+  },
+  "dependencies": {
+    "seedrandom": "^2.3.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vorg/pex-random.git"
+  },
+  "bugs": "https://github.com/vorg/pex-random/issues",
+  "homepage": "https://github.com/vorg/pex-random",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^2.0.1"
+  }
+}
