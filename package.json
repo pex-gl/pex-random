@@ -1,6 +1,6 @@
 {
   "name": "pex-random",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Random value generators (float, vec3, etc)",
   "keywords": [
     "pex",
