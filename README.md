@@ -13,5 +13,8 @@ rnd.vec2InRect(rect);
 rnd.vec3InBoundingBox(bbox);
 rnd.chance(chance);
 rnd.element(list);
+rnd.noise2(x, y);
+rnd.noise3(x, y, z);
+rnd.noise4(x, y, z, w);
 
 ```
