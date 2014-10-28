@@ -17,7 +17,8 @@
     "pex-geom": "0.x.x"
   },
   "dependencies": {
-    "seedrandom": "^2.3.10"
+    "seedrandom": "^2.3.10",
+    "simplex-noise": "^2.1.1"
   },
   "repository": {
     "type": "git",

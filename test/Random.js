@@ -7,7 +7,7 @@ var BoundingBox = geom.BoundingBox;
 
 beforeEach(function() {
   rnd.seed(Date.now());
-})
+});
 
 describe('Random', function() {
   describe('seed()', function() {
@@ -217,6 +217,105 @@ describe('Random', function() {
       for(var i=0; i<100; i++) {
         var e = rnd.element(list);
         assert(list.indexOf(e) > -1);
+      }
+    });
+  });
+  describe('noise2(x, y)', function() {
+     it('should return value between -1..1', function() {
+      for(var i=0; i<100; i++) {
+        var x = 100 * Math.random();
+        var y = 100 * Math.random();
+        var r = rnd.noise2(x, y);
+        assert(r >= -1 && r <= 1);
+      }
+    });
+    it('should return the same value for the same x,y', function() {
+      for(var i=0; i<100; i++) {
+        var x = 100 * Math.random();
+        var y = 100 * Math.random();
+        var r1 = rnd.noise2(x, y);
+        var r2 = rnd.noise2(x, y);
+        assert.equal(r1, r2);
+      }
+    });
+    it('should return the different value for the same x,y', function() {
+      for(var i=0; i<100; i++) {
+        var x = 100 * Math.random();
+        var y = 100 * Math.random();
+        rnd.seed(0);
+        var r1 = rnd.noise2(x, y);
+        rnd.seed(1);
+        var r2 = rnd.noise2(x, y);
+        assert.notEqual(r1, r2);
+      }
+    });
+  });
+  describe('noise3(x, y, z)', function() {
+     it('should return value between -1..1', function() {
+      for(var i=0; i<100; i++) {
+        var x = 100 * Math.random();
+        var y = 100 * Math.random();
+        var z = 100 * Math.random();
+        var r = rnd.noise3(x, y, z);
+        assert(r >= -1 && r <= 1);
+      }
+    });
+    it('should return the same value for the same x,y', function() {
+      for(var i=0; i<100; i++) {
+        var x = 100 * Math.random();
+        var y = 100 * Math.random();
+        var z = 100 * Math.random();
+        var r1 = rnd.noise3(x, y, z);
+        var r2 = rnd.noise3(x, y, z);
+        assert.equal(r1, r2);
+      }
+    });
+    it('should return the different value for the same x,y', function() {
+      for(var i=0; i<100; i++) {
+        var x = 100 * Math.random();
+        var y = 100 * Math.random();
+        var z = 100 * Math.random();
+        rnd.seed(0);
+        var r1 = rnd.noise3(x, y, z);
+        rnd.seed(1);
+        var r2 = rnd.noise3(x, y, z);
+        assert.notEqual(r1, r2);
+      }
+    });
+  });
+  describe('noise4(x, y, z)', function() {
+     it('should return value between -1..1', function() {
+      for(var i=0; i<100; i++) {
+        var x = 100 * Math.random();
+        var y = 100 * Math.random();
+        var z = 100 * Math.random();
+        var w = 100 * Math.random();
+        var r = rnd.noise4(x, y, z, w);
+        assert(r >= -1 && r <= 1);
+      }
+    });
+    it('should return the same value for the same x,y', function() {
+      for(var i=0; i<100; i++) {
+        var x = 100 * Math.random();
+        var y = 100 * Math.random();
+        var z = 100 * Math.random();
+        var w = 100 * Math.random();
+        var r1 = rnd.noise4(x, y, z, w);
+        var r2 = rnd.noise4(x, y, z, w);
+        assert.equal(r1, r2);
+      }
+    });
+    it('should return the different value for the same x,y', function() {
+      for(var i=0; i<100; i++) {
+        var x = 100 * Math.random();
+        var y = 100 * Math.random();
+        var z = 100 * Math.random();
+        var w = 100 * Math.random();
+        rnd.seed(0);
+        var r1 = rnd.noise4(x, y, z, w);
+        rnd.seed(1);
+        var r2 = rnd.noise4(x, y, z, w);
+        assert.notEqual(r1, r2);
       }
     });
   });
