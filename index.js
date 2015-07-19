@@ -1,1 +1,1 @@
-module.exports = require('./lib/Random');
+module.exports = require('./Random');

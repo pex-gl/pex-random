@@ -1,8 +1,5 @@
 var seedrandom = require('seedrandom');
-var geom = require('pex-geom');
 var SimplexNoise = require('simplex-noise');
-var Vec2 = geom.Vec2;
-var Vec3 = geom.Vec3;
 
 var simplex = new SimplexNoise(Math.random);
 
@@ -45,7 +42,7 @@ Random.vec2 = function(r) {
   var y = 2 * Math.random() - 1;
   var rr = Math.random() * r;
   var len = Math.sqrt(x*x + y*y);
-  return Vec2.create(rr * x / len, rr * y / len);
+  return [rr * x / len, rr * y / len];
 };
 
 Random.vec3 = function(r) {
@@ -55,18 +52,18 @@ Random.vec3 = function(r) {
   var z = 2 * Math.random() - 1;
   var rr = Math.random() * r;
   var len = Math.sqrt(x*x + y*y + z*z);
-  return Vec3.create(rr * x/len, rr * y/len, rr * z/len);
+  return [rr * x/len, rr * y/len, rr * z/len];
 };
 
 Random.vec2InRect = function(rect) {
-  return Vec2.create(rect.x + Math.random() * rect.width, rect.y + Math.random() * rect.height);
+  return [rect[0][0] + Math.random() * (rect[1][0] - rect[0][0]), rect[0][1] + Math.random() * (rect[1][1] - rect[0][1])];
 };
 
-Random.vec3InBoundingBox = function(bbox) {
-  var x = bbox.min.x + Math.random() * (bbox.max.x - bbox.min.x);
-  var y = bbox.min.y + Math.random() * (bbox.max.y - bbox.min.y);
-  var z = bbox.min.z + Math.random() * (bbox.max.z - bbox.min.z);
-  return Vec3.create(x, y, z);
+Random.vec3InAABB = function(bbox) {
+  var x = bbox[0][0] + Math.random() * (bbox[1][0] - bbox[0][0]);
+  var y = bbox[0][1] + Math.random() * (bbox[1][1] - bbox[0][1]);
+  var z = bbox[0][2] + Math.random() * (bbox[1][2] - bbox[0][2]);
+  return [x, y, z];
 };
 
 Random.chance = function(probability) {
