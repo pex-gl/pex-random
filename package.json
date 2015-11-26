@@ -1,6 +1,6 @@
 {
   "name": "pex-random",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-beta.1",
   "description": "Random value generators (float, vec3, etc) for the pex library",
   "main": "index.js",
   "repository": {
