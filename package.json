@@ -1,6 +1,6 @@
 {
   "name": "pex-random",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0",
   "description": "Random value generators (float, vec3, etc) for the pex library",
   "main": "index.js",
   "repository": {
@@ -24,8 +24,8 @@
     }
   ],
   "dependencies": {
-      "seedrandom": "^2.3.10",
-      "simplex-noise": "^2.1.1"
+    "seedrandom": "^2.3.10",
+    "simplex-noise": "^2.1.1"
   },
   "license": "MIT",
   "bugs": {
