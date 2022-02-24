@@ -33,7 +33,8 @@
   },
   "devDependencies": {
     "mocha": "^9.2.1",
-    "pex-geom": "^2.0.2"
+    "pex-geom": "^2.0.2",
+    "pex-math": "^3.0.0-4"
   },
   "engines": {
     "node": ">=16.0.0",
