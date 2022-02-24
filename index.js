@@ -57,10 +57,11 @@ export function vec2InRect(rect) {
 }
 
 export function vec3InAABB(bbox) {
-  const x = bbox[0][0] + Math.random() * (bbox[1][0] - bbox[0][0]);
-  const y = bbox[0][1] + Math.random() * (bbox[1][1] - bbox[0][1]);
-  const z = bbox[0][2] + Math.random() * (bbox[1][2] - bbox[0][2]);
-  return [x, y, z];
+  return [
+    bbox[0][0] + Math.random() * (bbox[1][0] - bbox[0][0]),
+    bbox[0][1] + Math.random() * (bbox[1][1] - bbox[0][1]),
+    bbox[0][2] + Math.random() * (bbox[1][2] - bbox[0][2]),
+  ];
 }
 
 export function chance(probability) {
