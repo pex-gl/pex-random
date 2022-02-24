@@ -1,5 +1,5 @@
 import assert from "assert";
-import * as rnd from "../index.js";
+import random from "../index.js";
 import pexGeom from "pex-geom";
 import pexMath from "pex-math";
 
@@ -7,17 +7,17 @@ const { rect } = pexGeom;
 const { vec2, vec3 } = pexMath;
 
 beforeEach(() => {
-  rnd.seed(Date.now());
+  random.seed(Date.now());
 });
 
 describe("seed()", () => {
   it("should return the same value for the same seed", () => {
-    const a = rnd.float();
-    const b = rnd.float();
-    rnd.seed(0);
-    const c = rnd.float();
-    rnd.seed(0);
-    const d = rnd.float();
+    const a = random.float();
+    const b = random.float();
+    random.seed(0);
+    const c = random.float();
+    random.seed(0);
+    const d = random.float();
     assert.notEqual(a, b);
     assert.equal(c, d);
   });
@@ -25,7 +25,7 @@ describe("seed()", () => {
 describe("float()", () => {
   it("should return value between 0..1", () => {
     for (let i = 0; i < 100; i++) {
-      const f = rnd.float();
+      const f = random.float();
       assert(f >= 0 && f <= 1);
     }
   });
@@ -34,7 +34,7 @@ describe("float(max)", () => {
   it("should return value between 0..max", () => {
     const max = 10;
     for (let i = 0; i < 100; i++) {
-      const f = rnd.float(max);
+      const f = random.float(max);
       assert(f >= 0 && f <= max);
     }
   });
@@ -44,7 +44,7 @@ describe("float(max)", () => {
     const max = 10;
     let avg = 0;
     for (let i = 0; i < 100; i++) {
-      const f = rnd.float(max);
+      const f = random.float(max);
       avg += f;
       assert(f >= 0 && f <= max);
     }
@@ -60,7 +60,7 @@ describe("float(min, max)", () => {
     const min = 10;
     const max = 20;
     for (let i = 0; i < 100; i++) {
-      const f = rnd.float(min, max);
+      const f = random.float(min, max);
       assert(f >= min && f <= max);
     }
   });
@@ -69,14 +69,14 @@ describe("int()", () => {
   it("should return value between 0..MAX_SAFE_INTEGER", () => {
     const maxSafeInteger = 2 ** 53 - 1;
     for (let i = 0; i < 100; i++) {
-      const j = rnd.int();
+      const j = random.int();
       assert(j >= 0 && j <= maxSafeInteger);
     }
   });
   it("should return values on average >> 1", () => {
     let avg = 0;
     for (let i = 0; i < 100; i++) {
-      const j = rnd.int();
+      const j = random.int();
       avg += j;
     }
     avg /= 100;
@@ -87,7 +87,7 @@ describe("int(max)", () => {
   it("should return value between 0..max", () => {
     const max = 10;
     for (let i = 0; i < 100; i++) {
-      const j = rnd.int(max);
+      const j = random.int(max);
       assert(j >= 0 && j <= max);
     }
   });
@@ -97,7 +97,7 @@ describe("int(max)", () => {
     const max = 10;
     let avg = 0;
     for (let i = 0; i < 100; i++) {
-      const j = rnd.int(max);
+      const j = random.int(max);
       avg += j;
       assert(j >= 0 && j <= max);
     }
@@ -113,7 +113,7 @@ describe("int(min, max)", () => {
     const min = 10;
     const max = 20;
     for (let i = 0; i < 100; i++) {
-      const j = rnd.int(min, max);
+      const j = random.int(min, max);
       assert(j >= min && j <= max);
     }
   });
@@ -121,7 +121,7 @@ describe("int(min, max)", () => {
 describe("vec2()", () => {
   it("should return vec2 with radius <= 1", () => {
     for (let i = 0; i < 100; i++) {
-      const v = rnd.vec2();
+      const v = random.vec2();
       assert(vec2.length(v) <= 1);
     }
   });
@@ -130,7 +130,7 @@ describe("vec2(r)", () => {
   it("should return vec2 with radius <= r", () => {
     const r = 10;
     for (let i = 0; i < 100; i++) {
-      const v = rnd.vec2(r);
+      const v = random.vec2(r);
       assert(vec2.length(v) <= r);
     }
   });
@@ -138,7 +138,7 @@ describe("vec2(r)", () => {
     let avg = 0;
     const r = 10;
     for (let i = 0; i < 100; i++) {
-      const v = rnd.vec2(r);
+      const v = random.vec2(r);
       avg += vec2.length(v);
       assert(vec2.length(v) <= r);
     }
@@ -149,7 +149,7 @@ describe("vec2(r)", () => {
 describe("vec3()", () => {
   it("should return vec3 with radius <= 1", () => {
     for (let i = 0; i < 100; i++) {
-      const v = rnd.vec3();
+      const v = random.vec3();
       assert(vec3.length(v) <= 1);
     }
   });
@@ -158,7 +158,7 @@ describe("vec3(r)", () => {
   it("should return vec3 with radius <= r", () => {
     const r = 10;
     for (let i = 0; i < 100; i++) {
-      const v = rnd.vec3(r);
+      const v = random.vec3(r);
       assert(vec3.length(v) <= r);
     }
   });
@@ -166,7 +166,7 @@ describe("vec3(r)", () => {
     let avg = 0;
     const r = 10;
     for (let i = 0; i < 100; i++) {
-      const v = rnd.vec3(r);
+      const v = random.vec3(r);
       avg += vec3.length(v);
       assert(vec3.length(v) <= r);
     }
@@ -190,15 +190,15 @@ describe("vec2InRect(rect)", () => {
     ];
 
     for (let i = 0; i < 100; i++) {
-      const v = rnd.vec2InRect(rect1);
+      const v = random.vec2InRect(rect1);
       assert(rect.includePoint(rect1, v));
     }
     for (let i = 0; i < 100; i++) {
-      const v = rnd.vec2InRect(rect2);
+      const v = random.vec2InRect(rect2);
       assert(rect.includePoint(rect2, v));
     }
     for (let i = 0; i < 100; i++) {
-      const v = rnd.vec2InRect(rect3);
+      const v = random.vec2InRect(rect3);
       assert(rect.includePoint(rect3, v));
     }
   });
@@ -207,21 +207,21 @@ describe("chance(probability)", () => {
   it("should sometimes win for probability of 0.5", () => {
     let wins = 0;
     for (let i = 0; i < 100; i++) {
-      if (rnd.chance(0.5)) wins++;
+      if (random.chance(0.5)) wins++;
     }
     assert(wins > 0);
   });
   it("should never win for probability of 0", () => {
     let wins = 0;
     for (let i = 0; i < 100; i++) {
-      if (rnd.chance()) wins++;
+      if (random.chance()) wins++;
     }
     assert.equal(wins, 0);
   });
   it("should always win for probability of 1", () => {
     let wins = 0;
     for (let i = 0; i < 100; i++) {
-      if (rnd.chance(1)) wins++;
+      if (random.chance(1)) wins++;
     }
     assert.equal(wins, 100);
   });
@@ -230,7 +230,7 @@ describe("element(list)", () => {
   it("should return element from the list", () => {
     const list = ["a", "b", "c", "d", "e", "f"];
     for (let i = 0; i < 100; i++) {
-      const e = rnd.element(list);
+      const e = random.element(list);
       assert(list.includes(e));
     }
   });
@@ -240,7 +240,7 @@ describe("noise2(x, y)", () => {
     for (let i = 0; i < 100; i++) {
       const x = 100 * Math.random();
       const y = 100 * Math.random();
-      const r = rnd.noise2(x, y);
+      const r = random.noise2(x, y);
       assert(r >= -1 && r <= 1);
     }
   });
@@ -248,8 +248,8 @@ describe("noise2(x, y)", () => {
     for (let i = 0; i < 100; i++) {
       const x = 100 * Math.random();
       const y = 100 * Math.random();
-      const r1 = rnd.noise2(x, y);
-      const r2 = rnd.noise2(x, y);
+      const r1 = random.noise2(x, y);
+      const r2 = random.noise2(x, y);
       assert.equal(r1, r2);
     }
   });
@@ -257,10 +257,10 @@ describe("noise2(x, y)", () => {
     for (let i = 0; i < 100; i++) {
       const x = 100 * Math.random();
       const y = 100 * Math.random();
-      rnd.seed(0);
-      const r1 = rnd.noise2(x, y);
-      rnd.seed(1);
-      const r2 = rnd.noise2(x, y);
+      random.seed(0);
+      const r1 = random.noise2(x, y);
+      random.seed(1);
+      const r2 = random.noise2(x, y);
       assert.notEqual(r1, r2);
     }
   });
@@ -271,7 +271,7 @@ describe("noise3(x, y, z)", () => {
       const x = 100 * Math.random();
       const y = 100 * Math.random();
       const z = 100 * Math.random();
-      const r = rnd.noise3(x, y, z);
+      const r = random.noise3(x, y, z);
       assert(r >= -1 && r <= 1);
     }
   });
@@ -280,8 +280,8 @@ describe("noise3(x, y, z)", () => {
       const x = 100 * Math.random();
       const y = 100 * Math.random();
       const z = 100 * Math.random();
-      const r1 = rnd.noise3(x, y, z);
-      const r2 = rnd.noise3(x, y, z);
+      const r1 = random.noise3(x, y, z);
+      const r2 = random.noise3(x, y, z);
       assert.equal(r1, r2);
     }
   });
@@ -290,10 +290,10 @@ describe("noise3(x, y, z)", () => {
       const x = 100 * Math.random();
       const y = 100 * Math.random();
       const z = 100 * Math.random();
-      rnd.seed(0);
-      const r1 = rnd.noise3(x, y, z);
-      rnd.seed(1);
-      const r2 = rnd.noise3(x, y, z);
+      random.seed(0);
+      const r1 = random.noise3(x, y, z);
+      random.seed(1);
+      const r2 = random.noise3(x, y, z);
       assert.notEqual(r1, r2);
     }
   });
@@ -305,7 +305,7 @@ describe("noise4(x, y, z)", () => {
       const y = 100 * Math.random();
       const z = 100 * Math.random();
       const w = 100 * Math.random();
-      const r = rnd.noise4(x, y, z, w);
+      const r = random.noise4(x, y, z, w);
       assert(r >= -1 && r <= 1);
     }
   });
@@ -315,8 +315,8 @@ describe("noise4(x, y, z)", () => {
       const y = 100 * Math.random();
       const z = 100 * Math.random();
       const w = 100 * Math.random();
-      const r1 = rnd.noise4(x, y, z, w);
-      const r2 = rnd.noise4(x, y, z, w);
+      const r1 = random.noise4(x, y, z, w);
+      const r2 = random.noise4(x, y, z, w);
       assert.equal(r1, r2);
     }
   });
@@ -326,10 +326,10 @@ describe("noise4(x, y, z)", () => {
       const y = 100 * Math.random();
       const z = 100 * Math.random();
       const w = 100 * Math.random();
-      rnd.seed(0);
-      const r1 = rnd.noise4(x, y, z, w);
-      rnd.seed(1);
-      const r2 = rnd.noise4(x, y, z, w);
+      random.seed(0);
+      const r1 = random.noise4(x, y, z, w);
+      random.seed(1);
+      const r2 = random.noise4(x, y, z, w);
       assert.notEqual(r1, r2);
     }
   });
