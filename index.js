@@ -30,8 +30,7 @@ export function int(min, max) {
   return Math.floor(float(min, max));
 }
 
-export function vec2(r) {
-  if (typeof r == "undefined") r = 1;
+export function vec2(r = 1) {
   const x = 2 * Math.random() - 1;
   const y = 2 * Math.random() - 1;
   const rr = Math.random() * r;
@@ -39,8 +38,7 @@ export function vec2(r) {
   return [(rr * x) / len, (rr * y) / len];
 }
 
-export function vec3(r) {
-  if (typeof r == "undefined") r = 1;
+export function vec3(r = 1) {
   const x = 2 * Math.random() - 1;
   const y = 2 * Math.random() - 1;
   const z = 2 * Math.random() - 1;
