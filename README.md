@@ -1,20 +1,40 @@
-Random value generators (float, vec3, etc) for the pex library
+# pex-random
 
-```javascript
+[![npm version](https://img.shields.io/npm/v/pex-random)](https://www.npmjs.com/package/pex-random)
+[![stability-stable](https://img.shields.io/badge/stability-stable-green.svg)](https://www.npmjs.com/package/pex-random)
+[![npm minzipped size](https://img.shields.io/bundlephobia/minzip/pex-random)](https://bundlephobia.com/package/pex-random)
+[![dependencies](https://img.shields.io/librariesio/release/npm/pex-random)](https://github.com/pex-gl/pex-random/blob/main/package.json)
+[![types](https://img.shields.io/npm/types/pex-random)](https://github.com/microsoft/TypeScript)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-fa6673.svg)](https://conventionalcommits.org)
+[![styled with prettier](https://img.shields.io/badge/styled_with-Prettier-f8bc45.svg?logo=prettier)](https://github.com/prettier/prettier)
+[![linted with eslint](https://img.shields.io/badge/linted_with-ES_Lint-4B32C3.svg?logo=eslint)](https://github.com/eslint/eslint)
+[![license](https://img.shields.io/github/license/pex-gl/pex-random)](https://github.com/pex-gl/pex-random/blob/main/LICENSE.md)
 
-var rnd = require('pex-random');
+Random value generators (float, int, vector and noise) for [PEX](https://pex.gl).
 
-rnd.seed(0);
-rnd.float(min, max);
-rnd.int(min, max);
-rnd.vec2(r);
-rnd.vec3(r);
-rnd.vec2InRect(rect);
-rnd.vec3InBoundingBox(bbox);
-rnd.chance(chance);
-rnd.element(list);
-rnd.noise2(x, y);
-rnd.noise3(x, y, z);
-rnd.noise4(x, y, z, w);
+![](https://raw.githubusercontent.com/pex-gl/pex-random/main/screenshot.gif)
 
+## Installation
+
+```bash
+npm install pex-random
 ```
+
+## Usage
+
+```js
+import pexRandomEsm from "pex-random";
+console.log(pexRandomEsm);
+```
+
+## API
+
+<!-- api-start -->
+
+Auto-generated API content.
+
+<!-- api-end -->
+
+## License
+
+MIT. See [license file](https://github.com/pex-gl/pex-random/blob/main/LICENSE.md).
