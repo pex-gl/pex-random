@@ -19,12 +19,10 @@ export function float(min, max) {
   return min + (max - min) * Math.random();
 }
 
-//Using max safe integer as max value unless otherwise specified
-//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER
 export function int(min, max) {
   if (arguments.length == 0) {
     min = 0;
-    max = 2 ** 53 - 1;
+    max = Number.MAX_SAFE_INTEGER;
   } else if (arguments.length == 1) {
     max = min;
     min = 0;
