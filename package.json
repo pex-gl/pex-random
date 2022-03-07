@@ -25,14 +25,17 @@
   "main": "index.js",
   "types": "types/index.d.ts",
   "scripts": {
-    "test": "mocha",
-    "test:watch": "npm test -- --watch --parallel"
+    "build": "snowdev build",
+    "release": "snowdev release",
+    "test": "c8 mocha",
+    "test:watch": "mocha --watch --parallel"
   },
   "dependencies": {
     "seedrandom": "^3.0.5",
     "simplex-noise": "3.0.1"
   },
   "devDependencies": {
+    "c8": "^7.11.0",
     "mocha": "^9.2.1",
     "pex-geom": "^2.0.2",
     "pex-math": "^3.0.0-4"
