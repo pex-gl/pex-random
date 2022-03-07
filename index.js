@@ -152,18 +152,3 @@ export function noise3(x, y, z) {
 export function noise4(x, y, z, w) {
   return simplex.noise4D(x, y, z, w);
 }
-
-export default {
-  seed,
-  float,
-  int,
-  vec2,
-  vec3,
-  vec2InRect,
-  vec3InAABB,
-  chance,
-  element,
-  noise2,
-  noise3,
-  noise4,
-};

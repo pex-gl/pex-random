@@ -37,8 +37,8 @@
   "devDependencies": {
     "c8": "^7.11.0",
     "mocha": "^9.2.1",
-    "pex-geom": "^2.0.2",
-    "pex-math": "^3.0.0-4"
+    "pex-geom": "github:pex-gl/pex-geom#v3",
+    "pex-math": "github:pex-gl/pex-math#v4"
   },
   "engines": {
     "node": ">=16.0.0",

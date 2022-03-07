@@ -1,10 +1,9 @@
 import assert from "assert";
-import random from "../index.js";
-import pexGeom from "pex-geom";
-import pexMath from "pex-math";
 
-const { rect } = pexGeom;
-const { vec2, vec3 } = pexMath;
+import { rect } from "pex-geom";
+import { vec2, vec3 } from "pex-math";
+
+import * as random from "../index.js";
 
 beforeEach(() => {
   random.seed(Date.now());
