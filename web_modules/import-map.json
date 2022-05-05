@@ -1,0 +1,9 @@
+{
+  "imports": {
+    "es-module-shims": "./es-module-shims.js",
+    "pex-geom": "./pex-geom.js",
+    "pex-math": "./pex-math.js",
+    "seedrandom": "./seedrandom.js",
+    "simplex-noise": "./simplex-noise.js"
+  }
+}

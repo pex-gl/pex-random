@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>pex-random by pex-gl (https://github.com/pex-gl)</title>
+    <style>
+      :root {
+        --color-dark: #404040;
+        --color-light: #f2f2f2;
+        --color-accent: #fd5e62;
+      }
+
+      body {
+        margin: 0;
+        overscroll-behavior: none;
+        font-family: sans-serif;
+        color: var(--color-dark);
+        background-color: var(--color-light);
+      }
+
+      main {
+        padding: 0 20px;
+      }
+
+      canvas {
+        background-color: #fff;
+      }
+
+      .Noise {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .Chance {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>pex-random</h1>
+      <h2>noise</h2>
+      <div class="Noise">
+        <div>
+          <h3>2D</h3>
+          <canvas class="Noise-2d-64"></canvas>
+          <canvas class="Noise-2d-128"></canvas>
+          <canvas class="Noise-2d-256"></canvas>
+        </div>
+        <div>
+          <h3>3D</h3>
+          <canvas class="Noise-3d"></canvas>
+        </div>
+        <div>
+          <h3>FBM</h3>
+          <canvas class="Noise-octave"></canvas>
+        </div>
+      </div>
+      <h2>chance</h2>
+      <div class="Chance">
+        <div>
+          <input
+            class="Chance-input"
+            type="number"
+            value="0.5"
+            step="0.1"
+            min="0"
+            max="1"
+          />
+          <button class="Chance-generate">Generate</button>
+        </div>
+        <div>
+          <canvas class="Chance-canvas" width="128" height="128"></canvas>
+        </div>
+      </div>
+      <h2>vec2/vec3</h2>
+      <div>
+        <canvas class="Vec2" width="128" height="128"></canvas>
+        <canvas class="Vec3" width="128" height="128"></canvas>
+      </div>
+      <h2>vec2InRect/vec3InAABB</h2>
+      <div>
+        <canvas class="Vec2InRect" width="128" height="128"></canvas>
+        <canvas class="Vec3InAABB" width="128" height="128"></canvas>
+      </div>
+    </main>
+    <script async src="web_modules/es-module-shims.js" type="module"></script>
+    <script src="web_modules/import-map.json" type="importmap-shim"></script>
+    <script type="module-shim">
+      import random from "./index.js";
+      import { rect } from "pex-geom";
+
+      const drawCircle = (context, x, y, r, fillStyle) => {
+        if (fillStyle) context.fillStyle = fillStyle;
+        context.beginPath();
+        context.arc(x, y, r, 0, Math.PI * 2);
+        fillStyle ? context.fill() : context.stroke();
+      };
+
+      // vec2
+      random.seed(0);
+      const Vec2Ctx = document.querySelector(".Vec2").getContext("2d");
+      const radius = Vec2Ctx.canvas.width / 4;
+      Vec2Ctx.translate(Vec2Ctx.canvas.width / 3, Vec2Ctx.canvas.height / 3);
+      drawCircle(Vec2Ctx, 0, 0, radius);
+      for (let i = 0; i < 100; i++) {
+        drawCircle(Vec2Ctx, ...random.vec2(radius), 1, `#000`);
+      }
+
+      // vec3
+      random.seed(0);
+      const Vec3Ctx = document.querySelector(".Vec3").getContext("2d");
+      const radius3 = Vec3Ctx.canvas.width / 4;
+      Vec3Ctx.translate(Vec3Ctx.canvas.width / 3, Vec3Ctx.canvas.height / 3);
+      Vec3Ctx.beginPath();
+      Vec3Ctx.arc(0, 0, radius3, 0, Math.PI * 2);
+      Vec3Ctx.stroke();
+      for (let i = 0; i < 100; i++) {
+        const [x, y, h] = random.vec3(radius);
+        drawCircle(Vec3Ctx, x, y, 1, `hsl(${360 * h}, 100%, 50%)`);
+      }
+
+      // vec2InRect
+      random.seed(0);
+      const Vec2InRectCtx = document
+        .querySelector(".Vec2InRect")
+        .getContext("2d");
+      const r = [
+        [10, 10],
+        [100, 100],
+      ];
+      Vec2InRectCtx.strokeRect(...r[0], rect.width(r), rect.height(r));
+      for (let i = 0; i < 100; i++) {
+        drawCircle(Vec2InRectCtx, ...random.vec2InRect(r), 1, `#000`);
+      }
+
+      // vec2InRect
+      random.seed(0);
+      const Vec3InAABBCtx = document
+        .querySelector(".Vec3InAABB")
+        .getContext("2d");
+      const box = [
+        [10, 10, 10],
+        [100, 100, 100],
+      ];
+      Vec3InAABBCtx.strokeRect(...r[0], rect.width(r), rect.height(r));
+      for (let i = 0; i < 100; i++) {
+        const [x, y, h] = random.vec3InAABB(box);
+        drawCircle(Vec3InAABBCtx, x, y, 1, `hsl(${360 * h}, 100%, 50%)`);
+      }
+
+      // chance
+      const generateChance = () => {
+        const probability = parseFloat(
+          document.querySelector(".Chance-input").value
+        );
+        const ChanceCtx = document
+          .querySelector(".Chance-canvas")
+          .getContext("2d");
+        const chanceResults = [];
+        for (let i = 0; i < 100; i++) {
+          chanceResults.push(random.chance(probability));
+        }
+        const { width, height } = ChanceCtx.canvas;
+        ChanceCtx.clearRect(0, 0, width, height);
+
+        const barWidth = width * 0.2;
+        const barHeight = (height * chanceResults.filter(Boolean).length) / 100;
+        ChanceCtx.fillRect(0, (1 - probability) * height, width, 2);
+        ChanceCtx.fillRect(
+          width * 0.2,
+          height - barHeight,
+          barWidth,
+          barHeight
+        );
+        ChanceCtx.fillRect(
+          width * 0.6,
+          barHeight,
+          barWidth,
+          height - barHeight
+        );
+      };
+      document
+        .querySelector(".Chance-generate")
+        .addEventListener("click", generateChance);
+      document
+        .querySelector(".Chance-input")
+        .addEventListener("change", generateChance);
+      generateChance();
+
+      // Noise
+      // 2D
+      function drawNoise(ctx, size, fn) {
+        ctx.canvas.width = size;
+        ctx.canvas.height = size;
+
+        const imageData = ctx.getImageData(0, 0, size, size);
+        for (let i = 0; i < imageData.data.length; i++) {
+          const x = i % size;
+          const y = ~~(i / size);
+          const n = (fn(x, y) + 1) * 128;
+          imageData.data[i * 4] = n;
+          imageData.data[i * 4 + 1] = n;
+          imageData.data[i * 4 + 2] = n;
+          imageData.data[i * 4 + 3] = 255;
+        }
+        ctx.putImageData(imageData, 0, 0);
+      }
+
+      const frequency = 0.02;
+      random.seed(0);
+      drawNoise(
+        document.querySelector(".Noise-2d-64").getContext("2d"),
+        64,
+        (x, y) => random.noise2(x * frequency, y * frequency)
+      );
+      random.seed(0);
+      drawNoise(
+        document.querySelector(".Noise-2d-128").getContext("2d"),
+        128,
+        (x, y) => random.noise2(x * frequency, y * frequency)
+      );
+      random.seed(0);
+      drawNoise(
+        document.querySelector(".Noise-2d-256").getContext("2d"),
+        256,
+        (x, y) => random.noise2(x * frequency, y * frequency)
+      );
+
+      // 3D
+      let i = 0;
+
+      const noise3dCtx = document.querySelector(".Noise-3d").getContext("2d");
+      random.seed(0);
+
+      requestAnimationFrame(async function frame() {
+        i++;
+
+        drawNoise(noise3dCtx, 256, (x, y) =>
+          random.noise3(x * frequency, y * frequency, i * frequency)
+        );
+
+        await new Promise((resolve) => setTimeout(resolve, 30));
+
+        requestAnimationFrame(frame);
+      });
+
+      // FBM
+      random.seed(0);
+      drawNoise(
+        document.querySelector(".Noise-octave").getContext("2d"),
+        256,
+        (x, y) => random.fbm({ octaves: 4 }, x * frequency, y * frequency)
+      );
+    </script>
+  </body>
+</html>

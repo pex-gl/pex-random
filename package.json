@@ -26,6 +26,7 @@
   "types": "types/index.d.ts",
   "scripts": {
     "build": "snowdev build",
+    "dev": "snowdev dev",
     "release": "snowdev release",
     "test": "c8 mocha",
     "test:watch": "mocha --watch --parallel"
@@ -36,6 +37,7 @@
   },
   "devDependencies": {
     "c8": "^7.11.0",
+    "es-module-shims": "^1.4.7",
     "mocha": "^9.2.1",
     "pex-geom": "github:pex-gl/pex-geom#v3",
     "pex-math": "github:pex-gl/pex-math#v4"
@@ -43,5 +45,14 @@
   "engines": {
     "node": ">=16.0.0",
     "npm": ">=7.0.0"
+  },
+  "snowdev": {
+    "dependencies": [
+      "es-module-shims",
+      "pex-geom",
+      "pex-math",
+      "seedrandom",
+      "simplex-noise"
+    ]
   }
 }
