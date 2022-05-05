@@ -1,45 +1,4 @@
-import { a as createCommonjsModule } from './_commonjsHelpers-a3307dcf.js';
-import { w as wellKnownSymbol, n as global_1, p as classofRaw, i as isCallable, b as objectGetPrototypeOf, u as uid, g as objectSetPrototypeOf, h as createNonEnumerableProperty, m as descriptors, q as hasOwnProperty_1, v as isObject, o as objectDefineProperty, x as objectIsPrototypeOf, y as tryToString, r as redefine, f as fails, z as toIntegerOrInfinity, A as toLength, B as toObject, C as lengthOfArrayLike, D as toAbsoluteIndex, E as toPropertyKey, c as createPropertyDescriptor, F as functionUncurryThis, s as setToStringTag, G as objectGetOwnPropertyNames, k as functionName, l as internalState, H as functionBindNative, I as aCallable, J as getBuiltIn, K as inspectSource, L as getMethod, e as iterators, M as anObject, j as functionCall, N as indexedObject, _ as _export, a as objectCreate, O as isSymbol, P as objectGetOwnPropertyDescriptor, Q as engineUserAgent, R as engineV8Version } from './object-set-prototype-of-321dbe28.js';
-
-var ITERATOR = wellKnownSymbol('iterator');
-var SAFE_CLOSING = false;
-
-try {
-  var called = 0;
-  var iteratorWithReturn = {
-    next: function () {
-      return { done: !!called++ };
-    },
-    'return': function () {
-      SAFE_CLOSING = true;
-    }
-  };
-  iteratorWithReturn[ITERATOR] = function () {
-    return this;
-  };
-  // eslint-disable-next-line es/no-array-from, no-throw-literal -- required for testing
-  Array.from(iteratorWithReturn, function () { throw 2; });
-} catch (error) { /* empty */ }
-
-var checkCorrectnessOfIteration = function (exec, SKIP_CLOSING) {
-  if (!SKIP_CLOSING && !SAFE_CLOSING) return false;
-  var ITERATION_SUPPORT = false;
-  try {
-    var object = {};
-    object[ITERATOR] = function () {
-      return {
-        next: function () {
-          return { done: ITERATION_SUPPORT = true };
-        }
-      };
-    };
-    exec(object);
-  } catch (error) { /* empty */ }
-  return ITERATION_SUPPORT;
-};
-
-// eslint-disable-next-line es/no-typed-arrays -- safe
-var arrayBufferNative = typeof ArrayBuffer != 'undefined' && typeof DataView != 'undefined';
+import { w as wellKnownSymbol, g as global_1, D as classofRaw, q as isCallable, b as functionUncurryThis, A as functionBindNative, M as aCallable, H as objectIsPrototypeOf, Q as iterators, G as getBuiltIn, f as fails, T as inspectSource, U as toPropertyKey, F as objectDefineProperty, x as createPropertyDescriptor, m as getMethod, l as anObject, h as functionCall, N as tryToString, n as lengthOfArrayLike, V as toAbsoluteIndex, p as redefine, I as objectSetPrototypeOf, u as isObject, L as objectGetPrototypeOf, W as uid, C as createNonEnumerableProperty, e as descriptors, y as hasOwnProperty_1, t as toIntegerOrInfinity, E as toLength, c as toObject, s as setToStringTag, X as objectGetOwnPropertyNames, R as functionName, i as internalState, d as indexedObject, Y as createCommonjsModule, _ as _export, v as objectCreate, Z as isSymbol, $ as objectGetOwnPropertyDescriptor, a0 as engineUserAgent, a1 as engineV8Version } from './object-set-prototype-of-42e9993d.js';
 
 var TO_STRING_TAG = wellKnownSymbol('toStringTag');
 var test = {};
@@ -73,6 +32,215 @@ var classof = toStringTagSupport ? classofRaw : function (it) {
     : (result = classofRaw(O)) == 'Object' && isCallable(O.callee) ? 'Arguments' : result;
 };
 
+var bind = functionUncurryThis(functionUncurryThis.bind);
+
+// optional / simple context binding
+var functionBindContext = function (fn, that) {
+  aCallable(fn);
+  return that === undefined ? fn : functionBindNative ? bind(fn, that) : function (/* ...args */) {
+    return fn.apply(that, arguments);
+  };
+};
+
+var TypeError$1 = global_1.TypeError;
+
+var anInstance = function (it, Prototype) {
+  if (objectIsPrototypeOf(Prototype, it)) return it;
+  throw TypeError$1('Incorrect invocation');
+};
+
+var ITERATOR = wellKnownSymbol('iterator');
+var ArrayPrototype = Array.prototype;
+
+// check on default Array iterator
+var isArrayIteratorMethod = function (it) {
+  return it !== undefined && (iterators.Array === it || ArrayPrototype[ITERATOR] === it);
+};
+
+var noop = function () { /* empty */ };
+var empty = [];
+var construct = getBuiltIn('Reflect', 'construct');
+var constructorRegExp = /^\s*(?:class|function)\b/;
+var exec = functionUncurryThis(constructorRegExp.exec);
+var INCORRECT_TO_STRING = !constructorRegExp.exec(noop);
+
+var isConstructorModern = function isConstructor(argument) {
+  if (!isCallable(argument)) return false;
+  try {
+    construct(noop, empty, argument);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
+var isConstructorLegacy = function isConstructor(argument) {
+  if (!isCallable(argument)) return false;
+  switch (classof(argument)) {
+    case 'AsyncFunction':
+    case 'GeneratorFunction':
+    case 'AsyncGeneratorFunction': return false;
+  }
+  try {
+    // we can't check .prototype since constructors produced by .bind haven't it
+    // `Function#toString` throws on some built-it function in some legacy engines
+    // (for example, `DOMQuad` and similar in FF41-)
+    return INCORRECT_TO_STRING || !!exec(constructorRegExp, inspectSource(argument));
+  } catch (error) {
+    return true;
+  }
+};
+
+isConstructorLegacy.sham = true;
+
+// `IsConstructor` abstract operation
+// https://tc39.es/ecma262/#sec-isconstructor
+var isConstructor = !construct || fails(function () {
+  var called;
+  return isConstructorModern(isConstructorModern.call)
+    || !isConstructorModern(Object)
+    || !isConstructorModern(function () { called = true; })
+    || called;
+}) ? isConstructorLegacy : isConstructorModern;
+
+var createProperty = function (object, key, value) {
+  var propertyKey = toPropertyKey(key);
+  if (propertyKey in object) objectDefineProperty.f(object, propertyKey, createPropertyDescriptor(0, value));
+  else object[propertyKey] = value;
+};
+
+var ITERATOR$1 = wellKnownSymbol('iterator');
+
+var getIteratorMethod = function (it) {
+  if (it != undefined) return getMethod(it, ITERATOR$1)
+    || getMethod(it, '@@iterator')
+    || iterators[classof(it)];
+};
+
+var TypeError$2 = global_1.TypeError;
+
+var getIterator = function (argument, usingIterator) {
+  var iteratorMethod = arguments.length < 2 ? getIteratorMethod(argument) : usingIterator;
+  if (aCallable(iteratorMethod)) return anObject(functionCall(iteratorMethod, argument));
+  throw TypeError$2(tryToString(argument) + ' is not iterable');
+};
+
+var Array$1 = global_1.Array;
+var max = Math.max;
+
+var arraySliceSimple = function (O, start, end) {
+  var length = lengthOfArrayLike(O);
+  var k = toAbsoluteIndex(start, length);
+  var fin = toAbsoluteIndex(end === undefined ? length : end, length);
+  var result = Array$1(max(fin - k, 0));
+  for (var n = 0; k < fin; k++, n++) createProperty(result, n, O[k]);
+  result.length = n;
+  return result;
+};
+
+var redefineAll = function (target, src, options) {
+  for (var key in src) redefine(target, key, src[key], options);
+  return target;
+};
+
+var floor = Math.floor;
+
+var mergeSort = function (array, comparefn) {
+  var length = array.length;
+  var middle = floor(length / 2);
+  return length < 8 ? insertionSort(array, comparefn) : merge(
+    array,
+    mergeSort(arraySliceSimple(array, 0, middle), comparefn),
+    mergeSort(arraySliceSimple(array, middle), comparefn),
+    comparefn
+  );
+};
+
+var insertionSort = function (array, comparefn) {
+  var length = array.length;
+  var i = 1;
+  var element, j;
+
+  while (i < length) {
+    j = i;
+    element = array[i];
+    while (j && comparefn(array[j - 1], element) > 0) {
+      array[j] = array[--j];
+    }
+    if (j !== i++) array[j] = element;
+  } return array;
+};
+
+var merge = function (array, left, right, comparefn) {
+  var llength = left.length;
+  var rlength = right.length;
+  var lindex = 0;
+  var rindex = 0;
+
+  while (lindex < llength || rindex < rlength) {
+    array[lindex + rindex] = (lindex < llength && rindex < rlength)
+      ? comparefn(left[lindex], right[rindex]) <= 0 ? left[lindex++] : right[rindex++]
+      : lindex < llength ? left[lindex++] : right[rindex++];
+  } return array;
+};
+
+var arraySort = mergeSort;
+
+// makes subclassing work correct for wrapped built-ins
+var inheritIfRequired = function ($this, dummy, Wrapper) {
+  var NewTarget, NewTargetPrototype;
+  if (
+    // it can work only with native `setPrototypeOf`
+    objectSetPrototypeOf &&
+    // we haven't completely correct pre-ES6 way for getting `new.target`, so use this
+    isCallable(NewTarget = dummy.constructor) &&
+    NewTarget !== Wrapper &&
+    isObject(NewTargetPrototype = NewTarget.prototype) &&
+    NewTargetPrototype !== Wrapper.prototype
+  ) objectSetPrototypeOf($this, NewTargetPrototype);
+  return $this;
+};
+
+var ITERATOR$2 = wellKnownSymbol('iterator');
+var SAFE_CLOSING = false;
+
+try {
+  var called = 0;
+  var iteratorWithReturn = {
+    next: function () {
+      return { done: !!called++ };
+    },
+    'return': function () {
+      SAFE_CLOSING = true;
+    }
+  };
+  iteratorWithReturn[ITERATOR$2] = function () {
+    return this;
+  };
+  // eslint-disable-next-line es-x/no-array-from, no-throw-literal -- required for testing
+  Array.from(iteratorWithReturn, function () { throw 2; });
+} catch (error) { /* empty */ }
+
+var checkCorrectnessOfIteration = function (exec, SKIP_CLOSING) {
+  if (!SKIP_CLOSING && !SAFE_CLOSING) return false;
+  var ITERATION_SUPPORT = false;
+  try {
+    var object = {};
+    object[ITERATOR$2] = function () {
+      return {
+        next: function () {
+          return { done: ITERATION_SUPPORT = true };
+        }
+      };
+    };
+    exec(object);
+  } catch (error) { /* empty */ }
+  return ITERATION_SUPPORT;
+};
+
+// eslint-disable-next-line es-x/no-typed-arrays -- safe
+var arrayBufferNative = typeof ArrayBuffer != 'undefined' && typeof DataView != 'undefined';
+
 var defineProperty = objectDefineProperty.f;
 
 
@@ -87,7 +255,7 @@ var Uint8ClampedArrayPrototype = Uint8ClampedArray$1 && Uint8ClampedArray$1.prot
 var TypedArray = Int8Array && objectGetPrototypeOf(Int8Array);
 var TypedArrayPrototype = Int8ArrayPrototype && objectGetPrototypeOf(Int8ArrayPrototype);
 var ObjectPrototype = Object.prototype;
-var TypeError = global_1.TypeError;
+var TypeError$3 = global_1.TypeError;
 
 var TO_STRING_TAG$2 = wellKnownSymbol('toStringTag');
 var TYPED_ARRAY_TAG = uid('TYPED_ARRAY_TAG');
@@ -131,12 +299,12 @@ var isTypedArray = function (it) {
 
 var aTypedArray = function (it) {
   if (isTypedArray(it)) return it;
-  throw TypeError('Target is not a typed array');
+  throw TypeError$3('Target is not a typed array');
 };
 
 var aTypedArrayConstructor = function (C) {
   if (isCallable(C) && (!objectSetPrototypeOf || objectIsPrototypeOf(TypedArray, C))) return C;
-  throw TypeError(tryToString(C) + ' is not a typed array constructor');
+  throw TypeError$3(tryToString(C) + ' is not a typed array constructor');
 };
 
 var exportTypedArrayMethod = function (KEY, property, forced, options) {
@@ -200,7 +368,7 @@ for (NAME in BigIntArrayConstructorsList) {
 if (!NATIVE_ARRAY_BUFFER_VIEWS || !isCallable(TypedArray) || TypedArray === Function.prototype) {
   // eslint-disable-next-line no-shadow -- safe
   TypedArray = function TypedArray() {
-    throw TypeError('Incorrect invocation');
+    throw TypeError$3('Incorrect invocation');
   };
   if (NATIVE_ARRAY_BUFFER_VIEWS) for (NAME in TypedArrayConstructorsList) {
     if (global_1[NAME]) objectSetPrototypeOf(global_1[NAME], TypedArray);
@@ -266,18 +434,6 @@ var typedArrayConstructorsRequireWrappers = !NATIVE_ARRAY_BUFFER_VIEWS$1 || !fai
   return new Int8Array$1(new ArrayBuffer$1(2), 1, undefined).length !== 1;
 });
 
-var redefineAll = function (target, src, options) {
-  for (var key in src) redefine(target, key, src[key], options);
-  return target;
-};
-
-var TypeError$1 = global_1.TypeError;
-
-var anInstance = function (it, Prototype) {
-  if (objectIsPrototypeOf(Prototype, it)) return it;
-  throw TypeError$1('Incorrect invocation');
-};
-
 var RangeError = global_1.RangeError;
 
 // `ToIndex` abstract operation
@@ -293,15 +449,15 @@ var toIndex = function (it) {
 // IEEE754 conversions based on https://github.com/feross/ieee754
 
 
-var Array$1 = global_1.Array;
+var Array$2 = global_1.Array;
 var abs = Math.abs;
 var pow = Math.pow;
-var floor = Math.floor;
+var floor$1 = Math.floor;
 var log = Math.log;
 var LN2 = Math.LN2;
 
 var pack = function (number, mantissaLength, bytes) {
-  var buffer = Array$1(bytes);
+  var buffer = Array$2(bytes);
   var exponentLength = bytes * 8 - mantissaLength - 1;
   var eMax = (1 << exponentLength) - 1;
   var eBias = eMax >> 1;
@@ -316,7 +472,7 @@ var pack = function (number, mantissaLength, bytes) {
     mantissa = number != number ? 1 : 0;
     exponent = eMax;
   } else {
-    exponent = floor(log(number) / LN2);
+    exponent = floor$1(log(number) / LN2);
     c = pow(2, -exponent);
     if (number * c < 1) {
       exponent--;
@@ -406,25 +562,6 @@ var arrayFill = function fill(value /* , start = 0, end = @length */) {
   var endPos = end === undefined ? length : toAbsoluteIndex(end, length);
   while (endPos > index) O[index++] = value;
   return O;
-};
-
-var createProperty = function (object, key, value) {
-  var propertyKey = toPropertyKey(key);
-  if (propertyKey in object) objectDefineProperty.f(object, propertyKey, createPropertyDescriptor(0, value));
-  else object[propertyKey] = value;
-};
-
-var Array$2 = global_1.Array;
-var max = Math.max;
-
-var arraySliceSimple = function (O, start, end) {
-  var length = lengthOfArrayLike(O);
-  var k = toAbsoluteIndex(start, length);
-  var fin = toAbsoluteIndex(end === undefined ? length : end, length);
-  var result = Array$2(max(fin - k, 0));
-  for (var n = 0; k < fin; k++, n++) createProperty(result, n, O[k]);
-  result.length = n;
-  return result;
 };
 
 var getOwnPropertyNames = objectGetOwnPropertyNames.f;
@@ -659,13 +796,13 @@ var arrayBuffer = {
   DataView: $DataView
 };
 
-var floor$1 = Math.floor;
+var floor$2 = Math.floor;
 
 // `IsIntegralNumber` abstract operation
 // https://tc39.es/ecma262/#sec-isintegralnumber
-// eslint-disable-next-line es/no-number-isinteger -- safe
+// eslint-disable-next-line es-x/no-number-isinteger -- safe
 var isIntegralNumber = Number.isInteger || function isInteger(it) {
-  return !isObject(it) && isFinite(it) && floor$1(it) === it;
+  return !isObject(it) && isFinite(it) && floor$2(it) === it;
 };
 
 var RangeError$2 = global_1.RangeError;
@@ -684,92 +821,12 @@ var toOffset = function (it, BYTES) {
   return offset;
 };
 
-var bind = functionUncurryThis(functionUncurryThis.bind);
-
-// optional / simple context binding
-var functionBindContext = function (fn, that) {
-  aCallable(fn);
-  return that === undefined ? fn : functionBindNative ? bind(fn, that) : function (/* ...args */) {
-    return fn.apply(that, arguments);
-  };
-};
-
-var noop = function () { /* empty */ };
-var empty = [];
-var construct = getBuiltIn('Reflect', 'construct');
-var constructorRegExp = /^\s*(?:class|function)\b/;
-var exec = functionUncurryThis(constructorRegExp.exec);
-var INCORRECT_TO_STRING = !constructorRegExp.exec(noop);
-
-var isConstructorModern = function isConstructor(argument) {
-  if (!isCallable(argument)) return false;
-  try {
-    construct(noop, empty, argument);
-    return true;
-  } catch (error) {
-    return false;
-  }
-};
-
-var isConstructorLegacy = function isConstructor(argument) {
-  if (!isCallable(argument)) return false;
-  switch (classof(argument)) {
-    case 'AsyncFunction':
-    case 'GeneratorFunction':
-    case 'AsyncGeneratorFunction': return false;
-  }
-  try {
-    // we can't check .prototype since constructors produced by .bind haven't it
-    // `Function#toString` throws on some built-it function in some legacy engines
-    // (for example, `DOMQuad` and similar in FF41-)
-    return INCORRECT_TO_STRING || !!exec(constructorRegExp, inspectSource(argument));
-  } catch (error) {
-    return true;
-  }
-};
-
-isConstructorLegacy.sham = true;
-
-// `IsConstructor` abstract operation
-// https://tc39.es/ecma262/#sec-isconstructor
-var isConstructor = !construct || fails(function () {
-  var called;
-  return isConstructorModern(isConstructorModern.call)
-    || !isConstructorModern(Object)
-    || !isConstructorModern(function () { called = true; })
-    || called;
-}) ? isConstructorLegacy : isConstructorModern;
-
-var TypeError$2 = global_1.TypeError;
+var TypeError$4 = global_1.TypeError;
 
 // `Assert: IsConstructor(argument) is true`
 var aConstructor = function (argument) {
   if (isConstructor(argument)) return argument;
-  throw TypeError$2(tryToString(argument) + ' is not a constructor');
-};
-
-var ITERATOR$1 = wellKnownSymbol('iterator');
-
-var getIteratorMethod = function (it) {
-  if (it != undefined) return getMethod(it, ITERATOR$1)
-    || getMethod(it, '@@iterator')
-    || iterators[classof(it)];
-};
-
-var TypeError$3 = global_1.TypeError;
-
-var getIterator = function (argument, usingIterator) {
-  var iteratorMethod = arguments.length < 2 ? getIteratorMethod(argument) : usingIterator;
-  if (aCallable(iteratorMethod)) return anObject(functionCall(iteratorMethod, argument));
-  throw TypeError$3(tryToString(argument) + ' is not iterable');
-};
-
-var ITERATOR$2 = wellKnownSymbol('iterator');
-var ArrayPrototype = Array.prototype;
-
-// check on default Array iterator
-var isArrayIteratorMethod = function (it) {
-  return it !== undefined && (iterators.Array === it || ArrayPrototype[ITERATOR$2] === it);
+  throw TypeError$4(tryToString(argument) + ' is not a constructor');
 };
 
 var aTypedArrayConstructor$1 = arrayBufferViewCore.aTypedArrayConstructor;
@@ -803,7 +860,7 @@ var typedArrayFrom = function from(source /* , mapfn, thisArg */) {
 
 // `IsArray` abstract operation
 // https://tc39.es/ecma262/#sec-isarray
-// eslint-disable-next-line es/no-array-isarray -- safe
+// eslint-disable-next-line es-x/no-array-isarray -- safe
 var isArray = Array.isArray || function isArray(argument) {
   return classofRaw(argument) == 'Array';
 };
@@ -911,21 +968,6 @@ var setSpecies = function (CONSTRUCTOR_NAME) {
       get: function () { return this; }
     });
   }
-};
-
-// makes subclassing work correct for wrapped built-ins
-var inheritIfRequired = function ($this, dummy, Wrapper) {
-  var NewTarget, NewTargetPrototype;
-  if (
-    // it can work only with native `setPrototypeOf`
-    objectSetPrototypeOf &&
-    // we haven't completely correct pre-ES6 way for getting `new.target`, so use this
-    isCallable(NewTarget = dummy.constructor) &&
-    NewTarget !== Wrapper &&
-    isObject(NewTargetPrototype = NewTarget.prototype) &&
-    NewTargetPrototype !== Wrapper.prototype
-  ) objectSetPrototypeOf($this, NewTargetPrototype);
-  return $this;
 };
 
 var typedArrayConstructor = createCommonjsModule(function (module) {
@@ -1201,7 +1243,7 @@ var aTypedArray$2 = arrayBufferViewCore.aTypedArray;
 var exportTypedArrayMethod$2 = arrayBufferViewCore.exportTypedArrayMethod;
 
 var WORKS_WITH_OBJECTS_AND_GEERIC_ON_TYPED_ARRAYS = !fails(function () {
-  // eslint-disable-next-line es/no-typed-arrays -- required for testing
+  // eslint-disable-next-line es-x/no-typed-arrays -- required for testing
   var array = new Uint8ClampedArray(2);
   functionCall($set, array, { length: 1, 0: 3 }, 1);
   return array[1] !== 3;
@@ -1229,49 +1271,6 @@ exportTypedArrayMethod$2('set', function set(arrayLike /* , offset */) {
   while (index < len) this[offset + index] = src[index++];
 }, !WORKS_WITH_OBJECTS_AND_GEERIC_ON_TYPED_ARRAYS || TO_OBJECT_BUG);
 
-var floor$2 = Math.floor;
-
-var mergeSort = function (array, comparefn) {
-  var length = array.length;
-  var middle = floor$2(length / 2);
-  return length < 8 ? insertionSort(array, comparefn) : merge(
-    array,
-    mergeSort(arraySliceSimple(array, 0, middle), comparefn),
-    mergeSort(arraySliceSimple(array, middle), comparefn),
-    comparefn
-  );
-};
-
-var insertionSort = function (array, comparefn) {
-  var length = array.length;
-  var i = 1;
-  var element, j;
-
-  while (i < length) {
-    j = i;
-    element = array[i];
-    while (j && comparefn(array[j - 1], element) > 0) {
-      array[j] = array[--j];
-    }
-    if (j !== i++) array[j] = element;
-  } return array;
-};
-
-var merge = function (array, left, right, comparefn) {
-  var llength = left.length;
-  var rlength = right.length;
-  var lindex = 0;
-  var rindex = 0;
-
-  while (lindex < llength || rindex < rlength) {
-    array[lindex + rindex] = (lindex < llength && rindex < rlength)
-      ? comparefn(left[lindex], right[rindex]) <= 0 ? left[lindex++] : right[rindex++]
-      : lindex < llength ? left[lindex++] : right[rindex++];
-  } return array;
-};
-
-var arraySort = mergeSort;
-
 var firefox = engineUserAgent.match(/firefox\/(\d+)/i);
 
 var engineFfVersion = !!firefox && +firefox[1];
@@ -1282,7 +1281,6 @@ var webkit = engineUserAgent.match(/AppleWebKit\/(\d+)\./);
 
 var engineWebkitVersion = !!webkit && +webkit[1];
 
-var Array$5 = global_1.Array;
 var aTypedArray$3 = arrayBufferViewCore.aTypedArray;
 var exportTypedArrayMethod$3 = arrayBufferViewCore.exportTypedArrayMethod;
 var Uint16Array = global_1.Uint16Array;
@@ -1303,7 +1301,7 @@ var STABLE_SORT = !!un$Sort && !fails(function () {
   if (engineWebkitVersion) return engineWebkitVersion < 602;
 
   var array = new Uint16Array(516);
-  var expected = Array$5(516);
+  var expected = Array(516);
   var index, mod;
 
   for (index = 0; index < 516; index++) {
@@ -1438,7 +1436,7 @@ exportTypedArrayMethod$6('findLastIndex', function findLastIndex(predicate /* , 
   return $findLastIndex(aTypedArray$6(this), predicate, arguments.length > 1 ? arguments[1] : undefined);
 });
 
-var Array$6 = global_1.Array;
+var Array$5 = global_1.Array;
 var push$1 = functionUncurryThis([].push);
 
 var arrayGroupBy = function ($this, callbackfn, that, specificConstructor) {
@@ -1460,7 +1458,7 @@ var arrayGroupBy = function ($this, callbackfn, that, specificConstructor) {
   // TODO: Remove this block from `core-js@4`
   if (specificConstructor) {
     Constructor = specificConstructor(O);
-    if (Constructor !== Array$6) {
+    if (Constructor !== Array$5) {
       for (key in target) target[key] = arrayFromConstructorAndList(Constructor, target[key]);
     }
   } return target;
@@ -1499,7 +1497,7 @@ var TYPED_ARRAY_CONSTRUCTOR$2 = arrayBufferViewCore.TYPED_ARRAY_CONSTRUCTOR;
 // https://tc39.es/proposal-change-array-by-copy/#sec-%typedarray%.prototype.toReversed
 exportTypedArrayMethod$8('toReversed', function toReversed() {
   return arrayToReversed(aTypedArray$8(this), this[TYPED_ARRAY_CONSTRUCTOR$2]);
-}, true);
+});
 
 var aTypedArray$9 = arrayBufferViewCore.aTypedArray;
 var exportTypedArrayMethod$9 = arrayBufferViewCore.exportTypedArrayMethod;
@@ -1513,12 +1511,14 @@ exportTypedArrayMethod$9('toSorted', function toSorted(compareFn) {
   var O = aTypedArray$9(this);
   var A = arrayFromConstructorAndList(O[TYPED_ARRAY_CONSTRUCTOR$3], O);
   return sort(A, compareFn);
-}, true);
+});
 
 var arraySlice = functionUncurryThis([].slice);
 
+var $TypeError = TypeError;
 var max$1 = Math.max;
 var min = Math.min;
+var MAX_SAFE_INTEGER = 0x1FFFFFFFFFFFFF;
 
 // https://tc39.es/proposal-change-array-by-copy/#sec-array.prototype.toSpliced
 // https://tc39.es/proposal-change-array-by-copy/#sec-%typedarray%.prototype.toSpliced
@@ -1540,6 +1540,7 @@ var arrayToSpliced = function (O, C, args) {
     actualDeleteCount = min(max$1(toIntegerOrInfinity(deleteCount), 0), len - actualStart);
   }
   newLen = len + insertCount - actualDeleteCount;
+  if (newLen > MAX_SAFE_INTEGER) throw $TypeError('Maximum allowed length exceeded');
   A = new C(newLen);
 
   for (; k < actualStart; k++) A[k] = O[k];
@@ -1558,7 +1559,7 @@ var TYPED_ARRAY_CONSTRUCTOR$4 = arrayBufferViewCore.TYPED_ARRAY_CONSTRUCTOR;
 // eslint-disable-next-line no-unused-vars -- required for .length
 exportTypedArrayMethod$a('toSpliced', function toSpliced(start, deleteCount /* , ...items */) {
   return arrayToSpliced(aTypedArray$a(this), this[TYPED_ARRAY_CONSTRUCTOR$4], arraySlice(arguments));
-}, true);
+});
 
 var Map = getBuiltIn('Map');
 var MapPrototype = Map.prototype;
@@ -1622,6 +1623,6 @@ var TYPED_ARRAY_CONSTRUCTOR$5 = arrayBufferViewCore.TYPED_ARRAY_CONSTRUCTOR;
 // https://tc39.es/proposal-change-array-by-copy/#sec-%typedarray%.prototype.with
 exportTypedArrayMethod$c('with', { 'with': function (index, value) {
   return arrayWith(aTypedArray$c(this), this[TYPED_ARRAY_CONSTRUCTOR$5], index, value);
-} }['with'], true);
+} }['with']);
 
-export { typedArrayConstructor as t };
+export { isArrayIteratorMethod as a, getIterator as b, classof as c, createProperty as d, arraySort as e, functionBindContext as f, getIteratorMethod as g, anInstance as h, isConstructor as i, arraySliceSimple as j, inheritIfRequired as k, redefineAll as r, typedArrayConstructor as t };
