@@ -8,7 +8,7 @@ import SimplexNoise from "simplex-noise";
  * @property {number} [gain=0.5]
  * @property {number} [frequency=1]
  * @property {number} [amplitude=gain]
- * @property {number} [noise]
+ * @property {Function} [noise]
  */
 
 class Random {
@@ -190,7 +190,7 @@ class Random {
   }
 
   /**
-   * Fractional Brownian motion. Default to 1/f noise with 8 octaves.
+   * Fractional Brownian motion (also called fractal Brownian motion) noise. Default to 1/f noise with 8 octaves.
    * @param {FBMOptions} options
    * @param  {...number} d x, y, z?, w?
    * @returns {number} in the interval [-1, 1]

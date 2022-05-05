@@ -288,7 +288,7 @@ Samples the noise field in 4 dimensions
 
 ### random.fbm(options, ...d) ⇒ <code>number</code>
 
-Fractional Brownian motion. Default to 1/f noise with 8 octaves.
+Fractional Brownian motion (also called fractal Brownian motion) noise. Default to 1/f noise with 8 octaves.
 
 **Kind**: instance method of [<code>Random</code>](#Random)
 **Returns**: <code>number</code> - in the interval [-1, 1]
@@ -305,14 +305,14 @@ Fractional Brownian motion. Default to 1/f noise with 8 octaves.
 **Kind**: global typedef
 **Properties**
 
-| Name         | Type                | Default           |
-| ------------ | ------------------- | ----------------- |
-| [octaves]    | <code>number</code> | <code>8</code>    |
-| [lacunarity] | <code>number</code> | <code>2</code>    |
-| [gain]       | <code>number</code> | <code>0.5</code>  |
-| [frequency]  | <code>number</code> | <code>1</code>    |
-| [amplitude]  | <code>number</code> | <code>gain</code> |
-| [noise]      | <code>number</code> |                   |
+| Name         | Type                  | Default           |
+| ------------ | --------------------- | ----------------- |
+| [octaves]    | <code>number</code>   | <code>8</code>    |
+| [lacunarity] | <code>number</code>   | <code>2</code>    |
+| [gain]       | <code>number</code>   | <code>0.5</code>  |
+| [frequency]  | <code>number</code>   | <code>1</code>    |
+| [amplitude]  | <code>number</code>   | <code>gain</code> |
+| [noise]      | <code>function</code> |                   |
 
 <!-- api-end -->
 
