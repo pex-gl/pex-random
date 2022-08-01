@@ -39,8 +39,8 @@
     "c8": "^7.12.0",
     "es-module-shims": "^1.5.10",
     "mocha": "^10.0.0",
-    "pex-geom": "github:pex-gl/pex-geom#v3",
-    "pex-math": "github:pex-gl/pex-math#v4"
+    "pex-geom": "^3.0.0-alpha.2",
+    "pex-math": "^4.0.0-alpha.2"
   },
   "engines": {
     "node": ">=16.0.0",

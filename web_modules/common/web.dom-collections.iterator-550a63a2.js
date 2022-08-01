@@ -1,4 +1,5 @@
-import { w as wellKnownSymbol, F as objectDefineProperty, v as objectCreate, P as documentCreateElement, L as objectGetPrototypeOf, f as fails, q as isCallable, p as redefine, x as createPropertyDescriptor, s as setToStringTag, Q as iterators, I as objectSetPrototypeOf, C as createNonEnumerableProperty, h as functionCall, _ as _export, R as functionName, i as internalState, e as descriptors, S as toIndexedObject, g as global_1 } from './object-set-prototype-of-42e9993d.js';
+import { w as wellKnownSymbol, E as objectDefineProperty, q as objectCreate, M as documentCreateElement, u as createPropertyDescriptor, s as setToStringTag, N as iterators, O as objectGetPrototypeOf, H as objectSetPrototypeOf, n as isCallable, m as redefine, A as createNonEnumerableProperty, h as functionCall, _ as _export, P as functionName, i as internalState, e as descriptors, Q as toIndexedObject, g as global_1 } from './object-set-prototype-of-29d68f2f.js';
+import { i as iteratorsCore } from './iterators-core-1d203bb8.js';
 
 var UNSCOPABLES = wellKnownSymbol('unscopables');
 var ArrayPrototype = Array.prototype;
@@ -61,46 +62,7 @@ var DOMTokenListPrototype = classList && classList.constructor && classList.cons
 
 var domTokenListPrototype = DOMTokenListPrototype === Object.prototype ? undefined : DOMTokenListPrototype;
 
-var ITERATOR = wellKnownSymbol('iterator');
-var BUGGY_SAFARI_ITERATORS = false;
-
-// `%IteratorPrototype%` object
-// https://tc39.es/ecma262/#sec-%iteratorprototype%-object
-var IteratorPrototype, PrototypeOfArrayIteratorPrototype, arrayIterator;
-
-/* eslint-disable es-x/no-array-prototype-keys -- safe */
-if ([].keys) {
-  arrayIterator = [].keys();
-  // Safari 8 has buggy iterators w/o `next`
-  if (!('next' in arrayIterator)) BUGGY_SAFARI_ITERATORS = true;
-  else {
-    PrototypeOfArrayIteratorPrototype = objectGetPrototypeOf(objectGetPrototypeOf(arrayIterator));
-    if (PrototypeOfArrayIteratorPrototype !== Object.prototype) IteratorPrototype = PrototypeOfArrayIteratorPrototype;
-  }
-}
-
-var NEW_ITERATOR_PROTOTYPE = IteratorPrototype == undefined || fails(function () {
-  var test = {};
-  // FF44- legacy iterators case
-  return IteratorPrototype[ITERATOR].call(test) !== test;
-});
-
-if (NEW_ITERATOR_PROTOTYPE) IteratorPrototype = {};
-
-// `%IteratorPrototype%[@@iterator]()` method
-// https://tc39.es/ecma262/#sec-%iteratorprototype%-@@iterator
-if (!isCallable(IteratorPrototype[ITERATOR])) {
-  redefine(IteratorPrototype, ITERATOR, function () {
-    return this;
-  });
-}
-
-var iteratorsCore = {
-  IteratorPrototype: IteratorPrototype,
-  BUGGY_SAFARI_ITERATORS: BUGGY_SAFARI_ITERATORS
-};
-
-var IteratorPrototype$1 = iteratorsCore.IteratorPrototype;
+var IteratorPrototype = iteratorsCore.IteratorPrototype;
 
 
 
@@ -110,7 +72,7 @@ var returnThis = function () { return this; };
 
 var createIteratorConstructor = function (IteratorConstructor, NAME, next, ENUMERABLE_NEXT) {
   var TO_STRING_TAG = NAME + ' Iterator';
-  IteratorConstructor.prototype = objectCreate(IteratorPrototype$1, { next: createPropertyDescriptor(+!ENUMERABLE_NEXT, next) });
+  IteratorConstructor.prototype = objectCreate(IteratorPrototype, { next: createPropertyDescriptor(+!ENUMERABLE_NEXT, next) });
   setToStringTag(IteratorConstructor, TO_STRING_TAG, false);
   iterators[TO_STRING_TAG] = returnThis;
   return IteratorConstructor;
@@ -118,9 +80,9 @@ var createIteratorConstructor = function (IteratorConstructor, NAME, next, ENUME
 
 var PROPER_FUNCTION_NAME = functionName.PROPER;
 var CONFIGURABLE_FUNCTION_NAME = functionName.CONFIGURABLE;
-var IteratorPrototype$2 = iteratorsCore.IteratorPrototype;
-var BUGGY_SAFARI_ITERATORS$1 = iteratorsCore.BUGGY_SAFARI_ITERATORS;
-var ITERATOR$1 = wellKnownSymbol('iterator');
+var IteratorPrototype$1 = iteratorsCore.IteratorPrototype;
+var BUGGY_SAFARI_ITERATORS = iteratorsCore.BUGGY_SAFARI_ITERATORS;
+var ITERATOR = wellKnownSymbol('iterator');
 var KEYS = 'keys';
 var VALUES = 'values';
 var ENTRIES = 'entries';
@@ -132,7 +94,7 @@ var defineIterator = function (Iterable, NAME, IteratorConstructor, next, DEFAUL
 
   var getIterationMethod = function (KIND) {
     if (KIND === DEFAULT && defaultIterator) return defaultIterator;
-    if (!BUGGY_SAFARI_ITERATORS$1 && KIND in IterablePrototype) return IterablePrototype[KIND];
+    if (!BUGGY_SAFARI_ITERATORS && KIND in IterablePrototype) return IterablePrototype[KIND];
     switch (KIND) {
       case KEYS: return function keys() { return new IteratorConstructor(this, KIND); };
       case VALUES: return function values() { return new IteratorConstructor(this, KIND); };
@@ -143,10 +105,10 @@ var defineIterator = function (Iterable, NAME, IteratorConstructor, next, DEFAUL
   var TO_STRING_TAG = NAME + ' Iterator';
   var INCORRECT_VALUES_NAME = false;
   var IterablePrototype = Iterable.prototype;
-  var nativeIterator = IterablePrototype[ITERATOR$1]
+  var nativeIterator = IterablePrototype[ITERATOR]
     || IterablePrototype['@@iterator']
     || DEFAULT && IterablePrototype[DEFAULT];
-  var defaultIterator = !BUGGY_SAFARI_ITERATORS$1 && nativeIterator || getIterationMethod(DEFAULT);
+  var defaultIterator = !BUGGY_SAFARI_ITERATORS && nativeIterator || getIterationMethod(DEFAULT);
   var anyNativeIterator = NAME == 'Array' ? IterablePrototype.entries || nativeIterator : nativeIterator;
   var CurrentIteratorPrototype, methods, KEY;
 
@@ -154,11 +116,11 @@ var defineIterator = function (Iterable, NAME, IteratorConstructor, next, DEFAUL
   if (anyNativeIterator) {
     CurrentIteratorPrototype = objectGetPrototypeOf(anyNativeIterator.call(new Iterable()));
     if (CurrentIteratorPrototype !== Object.prototype && CurrentIteratorPrototype.next) {
-      if ( objectGetPrototypeOf(CurrentIteratorPrototype) !== IteratorPrototype$2) {
+      if ( objectGetPrototypeOf(CurrentIteratorPrototype) !== IteratorPrototype$1) {
         if (objectSetPrototypeOf) {
-          objectSetPrototypeOf(CurrentIteratorPrototype, IteratorPrototype$2);
-        } else if (!isCallable(CurrentIteratorPrototype[ITERATOR$1])) {
-          redefine(CurrentIteratorPrototype, ITERATOR$1, returnThis$1);
+          objectSetPrototypeOf(CurrentIteratorPrototype, IteratorPrototype$1);
+        } else if (!isCallable(CurrentIteratorPrototype[ITERATOR])) {
+          redefine(CurrentIteratorPrototype, ITERATOR, returnThis$1);
         }
       }
       // Set @@toStringTag to native iterators
@@ -184,15 +146,15 @@ var defineIterator = function (Iterable, NAME, IteratorConstructor, next, DEFAUL
       entries: getIterationMethod(ENTRIES)
     };
     if (FORCED) for (KEY in methods) {
-      if (BUGGY_SAFARI_ITERATORS$1 || INCORRECT_VALUES_NAME || !(KEY in IterablePrototype)) {
+      if (BUGGY_SAFARI_ITERATORS || INCORRECT_VALUES_NAME || !(KEY in IterablePrototype)) {
         redefine(IterablePrototype, KEY, methods[KEY]);
       }
-    } else _export({ target: NAME, proto: true, forced: BUGGY_SAFARI_ITERATORS$1 || INCORRECT_VALUES_NAME }, methods);
+    } else _export({ target: NAME, proto: true, forced: BUGGY_SAFARI_ITERATORS || INCORRECT_VALUES_NAME }, methods);
   }
 
   // define iterator
-  if ( IterablePrototype[ITERATOR$1] !== defaultIterator) {
-    redefine(IterablePrototype, ITERATOR$1, defaultIterator, { name: DEFAULT });
+  if ( IterablePrototype[ITERATOR] !== defaultIterator) {
+    redefine(IterablePrototype, ITERATOR, defaultIterator, { name: DEFAULT });
   }
   iterators[NAME] = defaultIterator;
 
@@ -256,17 +218,17 @@ if ( descriptors && values.name !== 'values') try {
   defineProperty(values, 'name', { value: 'values' });
 } catch (error) { /* empty */ }
 
-var ITERATOR$2 = wellKnownSymbol('iterator');
+var ITERATOR$1 = wellKnownSymbol('iterator');
 var TO_STRING_TAG = wellKnownSymbol('toStringTag');
 var ArrayValues = es_array_iterator.values;
 
 var handlePrototype = function (CollectionPrototype, COLLECTION_NAME) {
   if (CollectionPrototype) {
     // some Chrome versions have non-configurable methods on DOMTokenList
-    if (CollectionPrototype[ITERATOR$2] !== ArrayValues) try {
-      createNonEnumerableProperty(CollectionPrototype, ITERATOR$2, ArrayValues);
+    if (CollectionPrototype[ITERATOR$1] !== ArrayValues) try {
+      createNonEnumerableProperty(CollectionPrototype, ITERATOR$1, ArrayValues);
     } catch (error) {
-      CollectionPrototype[ITERATOR$2] = ArrayValues;
+      CollectionPrototype[ITERATOR$1] = ArrayValues;
     }
     if (!CollectionPrototype[TO_STRING_TAG]) {
       createNonEnumerableProperty(CollectionPrototype, TO_STRING_TAG, COLLECTION_NAME);
@@ -288,4 +250,4 @@ for (var COLLECTION_NAME in domIterables) {
 
 handlePrototype(domTokenListPrototype, 'DOMTokenList');
 
-export { addToUnscopables as a, createIteratorConstructor as c, defineIterator as d, iteratorsCore as i };
+export { addToUnscopables as a, createIteratorConstructor as c, defineIterator as d };
