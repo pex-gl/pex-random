@@ -1,5 +1,5 @@
 import seedrandom from "seedrandom";
-import SimplexNoise from "simplex-noise";
+import { createNoise2D, createNoise3D, createNoise4D } from "simplex-noise";
 
 /**
  * @typedef FBMOptions
@@ -45,7 +45,11 @@ class Random {
    */
   seed(s) {
     this.rng = seedrandom(s);
-    this.simplex = new SimplexNoise(this.rng);
+    this.simplex = {
+      noise2D: createNoise2D(this.rng),
+      noise3D: createNoise3D(this.rng),
+      noise4D: createNoise4D(this.rng),
+    };
   }
 
   /**

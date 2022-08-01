@@ -33,11 +33,11 @@
   },
   "dependencies": {
     "seedrandom": "^3.0.5",
-    "simplex-noise": "3.0.1"
+    "simplex-noise": "4.0.0"
   },
   "devDependencies": {
-    "c8": "^7.11.2",
-    "es-module-shims": "^1.5.4",
+    "c8": "^7.12.0",
+    "es-module-shims": "^1.5.10",
     "mocha": "^10.0.0",
     "pex-geom": "github:pex-gl/pex-geom#v3",
     "pex-math": "github:pex-gl/pex-math#v4"
