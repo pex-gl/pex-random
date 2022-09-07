@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [2.0.0-alpha.1](https://github.com/pex-gl/pex-random/compare/v2.0.0-alpha.0...v2.0.0-alpha.1) (2022-09-07)
+
+
+### Features
+
+* use simplex-noise 4.0.0 ([6dcec5d](https://github.com/pex-gl/pex-random/commit/6dcec5d3835ef54c67936b41ec1df680d1f011c8)), closes [#6](https://github.com/pex-gl/pex-random/issues/6)
+
+
+
 # [2.0.0-alpha.0](https://github.com/pex-gl/pex-random/compare/v1.0.1...v2.0.0-alpha.0) (2022-07-06)
 
 

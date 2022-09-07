@@ -1,6 +1,6 @@
 {
   "name": "pex-random",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.0-alpha.1",
   "description": "Random value generators (float, int, vector and noise) for PEX.",
   "keywords": [
     "pex",
@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "c8": "^7.12.0",
-    "es-module-shims": "^1.5.10",
+    "es-module-shims": "^1.5.12",
     "mocha": "^10.0.0",
     "pex-geom": "^3.0.0-alpha.2",
     "pex-math": "^4.0.0-alpha.2"
