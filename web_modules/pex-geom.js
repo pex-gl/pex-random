@@ -1,23 +1,21 @@
-import './common/web.dom-collections.iterator-550a63a2.js';
-import { s as set3, t as toString$4, a as set$2, b as sub, n as normalize, d as dot, c as create$4, e as add, f as scale$1, g as cross, l as length, h as toString$5 } from './common/avec3-b1fbb7d5.js';
-import './common/object-set-prototype-of-29d68f2f.js';
-import './common/iterators-core-1d203bb8.js';
+import { s as set3, t as toString$4, a as set$2, b as sub, n as normalize, d as dot, c as create$4, e as add, f as scale$1, g as cross, l as length, h as toString$5 } from './common/avec3-cb8d43a4.js';
+
+/** @module aabb */
 
 /**
  * Creates a new bounding box.
  * @returns {import("./types.js").aabb}
  */
-
 function create() {
   // [min, max]
   return [[Infinity, Infinity, Infinity], [-Infinity, -Infinity, -Infinity]];
 }
+
 /**
  * Reset a bounding box.
  * @param {import("./types.js").aabb} a
  * @returns {import("./types.js").rect}
  */
-
 function empty(a) {
   a[0][0] = Infinity;
   a[0][1] = Infinity;
@@ -27,22 +25,22 @@ function empty(a) {
   a[1][2] = -Infinity;
   return a;
 }
+
 /**
  * Copies a bounding box.
  * @param {import("./types.js").aabb} a
  * @returns {import("./types.js").aabb}
  */
-
 function copy(a) {
   return [a[0].slice(), a[1].slice()];
 }
+
 /**
  * Sets a bounding box to another.
  * @param {import("./types.js").aabb} a
  * @param {import("./types.js").aabb} b
  * @returns {import("./types.js").aabb}
  */
-
 function set(a, b) {
   a[0][0] = b[0][0];
   a[0][1] = b[0][1];
@@ -52,38 +50,36 @@ function set(a, b) {
   a[1][2] = b[1][2];
   return a;
 }
+
 /**
  * Checks if a bounding box is empty.
  * @param {import("./types.js").aabb} aabb
  * @returns {boolean}
  */
-
 function isEmpty(a) {
   return a[0][0] > a[1][0] || a[0][1] > a[1][1] || a[0][2] > a[1][2];
 }
+
 /**
  * Updates a bounding box from a list of points.
  * @param {import("./types.js").aabb} a
  * @param {import("pex-math").vec3[] | TypedArray} points
  * @returns {import("./types.js").aabb}
  */
-
 function fromPoints(a, points) {
   const isTypedArray = !Array.isArray(points);
-
   for (let i = 0; i < points.length / (isTypedArray ? 3 : 1); i++) {
     includePoint(a, isTypedArray ? points.slice(i * 3) : points[i]);
   }
-
   return a;
 }
+
 /**
  * Returns a list of 8 points from a bounding box.
  * @param {import("./types.js").aabb} aabb
  * @param {import("pex-math").vec3[]} [points]
  * @returns {import("pex-math").vec3[]}
  */
-
 function getCorners(a, points = Array.from({
   length: 8
 }, () => [])) {
@@ -97,49 +93,49 @@ function getCorners(a, points = Array.from({
   set3(points[7], 0, a[0][0], a[1][1], a[1][2]);
   return points;
 }
+
 /**
  * Returns the center of a bounding box.
  * @param {import("./types.js").aabb} a
  * @param {import("pex-math").vec3} out
  * @returns {import("pex-math").vec3}
  */
-
 function center(a, out = [0, 0, 0]) {
   out[0] = (a[0][0] + a[1][0]) / 2;
   out[1] = (a[0][1] + a[1][1]) / 2;
   out[2] = (a[0][2] + a[1][2]) / 2;
   return out;
 }
+
 /**
  * Returns the size of a bounding box.
  * @param {import("./types.js").aabb} a
  * @param {import("pex-math").vec3} out
  * @returns {import("pex-math").vec3}
  */
-
 function size(a, out = [0, 0, 0]) {
   out[0] = Math.abs(a[1][0] - a[0][0]);
   out[1] = Math.abs(a[1][1] - a[0][1]);
   out[2] = Math.abs(a[1][2] - a[0][2]);
   return out;
 }
+
 /**
  * Checks if a point is inside a bounding box.
  * @param {import("./types.js").aabb} a
  * @param {import("pex-math").vec3} p
  * @returns {boolean}
  */
-
 function containsPoint(a, [x, y, z]) {
   return x >= a[0][0] && x <= a[1][0] && y >= a[0][1] && y <= a[1][1] && z >= a[0][2] && z <= a[1][2];
 }
+
 /**
  * Includes a bounding box in another.
  * @param {import("./types.js").aabb} a
  * @param {import("./types.js").aabb} b
  * @returns {import("./types.js").aabb}
  */
-
 function includeAABB(a, b) {
   if (isEmpty(a)) {
     set(a, b);
@@ -151,16 +147,15 @@ function includeAABB(a, b) {
     a[1][1] = Math.max(a[1][1], b[1][1]);
     a[1][2] = Math.max(a[1][2], b[1][2]);
   }
-
   return a;
 }
+
 /**
  * Includes a point in a bounding box.
  * @param {import("./types.js").aabb} a
  * @param {import("pex-math").vec3} p
  * @returns {import("pex-math").vec3}
  */
-
 function includePoint(a, p) {
   a[0][0] = Math.min(a[0][0], p[0]);
   a[0][1] = Math.min(a[0][1], p[1]);
@@ -170,13 +165,13 @@ function includePoint(a, p) {
   a[1][2] = Math.max(a[1][2], p[2]);
   return a;
 }
+
 /**
  * Prints a bounding box to a string.
  * @param {import("./types.js").aabb} a
  * @param {number} [precision=4]
  * @returns {string}
  */
-
 function toString(a, precision = 4) {
   // prettier-ignore
   return `[${toString$4(a[0], precision)}, ${toString$4(a[1], precision)}]`;
@@ -199,33 +194,34 @@ var aabb = /*#__PURE__*/Object.freeze({
   toString: toString
 });
 
+/** @module plane */
+
 /**
  * Enum for different side values
  * @readonly
  * @enum {number}
  */
-
 const Side = Object.freeze({
   OnPlane: 0,
   Same: -1,
   Opposite: 1
 });
 const TEMP_0 = create$4();
+
 /**
  * Creates a new plane
  * @returns {import("./types.js").plane}
  */
-
 function create$1() {
   return [[0, 0, 0], [0, 1, 0]];
 }
+
 /**
  * Returns on which side a point is.
  * @param {import("./types.js").plane} plane
  * @param {import("pex-math").vec3} point
  * @returns {number}
  */
-
 function side([planePoint, planeNormal], point) {
   set$2(TEMP_0, planePoint);
   sub(TEMP_0, point);
@@ -235,13 +231,13 @@ function side([planePoint, planeNormal], point) {
   if (dot$1 < 0) return Side.Same;
   return Side.OnPlane;
 }
+
 /**
  * Prints a plane to a string.
  * @param {import("./types.js").plane} a
  * @param {number} [precision=4]
  * @returns {string}
  */
-
 function toString$1(a, precision = 4) {
   // prettier-ignore
   return `[${toString$4(a[0], precision)}, ${toString$4(a[1], precision)}]`;
@@ -255,12 +251,13 @@ var plane = /*#__PURE__*/Object.freeze({
   toString: toString$1
 });
 
+/** @module ray */
+
 /**
  * Enum for different intersections values
  * @readonly
  * @enum {number}
  */
-
 const Intersections = Object.freeze({
   Intersect: 1,
   NoIntersect: 0,
@@ -277,14 +274,15 @@ const TEMP_5 = create$4();
 const TEMP_6 = create$4();
 const TEMP_7 = create$4();
 const EPSILON = 1e-6;
+
 /**
  * Creates a new ray
  * @returns {import("./types.js").ray}
  */
-
 function create$2() {
   return [[0, 0, 0], [0, 0, 1]];
 }
+
 /**
  * Determines if a ray intersect a plane and set intersection point
  * @see {@link https://www.cs.princeton.edu/courses/archive/fall00/cs426/lectures/raycast/sld017.htm}
@@ -293,7 +291,6 @@ function create$2() {
  * @param {import("pex-math").vec3} out
  * @returns {number}
  */
-
 function hitTestPlane([origin, direction], [point, normal], out = create$4()) {
   set$2(TEMP_0$1, origin);
   set$2(TEMP_1, direction);
@@ -305,6 +302,7 @@ function hitTestPlane([origin, direction], [point, normal], out = create$4()) {
   set$2(out, add(TEMP_0$1, scale$1(TEMP_1, t)));
   return Intersections.Intersect;
 }
+
 /**
  * Determines if a ray intersect a triangle and set intersection point
  * @see {@link http://geomalgorithms.com/a06-_intersect-2.html#intersect3D_RayTriangle()}
@@ -313,30 +311,31 @@ function hitTestPlane([origin, direction], [point, normal], out = create$4()) {
  * @param {import("pex-math").vec3} out
  * @returns {number}
  */
-
 function hitTestTriangle([origin, direction], [p0, p1, p2], out = create$4()) {
   // get triangle edge vectors and plane normal
   const u = sub(set$2(TEMP_0$1, p1), p0);
   const v = sub(set$2(TEMP_1, p2), p0);
   const n = cross(set$2(TEMP_2, u), v);
-  if (length(n) < EPSILON) return Intersections.TriangleDegenerate; // ray vectors
+  if (length(n) < EPSILON) return Intersections.TriangleDegenerate;
 
-  const w0 = sub(set$2(TEMP_3, origin), p0); // params to calc ray-plane intersect
+  // ray vectors
+  const w0 = sub(set$2(TEMP_3, origin), p0);
 
+  // params to calc ray-plane intersect
   const a = -dot(n, w0);
   const b = dot(n, direction);
-
   if (Math.abs(b) < EPSILON) {
     if (a === 0) return Intersections.SamePlane;
     return Intersections.NoIntersect;
-  } // get intersect point of ray with triangle plane
+  }
 
+  // get intersect point of ray with triangle plane
+  const r = a / b;
+  // ray goes away from triangle
+  if (r < -EPSILON) return Intersections.NoIntersect;
 
-  const r = a / b; // ray goes away from triangle
-
-  if (r < -EPSILON) return Intersections.NoIntersect; // for a segment, also test if (r > 1.0) => no intersect
+  // for a segment, also test if (r > 1.0) => no intersect
   // intersect point of ray and plane
-
   const I = add(set$2(TEMP_4, origin), scale$1(set$2(TEMP_5, direction), r));
   const uu = dot(u, u);
   const uv = dot(u, v);
@@ -344,8 +343,9 @@ function hitTestTriangle([origin, direction], [p0, p1, p2], out = create$4()) {
   const w = sub(set$2(TEMP_6, I), p0);
   const wu = dot(w, u);
   const wv = dot(w, v);
-  const D = uv * uv - uu * vv; // get and test parametric coords
+  const D = uv * uv - uu * vv;
 
+  // get and test parametric coords
   const s = (uv * wv - vv * wu) / D;
   if (s < -EPSILON || s > 1.0 + EPSILON) return Intersections.NoIntersect;
   const t = (uv * wu - uu * wv) / D;
@@ -356,6 +356,7 @@ function hitTestTriangle([origin, direction], [p0, p1, p2], out = create$4()) {
   add(out, p0);
   return Intersections.Intersect;
 }
+
 /**
  * Determines if a ray intersect an AABB bounding box
  * @see {@link http://gamedev.stackexchange.com/questions/18436/most-efficient-aabb-vs-ray-collision-algorithms}
@@ -363,7 +364,6 @@ function hitTestTriangle([origin, direction], [p0, p1, p2], out = create$4()) {
  * @param {import("./types.js").aabb} aabb
  * @returns {boolean}
  */
-
 function hitTestAABB([origin, direction], aabb) {
   const dirFracx = 1.0 / direction[0];
   const dirFracy = 1.0 / direction[1];
@@ -386,19 +386,19 @@ function hitTestAABB([origin, direction], aabb) {
   const tmax = Math.min(Math.min(Math.max(t1, t2), Math.max(t3, t4)), Math.max(t5, t6));
   return !(tmax < 0 || tmin > tmax);
 }
+
 /**
  * Alias for {@link hitTestAABB}
  * @function
  */
-
 const intersectsAABB = hitTestAABB;
+
 /**
  * Prints a plane to a string.
  * @param {import("./types.js").ray} a
  * @param {number} [precision=4]
  * @returns {string}
  */
-
 function toString$2(a, precision = 4) {
   // prettier-ignore
   return `[${toString$4(a[0], precision)}, ${toString$4(a[1], precision)}]`;
@@ -415,41 +415,42 @@ var ray = /*#__PURE__*/Object.freeze({
   toString: toString$2
 });
 
+/** @module rect */
+
 /**
  * Creates a new rectangle.
  * @returns {import("./types.js").rect}
  */
-
 function create$3() {
   return [[Infinity, Infinity], [-Infinity, -Infinity]];
 }
+
 /**
  * Reset a rectangle.
  * @param {import("./types.js").rect} a
  * @returns {import("./types.js").rect}
  */
-
 function empty$1(a) {
   a[0][0] = a[0][1] = Infinity;
   a[1][0] = a[1][1] = -Infinity;
   return a;
 }
+
 /**
  * Copies a rectangle.
  * @param {import("./types.js").rect} b
  * @returns {import("./types.js").rect}
  */
-
 function copy$1(a) {
   return [a[0].slice(), a[1].slice()];
 }
+
 /**
  * Sets a rectangle to another.
  * @param {import("./types.js").rect} a
  * @param {import("./types.js").rect} b
  * @returns {import("./types.js").rect}
  */
-
 function set$1(a, b) {
   a[0][0] = b[0][0];
   a[0][1] = b[0][1];
@@ -457,38 +458,36 @@ function set$1(a, b) {
   a[1][1] = b[1][1];
   return a;
 }
+
 /**
  * Checks if a rectangle is empty.
  * @param {import("./types.js").rect} a
  * @returns {boolean}
  */
-
 function isEmpty$1(a) {
   return a[0][0] > a[1][0] || a[0][1] > a[1][1];
 }
+
 /**
  * Updates a rectangle from a list of points.
  * @param {import("./types.js").rect} a
  * @param {import("pex-math").vec2[] | TypedArray} points
  * @returns {import("./types.js").rect}
  */
-
 function fromPoints$1(a, points) {
   const isTypedArray = !Array.isArray(points);
-
   for (let i = 0; i < points.length / (isTypedArray ? 2 : 1); i++) {
     includePoint$1(a, isTypedArray ? points.slice(i * 2) : points[i]);
   }
-
   return a;
 }
+
 /**
  * Returns a list of 4 points from a rectangle.
  * @param {import("./types.js").rect} a
  * @param {import("pex-math").vec2[]} points
  * @returns {import("pex-math").vec2[]}
  */
-
 function getCorners$1(a, points = []) {
   points[0] = a[0].slice();
   points[1] = [a[0][1], a[1][0]];
@@ -496,13 +495,13 @@ function getCorners$1(a, points = []) {
   points[3] = [a[1][0], a[0][1]];
   return points;
 }
+
 /**
  * Scales a rectangle.
  * @param {import("./types.js").rect} a
  * @param {number} n
  * @returns {import("./types.js").rect}
  */
-
 function scale(a, n) {
   a[0][0] *= n;
   a[0][1] *= n;
@@ -510,64 +509,64 @@ function scale(a, n) {
   a[1][1] *= n;
   return a;
 }
+
 /**
  * Sets the size of a rectangle using width and height.
  * @param {import("./types.js").rect} a
  * @param {import("pex-math").vec2} size
  * @returns {import("./types.js").rect}
  */
-
 function setSize(a, size) {
   a[1][0] = a[0][0] + size[0];
   a[1][1] = a[0][1] + size[1];
   return a;
 }
+
 /**
  * Returns the size of a rectangle.
  * @param {import("./types.js").rect} a
  * @param {import("pex-math").vec2} out
  * @returns {import("pex-math").vec2}
  */
-
 function size$1(a, out = []) {
   out[0] = width(a);
   out[1] = height(a);
   return out;
 }
+
 /**
  * Returns the width of a rectangle.
  * @param {import("./types.js").rect} a
  * @returns {number}
  */
-
 function width(a) {
   return a[1][0] - a[0][0];
 }
+
 /**
  * Returns the height of a rectangle.
  * @param {import("./types.js").rect} a
  * @returns {number}
  */
-
 function height(a) {
   return a[1][1] - a[0][1];
 }
+
 /**
  * Returns the aspect ratio of a rectangle.
  * @param {import("./types.js").rect} a
  * @returns {number}
  */
-
 function aspectRatio(a) {
   return width(a) / height(a);
 }
+
 /**
  * Sets the position of a rectangle.
  * @param {import("./types.js").rect} a
  * @param {import("pex-math").vec2} p
  * @returns {import("./types.js").rect}
  */
-
 function setPosition(a, [x, y]) {
   const w = width(a);
   const h = height(a);
@@ -577,45 +576,45 @@ function setPosition(a, [x, y]) {
   a[1][1] = y + h;
   return a;
 }
+
 /**
  * Returns the center of a rectangle.
  * @param {import("./types.js").rect} a
  * @param {import("pex-math").vec2} out
  * @returns {import("./types.js").rect}
  */
-
 function center$1(a, out = []) {
   out[0] = a[0][0] + width(a) * 0.5;
   out[1] = a[0][1] + height(a) * 0.5;
   return out;
 }
+
 /**
  * Checks if a point is inside a rectangle.
  * @param {import("./types.js").rect} a
  * @param {import("pex-math").vec2} p
  * @returns {boolean}
  */
-
 function containsPoint$1(a, [x, y]) {
   return x >= a[0][0] && x <= a[1][0] && y >= a[0][1] && y <= a[1][1];
 }
+
 /**
  * Checks if a rectangle is inside another rectangle.
  * @param {import("./types.js").rect} a
  * @param {import("./types.js").rect} b
  * @returns {boolean}
  */
-
 function containsRect(a, b) {
   return containsPoint$1(a, b[0]) && containsPoint$1(a, b[1]);
 }
+
 /**
  * Includes a point in a rectangle.
  * @param {import("./types.js").rect} a
  * @param {import("pex-math").vec2} p
  * @returns {import("./types.js").rect}
  */
-
 function includePoint$1(a, [x, y]) {
   const minx = a[0][0];
   const miny = a[0][1];
@@ -627,25 +626,25 @@ function includePoint$1(a, [x, y]) {
   a[1][1] = maxy < y ? y : maxy;
   return a;
 }
+
 /**
  * Includes a rectangle in another rectangle.
  * @param {import("./types.js").rect} a
  * @param {import("./types.js").rect} b
  * @returns {import("./types.js").rect}
  */
-
 function includeRect(a, b) {
   includePoint$1(a, b[0]);
   includePoint$1(a, b[1]);
   return a;
 }
+
 /**
  * Maps a point into the dimensions of a rectangle.
  * @param {import("./types.js").rect} a
  * @param {import("pex-math").vec2} p
  * @returns {import("pex-math").vec2}
  */
-
 function mapPoint(a, p) {
   const minx = a[0][0];
   const miny = a[0][1];
@@ -655,13 +654,13 @@ function mapPoint(a, p) {
   p[1] = Math.max(miny, Math.min(p[1], maxy)) - miny;
   return p;
 }
+
 /**
  * Clamps a point into the dimensions of a rectangle.
  * @param {import("./types.js").rect} a
  * @param {import("pex-math").vec2} p
  * @returns {import("pex-math").vec2}
  */
-
 function clampPoint(a, p) {
   const minx = a[0][0];
   const miny = a[0][1];
@@ -671,13 +670,13 @@ function clampPoint(a, p) {
   p[1] = Math.max(miny, Math.min(p[1], maxy));
   return p;
 }
+
 /**
  * Prints a rect to a string.
  * @param {import("./types.js").rect} a
  * @param {number} [precision=4]
  * @returns {string}
  */
-
 function toString$3(a, precision = 4) {
   // prettier-ignore
   return `[${toString$5(a[0], precision)}, ${toString$5(a[1], precision)}]`;
