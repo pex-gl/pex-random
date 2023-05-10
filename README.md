@@ -43,6 +43,11 @@ console.log(localSeededRandom.float());
 // => predictable, always returns: 0.8071179636424909
 ```
 
+Notes:
+
+- noise2/3/4: coordinates must be [between -2^31 and 2^31](https://github.com/jwagner/simplex-noise.js/#400). Eg. using `Date.now()` is not viable but `performance.now()` is.
+- [similar seeds might not result in different starting values](https://github.com/davidbau/seedrandom/issues/48#issuecomment-331904087)
+
 ## API
 
 <!-- api-start -->

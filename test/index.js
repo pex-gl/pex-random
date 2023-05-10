@@ -332,6 +332,7 @@ describe("noise2(x, y)", () => {
       assert.equal(r1, r2);
     }
   });
+  // TODO: failing test because of seed collision
   it("should return different values for the same position and different seeds", async () => {
     for (let i = 0; i < ITERATIONS; i++) {
       const x = random.float();
