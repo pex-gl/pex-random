@@ -143,6 +143,26 @@ class Random {
   }
 
   /**
+   * Get a random quaternion.
+   * @see [Steve LaValle]{@link https://web.archive.org/web/20211105205926/http://planning.cs.uiuc.edu/node198.html}
+   * @returns {import("pex-math").quat}
+   */
+  quat() {
+    const u1 = this.rng();
+    const sqrt1MinU = Math.sqrt(1 - u1);
+    const sqrtU = Math.sqrt(u1);
+    const u2 = 2 * Math.PI * this.rng();
+    const u3 = 2 * Math.PI * this.rng();
+
+    return [
+      sqrt1MinU * Math.cos(u2),
+      sqrtU * Math.sin(u3),
+      sqrtU * Math.cos(u3),
+      sqrt1MinU * Math.sin(u2),
+    ];
+  }
+
+  /**
    * Returns a chance of an event occuring according to a given probability between 0 and 1.
    * @param {number} [probability=0.5] Float between 0 and 1.
    * @returns {boolean}
