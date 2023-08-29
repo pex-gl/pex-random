@@ -24,7 +24,7 @@ class Random {
   static NOW = performance.now();
 
   /**
-   * Creates an instance of Random
+   * Creates an instance of Random.
    * @param {string|number} [seed=Random.NOW + Random.#instanceCount]
    */
   constructor(seed = Random.NOW + Random.#instanceCount) {
@@ -40,7 +40,7 @@ class Random {
   create = (seed) => new Random(seed);
 
   /**
-   * Set the seed for the random number generator
+   * Set the seed for the random number generator.
    * @param {string} s Seed value
    */
   seed(s) {
@@ -91,7 +91,7 @@ class Random {
   }
 
   /**
-   * Get a vec2 included in a radius
+   * Get a vec2 included in a radius.
    * @param {number} [r=1] radius
    * @returns {import("pex-math").vec2}
    */
@@ -104,7 +104,7 @@ class Random {
   }
 
   /**
-   * Get a vec3 included in a radius
+   * Get a vec3 included in a radius.
    * @param {number} [r=1] radius
    * @returns {import("pex-math").vec3}
    */
@@ -118,7 +118,7 @@ class Random {
   }
 
   /**
-   * Get a vec2 included in a rectangle
+   * Get a vec2 included in a rectangle.
    * @param {number} rect rectangle
    * @returns {import("pex-math").vec2}
    */
@@ -130,7 +130,7 @@ class Random {
   }
 
   /**
-   * Get a vec3 included in a rectangle bbox
+   * Get a vec3 included in a rectangle bbox.
    * @param {number} bbox rectangle bbox
    * @returns {import("pex-math").vec3}
    */
@@ -152,7 +152,7 @@ class Random {
   }
 
   /**
-   * Gets a random element from a list
+   * Gets a random element from a list.
    * @param {Array} list
    * @returns {*}
    */
@@ -161,7 +161,7 @@ class Random {
   }
 
   /**
-   * Samples the noise field in 2 dimensions
+   * Samples the noise field in 2 dimensions.
    * @param {number} x
    * @param {number} y
    * @returns {number} in the interval [-1, 1]
@@ -171,7 +171,7 @@ class Random {
   }
 
   /**
-   * Samples the noise field in 3 dimensions
+   * Samples the noise field in 3 dimensions.
    * @param {number} x
    * @param {number} y
    * @param {number} z
@@ -182,7 +182,7 @@ class Random {
   }
 
   /**
-   * Samples the noise field in 4 dimensions
+   * Samples the noise field in 4 dimensions.
    * @param {number} x
    * @param {number} y
    * @param {number} z
