@@ -1,6 +1,15 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+
+# [2.0.0-alpha.2](https://github.com/pex-gl/pex-random/compare/v2.0.0-alpha.1...v2.0.0-alpha.2) (2023-08-30)
+
+
+### Features
+
+* add random quat ([574efcd](https://github.com/pex-gl/pex-random/commit/574efcda418c1692aa3a76544c767805f4299ce9))
+
+
 
 # [2.0.0-alpha.1](https://github.com/pex-gl/pex-random/compare/v2.0.0-alpha.0...v2.0.0-alpha.1) (2022-09-07)
 

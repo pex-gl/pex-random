@@ -99,6 +99,7 @@ Notes:
   - [.vec3([r])](#Random+vec3) ⇒ <code>module:pex-math~vec3</code>
   - [.vec2InRect(rect)](#Random+vec2InRect) ⇒ <code>module:pex-math~vec2</code>
   - [.vec3InAABB(bbox)](#Random+vec3InAABB) ⇒ <code>module:pex-math~vec3</code>
+  - [.quat()](#Random+quat) ⇒ <code>module:pex-math~quat</code>
   - [.chance([probability])](#Random+chance) ⇒ <code>boolean</code>
   - [.element(list)](#Random+element) ⇒ <code>\*</code>
   - [.noise2(x, y)](#Random+noise2) ⇒ <code>number</code>
@@ -110,7 +111,7 @@ Notes:
 
 ### new Random([seed])
 
-Creates an instance of Random
+Creates an instance of Random.
 
 | Param  | Type                                       | Default                                                     |
 | ------ | ------------------------------------------ | ----------------------------------------------------------- |
@@ -132,7 +133,7 @@ Create an instance of Random.
 
 ### random.seed(s)
 
-Set the seed for the random number generator
+Set the seed for the random number generator.
 
 **Kind**: instance method of [<code>Random</code>](#Random)
 
@@ -176,7 +177,7 @@ Get an int between min and max. Defaults to:
 
 ### random.vec2([r]) ⇒ <code>module:pex-math~vec2</code>
 
-Get a vec2 included in a radius
+Get a vec2 included in a radius.
 
 **Kind**: instance method of [<code>Random</code>](#Random)
 
@@ -188,7 +189,7 @@ Get a vec2 included in a radius
 
 ### random.vec3([r]) ⇒ <code>module:pex-math~vec3</code>
 
-Get a vec3 included in a radius
+Get a vec3 included in a radius.
 
 **Kind**: instance method of [<code>Random</code>](#Random)
 
@@ -200,7 +201,7 @@ Get a vec3 included in a radius
 
 ### random.vec2InRect(rect) ⇒ <code>module:pex-math~vec2</code>
 
-Get a vec2 included in a rectangle
+Get a vec2 included in a rectangle.
 
 **Kind**: instance method of [<code>Random</code>](#Random)
 
@@ -212,7 +213,7 @@ Get a vec2 included in a rectangle
 
 ### random.vec3InAABB(bbox) ⇒ <code>module:pex-math~vec3</code>
 
-Get a vec3 included in a rectangle bbox
+Get a vec3 included in a rectangle bbox.
 
 **Kind**: instance method of [<code>Random</code>](#Random)
 
@@ -220,6 +221,14 @@ Get a vec3 included in a rectangle bbox
 | ----- | ------------------- | -------------- |
 | bbox  | <code>number</code> | rectangle bbox |
 
+<a name="Random+quat"></a>
+
+### random.quat() ⇒ <code>module:pex-math~quat</code>
+
+Get a random quaternion.
+
+**Kind**: instance method of [<code>Random</code>](#Random)
+**See**: [Steve LaValle](https://web.archive.org/web/20211105205926/http://planning.cs.uiuc.edu/node198.html)
 <a name="Random+chance"></a>
 
 ### random.chance([probability]) ⇒ <code>boolean</code>
@@ -236,7 +245,7 @@ Returns a chance of an event occuring according to a given probability between 0
 
 ### random.element(list) ⇒ <code>\*</code>
 
-Gets a random element from a list
+Gets a random element from a list.
 
 **Kind**: instance method of [<code>Random</code>](#Random)
 
@@ -248,7 +257,7 @@ Gets a random element from a list
 
 ### random.noise2(x, y) ⇒ <code>number</code>
 
-Samples the noise field in 2 dimensions
+Samples the noise field in 2 dimensions.
 
 **Kind**: instance method of [<code>Random</code>](#Random)
 **Returns**: <code>number</code> - in the interval [-1, 1]
@@ -262,7 +271,7 @@ Samples the noise field in 2 dimensions
 
 ### random.noise3(x, y, z) ⇒ <code>number</code>
 
-Samples the noise field in 3 dimensions
+Samples the noise field in 3 dimensions.
 
 **Kind**: instance method of [<code>Random</code>](#Random)
 **Returns**: <code>number</code> - in the interval [-1, 1]
@@ -277,7 +286,7 @@ Samples the noise field in 3 dimensions
 
 ### random.noise4(x, y, z, w) ⇒ <code>number</code>
 
-Samples the noise field in 4 dimensions
+Samples the noise field in 4 dimensions.
 
 **Kind**: instance method of [<code>Random</code>](#Random)
 **Returns**: <code>number</code> - in the interval [-1, 1]
