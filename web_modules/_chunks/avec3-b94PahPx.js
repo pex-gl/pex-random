@@ -1,5 +1,5 @@
 /** @module vec2 */ /**
- * Returns a new vec2 at 0, 0, 0.
+ * Returns a new vec2 at 0, 0.
  * @returns {import("./types.js").vec2}
  */ function create$1() {
     return [
@@ -281,7 +281,7 @@ var vec2 = /*#__PURE__*/Object.freeze({
  * @param {import("./types.js").vec3} a
  * @param {import("./types.js").mat4} m
  * @returns {import("./types.js").vec3}
- */ function multMat4(a, m) {
+ */ function multMat4$1(a, m) {
     const x = a[0];
     const y = a[1];
     const z = a[2];
@@ -295,7 +295,7 @@ var vec2 = /*#__PURE__*/Object.freeze({
  * @param {import("./types.js").vec3} a
  * @param {import("./types.js").quat} q
  * @returns {import("./types.js").vec3}
- */ function multQuat(a, q) {
+ */ function multQuat$1(a, q) {
     const x = a[0];
     const y = a[1];
     const z = a[2];
@@ -455,8 +455,8 @@ var vec3 = /*#__PURE__*/Object.freeze({
   lengthSq: lengthSq$1,
   lerp: lerp$1,
   limit: limit$1,
-  multMat4: multMat4,
-  multQuat: multQuat,
+  multMat4: multMat4$1,
+  multQuat: multQuat$1,
   normalize: normalize$1,
   scale: scale$1,
   set: set$1,
@@ -464,7 +464,8 @@ var vec3 = /*#__PURE__*/Object.freeze({
   toString: toString$1
 });
 
-/** @module avec3 */ /**
+const TEMP_VEC3 = create();
+/**
  * Sets a vector components.
  * @param {import("./types.js").avec3} a
  * @param {number} i
@@ -472,7 +473,7 @@ var vec3 = /*#__PURE__*/Object.freeze({
  * @param {number} y
  * @param {number} z
  */ function set3(a, i, x, y, z) {
-    a[i * 3 + 0] = x;
+    a[i * 3] = x;
     a[i * 3 + 1] = y;
     a[i * 3 + 2] = z;
 }
@@ -542,11 +543,48 @@ var vec3 = /*#__PURE__*/Object.freeze({
     a[i * 3 + 2] += b[j * 3 + 2] * s;
 }
 /**
+ * Multiplies a vector by a matrix.
+ * @param {import("./types.js").avec3} a
+ * @param {number} i
+ * @param {import("./types.js").amat4} m
+ * @param {number} j
+ */ function multMat4(a, i, m, j) {
+    const x = a[i * 3];
+    const y = a[i * 3 + 1];
+    const z = a[i * 3 + 2];
+    a[i * 3] = m[j * 16] * x + m[j * 16 + 4] * y + m[j * 16 + 8] * z + m[j * 16 + 12];
+    a[i * 3 + 1] = m[j * 16 + 1] * x + m[j * 16 + 5] * y + m[j * 16 + 9] * z + m[j * 16 + 13];
+    a[i * 3 + 2] = m[j * 16 + 2] * x + m[j * 16 + 6] * y + m[j * 16 + 10] * z + m[j * 16 + 14];
+}
+/**
+ * Multiplies a vector by a quaternion.
+ * @param {import("./types.js").avec3} a
+ * @param {number} i
+ * @param {import("./types.js").aquat} q
+ * @param {number} j
+ */ function multQuat(a, i, q, j) {
+    const x = a[i * 3];
+    const y = a[i * 3 + 1];
+    const z = a[i * 3 + 2];
+    const qx = q[j * 4];
+    const qy = q[j * 4 + 1];
+    const qz = q[j * 4 + 2];
+    const qw = q[j * 4 + 3];
+    const ix = qw * x + qy * z - qz * y;
+    const iy = qw * y + qz * x - qx * z;
+    const iz = qw * z + qx * y - qy * x;
+    const iw = -qx * x - qy * y - qz * z;
+    a[i * 3] = ix * qw + iw * -qx + iy * -qz - iz * -qy;
+    a[i * 3 + 1] = iy * qw + iw * -qy + iz * -qx - ix * -qz;
+    a[i * 3 + 2] = iz * qw + iw * -qz + ix * -qy - iy * -qx;
+}
+/**
  * Calculates the dot product of two vectors.
  * @param {import("./types.js").avec3} a
  * @param {number} i
  * @param {import("./types.js").avec3} b
  * @param {number} j
+ * @returns {number}
  */ function dot(a, i, b, j) {
     return a[i * 3] * b[j * 3] + a[i * 3 + 1] * b[j * 3 + 1] + a[i * 3 + 2] * b[j * 3 + 2];
 }
@@ -662,6 +700,40 @@ var vec3 = /*#__PURE__*/Object.freeze({
     a[i * 3 + 2] = z + (b[j * 3 + 2] - z) * t;
 }
 /**
+ * Executes a function once for each array element.
+ * @param {import("./types.js").avec3} a
+ * @param {import("./types.js").iterativeCallback} callbackFn
+ */ function forEach(a, callbackFn) {
+    for(let i = 0; i < a.length / 3; i++){
+        TEMP_VEC3[0] = a[i * 3];
+        TEMP_VEC3[1] = a[i * 3 + 1];
+        TEMP_VEC3[2] = a[i * 3 + 2];
+        callbackFn(TEMP_VEC3, i, a);
+        a[i * 3] = TEMP_VEC3[0];
+        a[i * 3 + 1] = TEMP_VEC3[1];
+        a[i * 3 + 2] = TEMP_VEC3[2];
+    }
+}
+/**
+ * Creates a new array populated with the results of calling a provided function on every element in the calling array.
+ * @param {import("./types.js").avec3} a
+ * @param {import("./types.js").iterativeCallback} callbackFn
+ * @returns {import("./types.js").avec3}
+ */ function map(a, callbackFn) {
+    const b = new a.constructor(a.length);
+    const element = new a.constructor(3);
+    for(let i = 0; i < a.length / 3; i++){
+        element[0] = a[i * 3];
+        element[1] = a[i * 3 + 1];
+        element[2] = a[i * 3 + 2];
+        const returnValue = callbackFn(element, i, a);
+        b[i * 3] = returnValue[0];
+        b[i * 3 + 1] = returnValue[1];
+        b[i * 3 + 2] = returnValue[2];
+    }
+    return b;
+}
+/**
  * Prints a vector to a string.
  * @param {import("./types.js").avec3} a
  * @param {number} i
@@ -683,10 +755,14 @@ var avec3 = /*#__PURE__*/Object.freeze({
   distanceSq: distanceSq,
   dot: dot,
   equals: equals,
+  forEach: forEach,
   length: length,
   lengthSq: lengthSq,
   lerp: lerp,
   limit: limit,
+  map: map,
+  multMat4: multMat4,
+  multQuat: multQuat,
   normalize: normalize,
   scale: scale,
   set: set,
@@ -695,4 +771,4 @@ var avec3 = /*#__PURE__*/Object.freeze({
   toString: toString
 });
 
-export { set$1 as a, sub$1 as b, create as c, dot$1 as d, add$1 as e, scale$1 as f, cross$1 as g, toString$2 as h, vec3 as i, avec3 as j, length$1 as l, normalize$1 as n, set3 as s, toString$1 as t, vec2 as v };
+export { set$1 as a, sub$1 as b, create as c, dot$1 as d, add$1 as e, scale$1 as f, cross$1 as g, toString$2 as h, create$1 as i, vec3 as j, avec3 as k, length$1 as l, normalize$1 as n, set3 as s, toString$1 as t, vec2 as v };

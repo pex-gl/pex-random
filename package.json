@@ -28,21 +28,21 @@
     "build": "snowdev build",
     "dev": "snowdev dev",
     "release": "snowdev release",
-    "test": "node --test --experimental-test-coverage test",
-    "test:watch": "node --test --watch test"
+    "test": "node --test --experimental-test-coverage",
+    "test:watch": "node --test --watch"
   },
   "dependencies": {
     "seedrandom": "^3.0.5",
     "simplex-noise": "4.0.1"
   },
   "devDependencies": {
-    "es-module-shims": "^1.8.0",
-    "pex-geom": "^3.0.0-alpha.2",
-    "pex-math": "^4.0.0-alpha.2"
+    "es-module-shims": "^1.8.2",
+    "pex-geom": "^3.0.1",
+    "pex-math": "^4.0.0"
   },
   "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=8.6.0"
+    "node": ">=20.0.0",
+    "npm": ">=9.6.4"
   },
   "snowdev": {
     "dependencies": [
