@@ -228,7 +228,11 @@ Get a vec3 included in a rectangle bbox.
 Get a random quaternion.
 
 **Kind**: instance method of [<code>Random</code>](#Random)
-**See**: [Steve LaValle](https://web.archive.org/web/20211105205926/http://planning.cs.uiuc.edu/node198.html)
+**See**
+
+- [Graphics Gems III, Edited by David Kirk, III.6 UNIFORM RANDOM ROTATIONS]
+- [Steve LaValle](https://web.archive.org/web/20211105205926/http://planning.cs.uiuc.edu/node198.html)
+
 <a name="Random+chance"></a>
 
 ### random.chance([probability]) ⇒ <code>boolean</code>

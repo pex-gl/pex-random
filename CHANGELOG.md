@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+# [2.1.0](https://github.com/pex-gl/pex-random/compare/v2.0.0...v2.1.0) (2024-04-12)
+
+
+### Features
+
+* use correct component order for random.quat ([7091313](https://github.com/pex-gl/pex-random/commit/7091313fa8f4a6a0ebfb236033b2de11f3904d81))
+
+
+
 # [2.0.0](https://github.com/pex-gl/pex-random/compare/v2.0.0-alpha.2...v2.0.0) (2024-02-05)
 
 
