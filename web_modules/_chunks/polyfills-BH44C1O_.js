@@ -29,15 +29,6 @@ function getAugmentedNamespace(n) {
 	return a;
 }
 
-var _polyfillNode_crypto = {};
-
-var _polyfillNode_crypto$1 = /*#__PURE__*/Object.freeze({
-	__proto__: null,
-	default: _polyfillNode_crypto
-});
-
-var require$$0 = /*@__PURE__*/getAugmentedNamespace(_polyfillNode_crypto$1);
-
 var global$1 = (typeof global !== "undefined" ? global :
   typeof self !== "undefined" ? self :
   typeof window !== "undefined" ? window : {});
@@ -2018,5 +2009,14 @@ function isFastBuffer (obj) {
 function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isFastBuffer(obj.slice(0, 0))
 }
+
+var _polyfillNode_crypto = {};
+
+var _polyfillNode_crypto$1 = /*#__PURE__*/Object.freeze({
+	__proto__: null,
+	default: _polyfillNode_crypto
+});
+
+var require$$0 = /*@__PURE__*/getAugmentedNamespace(_polyfillNode_crypto$1);
 
 export { Buffer as B, commonjsGlobal as c, getDefaultExportFromCjs as g, require$$0 as r };

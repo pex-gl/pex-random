@@ -1,4 +1,4 @@
-import { s as set3, t as toString$4, a as set$2, b as sub, n as normalize, d as dot, c as create$4, e as add, f as scale$1, g as cross, l as length, h as toString$5 } from './_chunks/avec3-b94PahPx.js';
+import { s as set3, t as toString$4, a as set$2, b as sub, n as normalize, d as dot, c as create$4, e as add, f as scale$1, g as cross, l as length, h as toString$5 } from './_chunks/avec3-DY1vEVDN.js';
 
 /**
  * Creates a new bounding box.

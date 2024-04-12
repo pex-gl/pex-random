@@ -1,5 +1,5 @@
-import { i as create$6 } from './_chunks/avec3-b94PahPx.js';
-export { k as avec3, v as vec2, j as vec3 } from './_chunks/avec3-b94PahPx.js';
+import { i as create$6 } from './_chunks/avec3-DY1vEVDN.js';
+export { k as avec3, v as vec2, j as vec3 } from './_chunks/avec3-DY1vEVDN.js';
 
 /** @module mat2x3 */ /**
  * Returns a 2x3 identity matrix, a short form for a 3x3 matrix with the last row ignored.
@@ -426,8 +426,17 @@ var mat3 = /*#__PURE__*/Object.freeze({
  * @param {number} outStart
  * @param {number} outEnd
  * @returns {number}
- */ function map$2(n, inStart, inEnd, outStart, outEnd) {
+ */ function remap(n, inStart, inEnd, outStart, outEnd) {
     return outStart + (outEnd - outStart) * (n - inStart) / (inEnd - inStart);
+}
+/**
+ * @deprecated Use "remap()"
+ * @ignore
+ */ function map$2() {
+    for(var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++){
+        args[_key] = arguments[_key];
+    }
+    return remap(...args);
 }
 /**
  * Transforms degrees into radians.
@@ -483,6 +492,7 @@ var utils = /*#__PURE__*/Object.freeze({
   map: map$2,
   nextPowerOfTwo: nextPowerOfTwo,
   prevPowerOfTwo: prevPowerOfTwo,
+  remap: remap,
   smoothstep: smoothstep,
   toDegrees: toDegrees,
   toRadians: toRadians
