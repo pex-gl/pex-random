@@ -144,21 +144,28 @@ class Random {
 
   /**
    * Get a random quaternion.
+   * @see [Graphics Gems III, Edited by David Kirk, III.6 UNIFORM RANDOM ROTATIONS]
    * @see [Steve LaValle]{@link https://web.archive.org/web/20211105205926/http://planning.cs.uiuc.edu/node198.html}
    * @returns {import("pex-math").quat}
    */
   quat() {
-    const u1 = this.rng();
-    const sqrt1MinU = Math.sqrt(1 - u1);
-    const sqrtU = Math.sqrt(u1);
-    const u2 = 2 * Math.PI * this.rng();
-    const u3 = 2 * Math.PI * this.rng();
+    // Let X0, X1, and X2 be three independent random variables that are uniformly distributed between 0 and 1.
+    const x0 = this.rng();
 
+    // Compute two uniformly distributed angles, θ1 = 2πX1 and θ2 = 2πX2, and their sines and cosines, s1, c1, s2, c2
+    const theta1 = 2 * Math.PI * this.rng();
+    const theta2 = 2 * Math.PI * this.rng();
+
+    // Also compute r1 = sqrt(1 – X0) and r2 = sqrt(X0)
+    const r1 = Math.sqrt(1 - x0);
+    const r2 = Math.sqrt(x0);
+
+    // Then return the unit quaternion with components [s1 r1, c1 r1, s2 r2, c2 r2]
     return [
-      sqrt1MinU * Math.cos(u2),
-      sqrtU * Math.sin(u3),
-      sqrtU * Math.cos(u3),
-      sqrt1MinU * Math.sin(u2),
+      Math.sin(theta1) * r1,
+      Math.cos(theta1) * r1,
+      Math.sin(theta2) * r2,
+      Math.cos(theta2) * r2,
     ];
   }
 

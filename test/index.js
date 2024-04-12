@@ -2,7 +2,7 @@ import { describe, it } from "node:test";
 import assert from "node:assert";
 
 import { aabb, rect } from "pex-geom";
-import { vec2, vec3 } from "pex-math";
+import { vec2, vec3, quat } from "pex-math";
 
 import random from "../index.js";
 
@@ -110,7 +110,7 @@ describe("float(max)", () => {
     avg /= ITERATIONS;
     assert(
       avg > (max * 1) / 4 && avg < (max * 3) / 4,
-      `Avg:${avg} Min: 0 Max:${max}`
+      `Avg:${avg} Min: 0 Max:${max}`,
     );
   });
 });
@@ -163,7 +163,7 @@ describe("int(max)", () => {
     avg /= ITERATIONS;
     assert(
       avg > (max * 1) / 4 && avg < (max * 3) / 4,
-      `Avg:${avg} Min: 0 Max:${max}`
+      `Avg:${avg} Min: 0 Max:${max}`,
     );
   });
 });
@@ -250,12 +250,12 @@ describe("vec2InRect(rect)", () => {
 
     for (let i = 0; i < ITERATIONS; i++) {
       assert(
-        rect.containsPoint(POSITIVE_RECT, random.vec2InRect(POSITIVE_RECT))
+        rect.containsPoint(POSITIVE_RECT, random.vec2InRect(POSITIVE_RECT)),
       );
     }
     for (let i = 0; i < ITERATIONS; i++) {
       assert(
-        rect.containsPoint(NEGATIVE_RECT, random.vec2InRect(NEGATIVE_RECT))
+        rect.containsPoint(NEGATIVE_RECT, random.vec2InRect(NEGATIVE_RECT)),
       );
     }
     for (let i = 0; i < ITERATIONS; i++) {
@@ -304,6 +304,17 @@ describe("chance(probability)", () => {
       if (random.chance(1)) wins++;
     }
     assert.equal(wins, ITERATIONS);
+  });
+});
+describe("quat()", () => {
+  it("should randomize", () => {
+    const q = quat.create();
+
+    for (let i = 0; i < ITERATIONS; i++) {
+      quat.identity(q);
+      quat.set(q, random.quat());
+      assert(quat.length(q) > Number.EPSILON);
+    }
   });
 });
 describe("element(list)", () => {
