@@ -62,7 +62,7 @@ Notes:
 ## Classes
 
 <dl>
-<dt><a href="#Random">Random</a></dt>
+<dt><a href="#pex-random">pex-random</a></dt>
 <dd></dd>
 </dl>
 
@@ -70,6 +70,12 @@ Notes:
 
 <dl>
 <dt><a href="#FBMOptions">FBMOptions</a></dt>
+<dd></dd>
+<dt><a href="#vec2">vec2</a> : <code>module:pex-math~vec2</code></dt>
+<dd></dd>
+<dt><a href="#vec3">vec3</a> : <code>module:pex-math~vec3</code></dt>
+<dd></dd>
+<dt><a href="#quat">quat</a> : <code>module:pex-math~quat</code></dt>
 <dd></dd>
 </dl>
 
@@ -83,31 +89,31 @@ Notes:
 - Call `random.seed("seed")` to overwrite the global PRNG: all other calls to `random.float()` will derive from the new seeded state.
 - Call `random.create()` to create a local instance of Random with a separate unpredictable PRNG.
 - Call `random.create("seed")` to create a local instance of Random with a separate predictable PRNG: all other calls to `random.float()` will derive from the new seeded state.
-  <a name="Random"></a>
+  <a name="pex-random"></a>
 
-## Random
+## pex-random
 
 **Kind**: global class
 
-- [Random](#Random)
-  - [new Random([seed])](#new_Random_new)
-  - [.create](#Random+create) ⇒ [<code>Random</code>](#Random)
-  - [.seed(s)](#Random+seed)
-  - [.float([min], [max])](#Random+float) ⇒ <code>number</code>
-  - [.int([min], [max])](#Random+int) ⇒ <code>number</code>
-  - [.vec2([r])](#Random+vec2) ⇒ <code>module:pex-math~vec2</code>
-  - [.vec3([r])](#Random+vec3) ⇒ <code>module:pex-math~vec3</code>
-  - [.vec2InRect(rect)](#Random+vec2InRect) ⇒ <code>module:pex-math~vec2</code>
-  - [.vec3InAABB(bbox)](#Random+vec3InAABB) ⇒ <code>module:pex-math~vec3</code>
-  - [.quat()](#Random+quat) ⇒ <code>module:pex-math~quat</code>
-  - [.chance([probability])](#Random+chance) ⇒ <code>boolean</code>
-  - [.element(list)](#Random+element) ⇒ <code>\*</code>
-  - [.noise2(x, y)](#Random+noise2) ⇒ <code>number</code>
-  - [.noise3(x, y, z)](#Random+noise3) ⇒ <code>number</code>
-  - [.noise4(x, y, z, w)](#Random+noise4) ⇒ <code>number</code>
-  - [.fbm(options, ...d)](#Random+fbm) ⇒ <code>number</code>
+- [pex-random](#pex-random)
+  - [new Random([seed])](#new_pex-random_new)
+  - [.create](#pex-random+create) ⇒ <code>Random</code>
+  - [.seed(s)](#pex-random+seed)
+  - [.float([min], [max])](#pex-random+float) ⇒ <code>number</code>
+  - [.int([min], [max])](#pex-random+int) ⇒ <code>number</code>
+  - [.vec2([r])](#pex-random+vec2) ⇒ [<code>vec2</code>](#vec2)
+  - [.vec3([r])](#pex-random+vec3) ⇒ [<code>vec3</code>](#vec3)
+  - [.vec2InRect(rect)](#pex-random+vec2InRect) ⇒ [<code>vec2</code>](#vec2)
+  - [.vec3InAABB(bbox)](#pex-random+vec3InAABB) ⇒ [<code>vec3</code>](#vec3)
+  - [.quat()](#pex-random+quat) ⇒ [<code>quat</code>](#quat)
+  - [.chance([probability])](#pex-random+chance) ⇒ <code>boolean</code>
+  - [.element(list)](#pex-random+element) ⇒ <code>\*</code>
+  - [.noise2(x, y)](#pex-random+noise2) ⇒ <code>number</code>
+  - [.noise3(x, y, z)](#pex-random+noise3) ⇒ <code>number</code>
+  - [.noise4(x, y, z, w)](#pex-random+noise4) ⇒ <code>number</code>
+  - [.fbm(options, ...d)](#pex-random+fbm) ⇒ <code>number</code>
 
-<a name="new_Random_new"></a>
+<a name="new_pex-random_new"></a>
 
 ### new Random([seed])
 
@@ -117,153 +123,153 @@ Creates an instance of Random.
 | ------ | ------------------------------------------ | ----------------------------------------------------------- |
 | [seed] | <code>string</code> \| <code>number</code> | <code>&quot;Random.NOW + Random.#instanceCount&quot;</code> |
 
-<a name="Random+create"></a>
+<a name="pex-random+create"></a>
 
-### random.create ⇒ [<code>Random</code>](#Random)
+### pex-random.create ⇒ <code>Random</code>
 
 Create an instance of Random.
 
-**Kind**: instance property of [<code>Random</code>](#Random)
+**Kind**: instance property of [<code>pex-random</code>](#pex-random)
 
 | Param  | Type                                       | Description                                                                        |
 | ------ | ------------------------------------------ | ---------------------------------------------------------------------------------- |
 | [seed] | <code>string</code> \| <code>number</code> | If omitted, the global PRNG seed will be used and incremented for each local PRNG. |
 
-<a name="Random+seed"></a>
+<a name="pex-random+seed"></a>
 
-### random.seed(s)
+### pex-random.seed(s)
 
 Set the seed for the random number generator.
 
-**Kind**: instance method of [<code>Random</code>](#Random)
+**Kind**: instance method of [<code>pex-random</code>](#pex-random)
 
 | Param | Type                | Description |
 | ----- | ------------------- | ----------- |
 | s     | <code>string</code> | Seed value  |
 
-<a name="Random+float"></a>
+<a name="pex-random+float"></a>
 
-### random.float([min], [max]) ⇒ <code>number</code>
+### pex-random.float([min], [max]) ⇒ <code>number</code>
 
 Get a float between min and max. Defaults to:
 
 - `0 <= x < 1` if no argument supplied
 - `0 <= x < max` if only one argument supplied
 
-**Kind**: instance method of [<code>Random</code>](#Random)
+**Kind**: instance method of [<code>pex-random</code>](#pex-random)
 
 | Param | Type                |
 | ----- | ------------------- |
 | [min] | <code>number</code> |
 | [max] | <code>number</code> |
 
-<a name="Random+int"></a>
+<a name="pex-random+int"></a>
 
-### random.int([min], [max]) ⇒ <code>number</code>
+### pex-random.int([min], [max]) ⇒ <code>number</code>
 
 Get an int between min and max. Defaults to:
 
 - `0 <= x < Number.MAX_SAFE_INTEGER` if no argument supplied
 - `0 <= x < max` if only one argument supplied
 
-**Kind**: instance method of [<code>Random</code>](#Random)
+**Kind**: instance method of [<code>pex-random</code>](#pex-random)
 
 | Param | Type                |
 | ----- | ------------------- |
 | [min] | <code>number</code> |
 | [max] | <code>number</code> |
 
-<a name="Random+vec2"></a>
+<a name="pex-random+vec2"></a>
 
-### random.vec2([r]) ⇒ <code>module:pex-math~vec2</code>
+### pex-random.vec2([r]) ⇒ [<code>vec2</code>](#vec2)
 
 Get a vec2 included in a radius.
 
-**Kind**: instance method of [<code>Random</code>](#Random)
+**Kind**: instance method of [<code>pex-random</code>](#pex-random)
 
 | Param | Type                | Default        | Description |
 | ----- | ------------------- | -------------- | ----------- |
 | [r]   | <code>number</code> | <code>1</code> | radius      |
 
-<a name="Random+vec3"></a>
+<a name="pex-random+vec3"></a>
 
-### random.vec3([r]) ⇒ <code>module:pex-math~vec3</code>
+### pex-random.vec3([r]) ⇒ [<code>vec3</code>](#vec3)
 
 Get a vec3 included in a radius.
 
-**Kind**: instance method of [<code>Random</code>](#Random)
+**Kind**: instance method of [<code>pex-random</code>](#pex-random)
 
 | Param | Type                | Default        | Description |
 | ----- | ------------------- | -------------- | ----------- |
 | [r]   | <code>number</code> | <code>1</code> | radius      |
 
-<a name="Random+vec2InRect"></a>
+<a name="pex-random+vec2InRect"></a>
 
-### random.vec2InRect(rect) ⇒ <code>module:pex-math~vec2</code>
+### pex-random.vec2InRect(rect) ⇒ [<code>vec2</code>](#vec2)
 
 Get a vec2 included in a rectangle.
 
-**Kind**: instance method of [<code>Random</code>](#Random)
+**Kind**: instance method of [<code>pex-random</code>](#pex-random)
 
 | Param | Type                | Description |
 | ----- | ------------------- | ----------- |
 | rect  | <code>number</code> | rectangle   |
 
-<a name="Random+vec3InAABB"></a>
+<a name="pex-random+vec3InAABB"></a>
 
-### random.vec3InAABB(bbox) ⇒ <code>module:pex-math~vec3</code>
+### pex-random.vec3InAABB(bbox) ⇒ [<code>vec3</code>](#vec3)
 
 Get a vec3 included in a rectangle bbox.
 
-**Kind**: instance method of [<code>Random</code>](#Random)
+**Kind**: instance method of [<code>pex-random</code>](#pex-random)
 
 | Param | Type                | Description    |
 | ----- | ------------------- | -------------- |
 | bbox  | <code>number</code> | rectangle bbox |
 
-<a name="Random+quat"></a>
+<a name="pex-random+quat"></a>
 
-### random.quat() ⇒ <code>module:pex-math~quat</code>
+### pex-random.quat() ⇒ [<code>quat</code>](#quat)
 
 Get a random quaternion.
 
-**Kind**: instance method of [<code>Random</code>](#Random)
+**Kind**: instance method of [<code>pex-random</code>](#pex-random)
 **See**
 
 - [Graphics Gems III, Edited by David Kirk, III.6 UNIFORM RANDOM ROTATIONS]
 - [Steve LaValle](https://web.archive.org/web/20211105205926/http://planning.cs.uiuc.edu/node198.html)
 
-<a name="Random+chance"></a>
+<a name="pex-random+chance"></a>
 
-### random.chance([probability]) ⇒ <code>boolean</code>
+### pex-random.chance([probability]) ⇒ <code>boolean</code>
 
 Returns a chance of an event occuring according to a given probability between 0 and 1.
 
-**Kind**: instance method of [<code>Random</code>](#Random)
+**Kind**: instance method of [<code>pex-random</code>](#pex-random)
 
 | Param         | Type                | Default          | Description            |
 | ------------- | ------------------- | ---------------- | ---------------------- |
 | [probability] | <code>number</code> | <code>0.5</code> | Float between 0 and 1. |
 
-<a name="Random+element"></a>
+<a name="pex-random+element"></a>
 
-### random.element(list) ⇒ <code>\*</code>
+### pex-random.element(list) ⇒ <code>\*</code>
 
 Gets a random element from a list.
 
-**Kind**: instance method of [<code>Random</code>](#Random)
+**Kind**: instance method of [<code>pex-random</code>](#pex-random)
 
 | Param | Type               |
 | ----- | ------------------ |
 | list  | <code>Array</code> |
 
-<a name="Random+noise2"></a>
+<a name="pex-random+noise2"></a>
 
-### random.noise2(x, y) ⇒ <code>number</code>
+### pex-random.noise2(x, y) ⇒ <code>number</code>
 
 Samples the noise field in 2 dimensions.
 
-**Kind**: instance method of [<code>Random</code>](#Random)
+**Kind**: instance method of [<code>pex-random</code>](#pex-random)
 **Returns**: <code>number</code> - in the interval [-1, 1]
 
 | Param | Type                |
@@ -271,13 +277,13 @@ Samples the noise field in 2 dimensions.
 | x     | <code>number</code> |
 | y     | <code>number</code> |
 
-<a name="Random+noise3"></a>
+<a name="pex-random+noise3"></a>
 
-### random.noise3(x, y, z) ⇒ <code>number</code>
+### pex-random.noise3(x, y, z) ⇒ <code>number</code>
 
 Samples the noise field in 3 dimensions.
 
-**Kind**: instance method of [<code>Random</code>](#Random)
+**Kind**: instance method of [<code>pex-random</code>](#pex-random)
 **Returns**: <code>number</code> - in the interval [-1, 1]
 
 | Param | Type                |
@@ -286,13 +292,13 @@ Samples the noise field in 3 dimensions.
 | y     | <code>number</code> |
 | z     | <code>number</code> |
 
-<a name="Random+noise4"></a>
+<a name="pex-random+noise4"></a>
 
-### random.noise4(x, y, z, w) ⇒ <code>number</code>
+### pex-random.noise4(x, y, z, w) ⇒ <code>number</code>
 
 Samples the noise field in 4 dimensions.
 
-**Kind**: instance method of [<code>Random</code>](#Random)
+**Kind**: instance method of [<code>pex-random</code>](#pex-random)
 **Returns**: <code>number</code> - in the interval [-1, 1]
 
 | Param | Type                |
@@ -302,13 +308,13 @@ Samples the noise field in 4 dimensions.
 | z     | <code>number</code> |
 | w     | <code>number</code> |
 
-<a name="Random+fbm"></a>
+<a name="pex-random+fbm"></a>
 
-### random.fbm(options, ...d) ⇒ <code>number</code>
+### pex-random.fbm(options, ...d) ⇒ <code>number</code>
 
 Fractional Brownian motion (also called fractal Brownian motion) noise. Default to 1/f noise with 8 octaves.
 
-**Kind**: instance method of [<code>Random</code>](#Random)
+**Kind**: instance method of [<code>pex-random</code>](#pex-random)
 **Returns**: <code>number</code> - in the interval [-1, 1]
 
 | Param   | Type                                   | Description  |
@@ -331,6 +337,22 @@ Fractional Brownian motion (also called fractal Brownian motion) noise. Default 
 | [frequency]  | <code>number</code>   | <code>1</code>    |
 | [amplitude]  | <code>number</code>   | <code>gain</code> |
 | [noise]      | <code>function</code> |                   |
+
+<a name="vec2"></a>
+
+## vec2 : <code>module:pex-math~vec2</code>
+
+**Kind**: global typedef
+<a name="vec3"></a>
+
+## vec3 : <code>module:pex-math~vec3</code>
+
+**Kind**: global typedef
+<a name="quat"></a>
+
+## quat : <code>module:pex-math~quat</code>
+
+**Kind**: global typedef
 
 <!-- api-end -->
 

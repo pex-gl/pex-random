@@ -1,6 +1,6 @@
 {
   "name": "pex-random",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Random value generators (float, int, vector and noise) for PEX.",
   "keywords": [
     "pex",
@@ -14,7 +14,10 @@
   ],
   "homepage": "https://github.com/pex-gl/pex-random",
   "bugs": "https://github.com/pex-gl/pex-random/issues",
-  "repository": "pex-gl/pex-random",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pex-gl/pex-random.git"
+  },
   "license": "MIT",
   "author": "Marcin Ignac <marcin.ignac@gmail.com> (http://marcinignac.com)",
   "contributors": [
