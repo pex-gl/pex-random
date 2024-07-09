@@ -2,15 +2,8 @@ import seedrandom from "seedrandom";
 import { createNoise2D, createNoise3D, createNoise4D } from "simplex-noise";
 
 /**
- * @typedef FBMOptions
- * @property {number} [octaves=8]
- * @property {number} [lacunarity=2]
- * @property {number} [gain=0.5]
- * @property {number} [frequency=1]
- * @property {number} [amplitude=gain]
- * @property {Function} [noise]
+ * @alias pex-random
  */
-
 class Random {
   /**
    * @private
@@ -93,7 +86,7 @@ class Random {
   /**
    * Get a vec2 included in a radius.
    * @param {number} [r=1] radius
-   * @returns {import("pex-math").vec2}
+   * @returns {import("./types.js").vec2}
    */
   vec2(r = 1) {
     const x = 2 * this.rng() - 1;
@@ -106,7 +99,7 @@ class Random {
   /**
    * Get a vec3 included in a radius.
    * @param {number} [r=1] radius
-   * @returns {import("pex-math").vec3}
+   * @returns {import("./types.js").vec3}
    */
   vec3(r = 1) {
     const x = 2 * this.rng() - 1;
@@ -120,7 +113,7 @@ class Random {
   /**
    * Get a vec2 included in a rectangle.
    * @param {number} rect rectangle
-   * @returns {import("pex-math").vec2}
+   * @returns {import("./types.js").vec2}
    */
   vec2InRect(rect) {
     return [
@@ -132,7 +125,7 @@ class Random {
   /**
    * Get a vec3 included in a rectangle bbox.
    * @param {number} bbox rectangle bbox
-   * @returns {import("pex-math").vec3}
+   * @returns {import("./types.js").vec3}
    */
   vec3InAABB(bbox) {
     return [
@@ -146,7 +139,7 @@ class Random {
    * Get a random quaternion.
    * @see [Graphics Gems III, Edited by David Kirk, III.6 UNIFORM RANDOM ROTATIONS]
    * @see [Steve LaValle]{@link https://web.archive.org/web/20211105205926/http://planning.cs.uiuc.edu/node198.html}
-   * @returns {import("pex-math").quat}
+   * @returns {import("./types.js").quat}
    */
   quat() {
     // Let X0, X1, and X2 be three independent random variables that are uniformly distributed between 0 and 1.
@@ -222,7 +215,7 @@ class Random {
 
   /**
    * Fractional Brownian motion (also called fractal Brownian motion) noise. Default to 1/f noise with 8 octaves.
-   * @param {FBMOptions} options
+   * @param {import("./types.js").FBMOptions} options
    * @param  {...number} d x, y, z?, w?
    * @returns {number} in the interval [-1, 1]
    */
