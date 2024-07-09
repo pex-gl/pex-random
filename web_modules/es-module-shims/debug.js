@@ -3,9 +3,9 @@ import { c as commonjsGlobal } from '../_chunks/polyfills-BH44C1O_.js';
 var esModuleShims_debug = {};
 
 (function() {
-    const hasDocument = typeof document !== "undefined";
+    const hasDocument = typeof document !== 'undefined';
     const noop = ()=>{};
-    const optionsScript = hasDocument ? document.querySelector("script[type=esms-options]") : undefined;
+    const optionsScript = hasDocument ? document.querySelector('script[type=esms-options]') : undefined;
     const esmsInitOptions = optionsScript ? JSON.parse(optionsScript.innerHTML) : {};
     Object.assign(esmsInitOptions, self.esmsInitOptions || {});
     let shimMode = hasDocument ? !!esmsInitOptions.shimMode : true;
@@ -16,50 +16,50 @@ var esModuleShims_debug = {};
     const mapOverrides = esmsInitOptions.mapOverrides;
     let nonce = esmsInitOptions.nonce;
     if (!nonce && hasDocument) {
-        const nonceElement = document.querySelector("script[nonce]");
-        if (nonceElement) nonce = nonceElement.nonce || nonceElement.getAttribute("nonce");
+        const nonceElement = document.querySelector('script[nonce]');
+        if (nonceElement) nonce = nonceElement.nonce || nonceElement.getAttribute('nonce');
     }
     const onerror = globalHook(esmsInitOptions.onerror || noop);
-    const { revokeBlobURLs , noLoadEventRetriggers , globalLoadEventRetrigger , enforceIntegrity  } = esmsInitOptions;
+    const { revokeBlobURLs, noLoadEventRetriggers, globalLoadEventRetrigger, enforceIntegrity } = esmsInitOptions;
     function globalHook(name) {
-        return typeof name === "string" ? self[name] : name;
+        return typeof name === 'string' ? self[name] : name;
     }
     const enable = Array.isArray(esmsInitOptions.polyfillEnable) ? esmsInitOptions.polyfillEnable : [];
-    const cssModulesEnabled = enable.includes("css-modules");
-    const jsonModulesEnabled = enable.includes("json-modules");
-    const wasmModulesEnabled = enable.includes("wasm-modules");
-    const sourcePhaseEnabled = enable.includes("source-phase");
+    const cssModulesEnabled = enable.includes('css-modules');
+    const jsonModulesEnabled = enable.includes('json-modules');
+    const wasmModulesEnabled = enable.includes('wasm-modules');
+    const sourcePhaseEnabled = enable.includes('source-phase');
     const onpolyfill = esmsInitOptions.onpolyfill ? globalHook(esmsInitOptions.onpolyfill) : ()=>{
-        console.log(`%c^^ Module error above is polyfilled and can be ignored ^^`, "font-weight:900;color:#391");
+        console.log(`%c^^ Module error above is polyfilled and can be ignored ^^`, 'font-weight:900;color:#391');
     };
     const edge = !navigator.userAgentData && !!navigator.userAgent.match(/Edge\/\d+\.\d+/);
-    const baseUrl = hasDocument ? document.baseURI : `${location.protocol}//${location.host}${location.pathname.includes("/") ? location.pathname.slice(0, location.pathname.lastIndexOf("/") + 1) : location.pathname}`;
+    const baseUrl = hasDocument ? document.baseURI : `${location.protocol}//${location.host}${location.pathname.includes('/') ? location.pathname.slice(0, location.pathname.lastIndexOf('/') + 1) : location.pathname}`;
     const createBlob = (source, type)=>{
-        if (type === void 0) type = "text/javascript";
+        if (type === void 0) type = 'text/javascript';
         return URL.createObjectURL(new Blob([
             source
         ], {
             type
         }));
     };
-    let { skip  } = esmsInitOptions;
+    let { skip } = esmsInitOptions;
     if (Array.isArray(skip)) {
         const l = skip.map((s)=>new URL(s, baseUrl).href);
-        skip = (s)=>l.some((i)=>i[i.length - 1] === "/" && s.startsWith(i) || s === i);
-    } else if (typeof skip === "string") {
+        skip = (s)=>l.some((i)=>i[i.length - 1] === '/' && s.startsWith(i) || s === i);
+    } else if (typeof skip === 'string') {
         const r = new RegExp(skip);
         skip = (s)=>r.test(s);
     } else if (skip instanceof RegExp) {
         skip = (s)=>skip.test(s);
     }
-    const dispatchError = (error)=>self.dispatchEvent(Object.assign(new Event("error"), {
+    const dispatchError = (error)=>self.dispatchEvent(Object.assign(new Event('error'), {
             error
         }));
     const throwError = (err)=>{
         (self.reportError || dispatchError)(err), void onerror(err);
     };
     function fromParent(parent) {
-        return parent ? ` imported from ${parent}` : "";
+        return parent ? ` imported from ${parent}` : '';
     }
     let importMapSrcOrLazy = false;
     function setImportMapSrcOrLazy() {
@@ -67,14 +67,14 @@ var esModuleShims_debug = {};
     }
     // shim mode is determined on initialization, no late shim mode
     if (!shimMode) {
-        if (document.querySelectorAll("script[type=module-shim],script[type=importmap-shim],link[rel=modulepreload-shim]").length) {
+        if (document.querySelectorAll('script[type=module-shim],script[type=importmap-shim],link[rel=modulepreload-shim]').length) {
             shimMode = true;
         } else {
             let seenScript = false;
-            for (const script of document.querySelectorAll("script[type=module],script[type=importmap]")){
+            for (const script of document.querySelectorAll('script[type=module],script[type=importmap]')){
                 if (!seenScript) {
-                    if (script.type === "module" && !script.ep) seenScript = true;
-                } else if (script.type === "importmap" && seenScript) {
+                    if (script.type === 'module' && !script.ep) seenScript = true;
+                } else if (script.type === 'importmap' && seenScript) {
                     importMapSrcOrLazy = true;
                     break;
                 }
@@ -84,22 +84,22 @@ var esModuleShims_debug = {};
     const backslashRegEx = /\\/g;
     function asURL(url) {
         try {
-            if (url.indexOf(":") !== -1) return new URL(url).href;
+            if (url.indexOf(':') !== -1) return new URL(url).href;
         } catch (_) {}
     }
     function resolveUrl(relUrl, parentUrl) {
-        return resolveIfNotPlainOrUrl(relUrl, parentUrl) || asURL(relUrl) || resolveIfNotPlainOrUrl("./" + relUrl, parentUrl);
+        return resolveIfNotPlainOrUrl(relUrl, parentUrl) || asURL(relUrl) || resolveIfNotPlainOrUrl('./' + relUrl, parentUrl);
     }
     function resolveIfNotPlainOrUrl(relUrl, parentUrl) {
-        const hIdx = parentUrl.indexOf("#"), qIdx = parentUrl.indexOf("?");
+        const hIdx = parentUrl.indexOf('#'), qIdx = parentUrl.indexOf('?');
         if (hIdx + qIdx > -2) parentUrl = parentUrl.slice(0, hIdx === -1 ? qIdx : qIdx === -1 || qIdx > hIdx ? hIdx : qIdx);
-        if (relUrl.indexOf("\\") !== -1) relUrl = relUrl.replace(backslashRegEx, "/");
+        if (relUrl.indexOf('\\') !== -1) relUrl = relUrl.replace(backslashRegEx, '/');
         // protocol-relative
-        if (relUrl[0] === "/" && relUrl[1] === "/") {
-            return parentUrl.slice(0, parentUrl.indexOf(":") + 1) + relUrl;
-        } else if (relUrl[0] === "." && (relUrl[1] === "/" || relUrl[1] === "." && (relUrl[2] === "/" || relUrl.length === 2 && (relUrl += "/")) || relUrl.length === 1 && (relUrl += "/")) || relUrl[0] === "/") {
-            const parentProtocol = parentUrl.slice(0, parentUrl.indexOf(":") + 1);
-            if (parentProtocol === "blob:") {
+        if (relUrl[0] === '/' && relUrl[1] === '/') {
+            return parentUrl.slice(0, parentUrl.indexOf(':') + 1) + relUrl;
+        } else if (relUrl[0] === '.' && (relUrl[1] === '/' || relUrl[1] === '.' && (relUrl[2] === '/' || relUrl.length === 2 && (relUrl += '/')) || relUrl.length === 1 && (relUrl += '/')) || relUrl[0] === '/') {
+            const parentProtocol = parentUrl.slice(0, parentUrl.indexOf(':') + 1);
+            if (parentProtocol === 'blob:') {
                 throw new TypeError(`Failed to resolve module specifier "${relUrl}". Invalid relative url or base scheme isn't hierarchical.`);
             }
             // Disabled, but these cases will give inconsistent results for deep backtracking
@@ -108,63 +108,65 @@ var esModuleShims_debug = {};
             // read pathname from parent URL
             // pathname taken to be part after leading "/"
             let pathname;
-            if (parentUrl[parentProtocol.length + 1] === "/") {
+            if (parentUrl[parentProtocol.length + 1] === '/') {
                 // resolving to a :// so we need to read out the auth and host
-                if (parentProtocol !== "file:") {
+                if (parentProtocol !== 'file:') {
                     pathname = parentUrl.slice(parentProtocol.length + 2);
-                    pathname = pathname.slice(pathname.indexOf("/") + 1);
+                    pathname = pathname.slice(pathname.indexOf('/') + 1);
                 } else {
                     pathname = parentUrl.slice(8);
                 }
             } else {
                 // resolving to :/ so pathname is the /... part
-                pathname = parentUrl.slice(parentProtocol.length + (parentUrl[parentProtocol.length] === "/"));
+                pathname = parentUrl.slice(parentProtocol.length + (parentUrl[parentProtocol.length] === '/'));
             }
-            if (relUrl[0] === "/") return parentUrl.slice(0, parentUrl.length - pathname.length - 1) + relUrl;
+            if (relUrl[0] === '/') return parentUrl.slice(0, parentUrl.length - pathname.length - 1) + relUrl;
             // join together and split for removal of .. and . segments
             // looping the string instead of anything fancy for perf reasons
             // '../../../../../z' resolved to 'x/y' is just 'z'
-            const segmented = pathname.slice(0, pathname.lastIndexOf("/") + 1) + relUrl;
+            const segmented = pathname.slice(0, pathname.lastIndexOf('/') + 1) + relUrl;
             const output = [];
             let segmentIndex = -1;
             for(let i = 0; i < segmented.length; i++){
                 // busy reading a segment - only terminate on '/'
                 if (segmentIndex !== -1) {
-                    if (segmented[i] === "/") {
+                    if (segmented[i] === '/') {
                         output.push(segmented.slice(segmentIndex, i + 1));
                         segmentIndex = -1;
                     }
                     continue;
-                } else if (segmented[i] === ".") {
+                } else if (segmented[i] === '.') {
                     // ../ segment
-                    if (segmented[i + 1] === "." && (segmented[i + 2] === "/" || i + 2 === segmented.length)) {
+                    if (segmented[i + 1] === '.' && (segmented[i + 2] === '/' || i + 2 === segmented.length)) {
                         output.pop();
                         i += 2;
                         continue;
-                    } else if (segmented[i + 1] === "/" || i + 1 === segmented.length) {
+                    } else if (segmented[i + 1] === '/' || i + 1 === segmented.length) {
                         i += 1;
                         continue;
                     }
                 }
                 // it is the start of a new segment
-                while(segmented[i] === "/")i++;
+                while(segmented[i] === '/')i++;
                 segmentIndex = i;
             }
             // finish reading out the last segment
             if (segmentIndex !== -1) output.push(segmented.slice(segmentIndex));
-            return parentUrl.slice(0, parentUrl.length - pathname.length) + output.join("");
+            return parentUrl.slice(0, parentUrl.length - pathname.length) + output.join('');
         }
     }
     function resolveAndComposeImportMap(json, baseUrl, parentMap) {
         const outMap = {
             imports: Object.assign({}, parentMap.imports),
-            scopes: Object.assign({}, parentMap.scopes)
+            scopes: Object.assign({}, parentMap.scopes),
+            integrity: Object.assign({}, parentMap.integrity)
         };
         if (json.imports) resolveAndComposePackages(json.imports, outMap.imports, baseUrl, parentMap);
         if (json.scopes) for(let s in json.scopes){
             const resolvedScope = resolveUrl(s, baseUrl);
             resolveAndComposePackages(json.scopes[s], outMap.scopes[resolvedScope] || (outMap.scopes[resolvedScope] = {}), baseUrl, parentMap);
         }
+        if (json.integrity) resolveAndComposeIntegrity(json.integrity, outMap.integrity, baseUrl);
         return outMap;
     }
     function getMatch(path, matchObj) {
@@ -173,7 +175,7 @@ var esModuleShims_debug = {};
         do {
             const segment = path.slice(0, sepIndex + 1);
             if (segment in matchObj) return segment;
-        }while ((sepIndex = path.lastIndexOf("/", sepIndex - 1)) !== -1);
+        }while ((sepIndex = path.lastIndexOf('/', sepIndex - 1)) !== -1);
     }
     function applyPackages(id, packages) {
         const pkgName = getMatch(id, packages);
@@ -188,9 +190,9 @@ var esModuleShims_debug = {};
         while(scopeUrl){
             const packageResolution = applyPackages(resolvedOrPlain, importMap.scopes[scopeUrl]);
             if (packageResolution) return packageResolution;
-            scopeUrl = getMatch(scopeUrl.slice(0, scopeUrl.lastIndexOf("/")), importMap.scopes);
+            scopeUrl = getMatch(scopeUrl.slice(0, scopeUrl.lastIndexOf('/')), importMap.scopes);
         }
-        return applyPackages(resolvedOrPlain, importMap.imports) || resolvedOrPlain.indexOf(":") !== -1 && resolvedOrPlain;
+        return applyPackages(resolvedOrPlain, importMap.imports) || resolvedOrPlain.indexOf(':') !== -1 && resolvedOrPlain;
     }
     function resolveAndComposePackages(packages, outPackages, baseUrl, parentMap) {
         for(let p in packages){
@@ -199,7 +201,7 @@ var esModuleShims_debug = {};
                 throw Error(`Rejected map override "${resolvedLhs}" from ${outPackages[resolvedLhs]} to ${packages[resolvedLhs]}.`);
             }
             let target = packages[p];
-            if (typeof target !== "string") continue;
+            if (typeof target !== 'string') continue;
             const mapped = resolveImportMap(parentMap, resolveIfNotPlainOrUrl(target, baseUrl) || target, baseUrl);
             if (mapped) {
                 outPackages[resolvedLhs] = mapped;
@@ -208,29 +210,38 @@ var esModuleShims_debug = {};
             console.warn(`Mapping "${p}" -> "${packages[p]}" does not resolve`);
         }
     }
-    let dynamicImport = !hasDocument && (0, eval)("u=>import(u)");
+    function resolveAndComposeIntegrity(integrity, outIntegrity, baseUrl) {
+        for(let p in integrity){
+            const resolvedLhs = resolveIfNotPlainOrUrl(p, baseUrl) || p;
+            if ((!shimMode || !mapOverrides) && outIntegrity[resolvedLhs] && outIntegrity[resolvedLhs] !== integrity[resolvedLhs]) {
+                throw Error(`Rejected map integrity override "${resolvedLhs}" from ${outIntegrity[resolvedLhs]} to ${integrity[resolvedLhs]}.`);
+            }
+            outIntegrity[resolvedLhs] = integrity[p];
+        }
+    }
+    let dynamicImport = !hasDocument && (0, eval)('u=>import(u)');
     let supportsDynamicImport;
     const dynamicImportCheck = hasDocument && new Promise((resolve)=>{
-        const s = Object.assign(document.createElement("script"), {
-            src: createBlob("self._d=u=>import(u)"),
+        const s = Object.assign(document.createElement('script'), {
+            src: createBlob('self._d=u=>import(u)'),
             ep: true
         });
-        s.setAttribute("nonce", nonce);
-        s.addEventListener("load", ()=>{
+        s.setAttribute('nonce', nonce);
+        s.addEventListener('load', ()=>{
             if (!(supportsDynamicImport = !!(dynamicImport = self._d))) {
                 let err;
-                window.addEventListener("error", (_err)=>err = _err);
+                window.addEventListener('error', (_err)=>err = _err);
                 dynamicImport = (url, opts)=>new Promise((resolve, reject)=>{
-                        const s = Object.assign(document.createElement("script"), {
-                            type: "module",
+                        const s = Object.assign(document.createElement('script'), {
+                            type: 'module',
                             src: createBlob(`import*as m from'${url}';self._esmsi=m`)
                         });
                         err = undefined;
                         s.ep = true;
-                        if (nonce) s.setAttribute("nonce", nonce);
+                        if (nonce) s.setAttribute('nonce', nonce);
                         // Safari is unique in supporting module script error events
-                        s.addEventListener("error", cb);
-                        s.addEventListener("load", cb);
+                        s.addEventListener('error', cb);
+                        s.addEventListener('load', cb);
                         function cb(_err) {
                             document.head.removeChild(s);
                             if (self._esmsi) {
@@ -254,7 +265,7 @@ var esModuleShims_debug = {};
     let supportsJsonAssertions = false;
     let supportsCssAssertions = false;
     const supports = hasDocument && HTMLScriptElement.supports;
-    let supportsImportMaps = supports && supports.name === "supports" && supports("importmap");
+    let supportsImportMaps = supports && supports.name === 'supports' && supports('importmap');
     let supportsImportMeta = supportsDynamicImport;
     let supportsWasmModules = false;
     let supportsSourcePhase = false;
@@ -271,28 +282,28 @@ var esModuleShims_debug = {};
     let featureDetectionPromise = Promise.resolve(dynamicImportCheck).then(()=>{
         if (!supportsDynamicImport) return;
         if (!hasDocument) return Promise.all([
-            supportsImportMaps || dynamicImport(createBlob("import.meta")).then(()=>supportsImportMeta = true, noop),
-            cssModulesEnabled && dynamicImport(createBlob(`import"${createBlob("", "text/css")}"with{type:"css"}`)).then(()=>supportsCssAssertions = true, noop),
-            jsonModulesEnabled && dynamicImport(createBlob(`import"${createBlob("{}", "text/json")}"with{type:"json"}`)).then(()=>supportsJsonAssertions = true, noop),
-            wasmModulesEnabled && dynamicImport(createBlob(`import"${createBlob(new Uint8Array(wasmBytes), "application/wasm")}"`)).then(()=>supportsWasmModules = true, noop),
-            wasmModulesEnabled && sourcePhaseEnabled && dynamicImport(createBlob(`import source x from"${createBlob(new Uint8Array(wasmBytes), "application/wasm")}"`)).then(()=>supportsSourcePhase = true, noop)
+            supportsImportMaps || dynamicImport(createBlob('import.meta')).then(()=>supportsImportMeta = true, noop),
+            cssModulesEnabled && dynamicImport(createBlob(`import"${createBlob('', 'text/css')}"with{type:"css"}`)).then(()=>supportsCssAssertions = true, noop),
+            jsonModulesEnabled && dynamicImport(createBlob(`import"${createBlob('{}', 'text/json')}"with{type:"json"}`)).then(()=>supportsJsonAssertions = true, noop),
+            wasmModulesEnabled && dynamicImport(createBlob(`import"${createBlob(new Uint8Array(wasmBytes), 'application/wasm')}"`)).then(()=>supportsWasmModules = true, noop),
+            wasmModulesEnabled && sourcePhaseEnabled && dynamicImport(createBlob(`import source x from"${createBlob(new Uint8Array(wasmBytes), 'application/wasm')}"`)).then(()=>supportsSourcePhase = true, noop)
         ]);
         return new Promise((resolve)=>{
-            console.info(`es-module-shims: performing feature detections for ${`${supportsImportMaps ? "" : "import maps, "}${cssModulesEnabled ? "css modules, " : ""}${jsonModulesEnabled ? "json modules, " : ""}${wasmModulesEnabled ? "wasm modules, " : ""}${wasmModulesEnabled && sourcePhaseEnabled ? "source phase, " : ""}`.slice(0, -2)}`);
-            const iframe = document.createElement("iframe");
-            iframe.style.display = "none";
-            iframe.setAttribute("nonce", nonce);
+            console.info(`es-module-shims: performing feature detections for ${`${supportsImportMaps ? '' : 'import maps, '}${cssModulesEnabled ? 'css modules, ' : ''}${jsonModulesEnabled ? 'json modules, ' : ''}${wasmModulesEnabled ? 'wasm modules, ' : ''}${wasmModulesEnabled && sourcePhaseEnabled ? 'source phase, ' : ''}`.slice(0, -2)}`);
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.setAttribute('nonce', nonce);
             function cb(param) {
-                let { data  } = param;
-                const isFeatureDetectionMessage = Array.isArray(data) && data[0] === "esms";
+                let { data } = param;
+                const isFeatureDetectionMessage = Array.isArray(data) && data[0] === 'esms';
                 if (!isFeatureDetectionMessage) return;
                 [, supportsImportMaps, supportsImportMeta, supportsCssAssertions, supportsJsonAssertions, supportsWasmModules, supportsSourcePhase] = data;
                 resolve();
                 document.head.removeChild(iframe);
-                window.removeEventListener("message", cb, false);
+                window.removeEventListener('message', cb, false);
             }
-            window.addEventListener("message", cb, false);
-            const importMapTest = `<script nonce=${nonce || ""}>b=(s,type='text/javascript')=>URL.createObjectURL(new Blob([s],{type}));document.head.appendChild(Object.assign(document.createElement('script'),{type:'importmap',nonce:"${nonce}",innerText:\`{"imports":{"x":"\${b('')}"}}\`}));Promise.all([${supportsImportMaps ? "true,true" : `'x',b('import.meta')`}, ${cssModulesEnabled ? `b(\`import"\${b('','text/css')}"with{type:"css"}\`)` : "false"}, ${jsonModulesEnabled ? `b(\`import"\${b('{}','text/json')\}"with{type:"json"}\`)` : "false"}, ${wasmModulesEnabled ? `b(\`import"\${b(new Uint8Array(${JSON.stringify(wasmBytes)}),'application/wasm')\}"\`)` : "false"}, ${wasmModulesEnabled && sourcePhaseEnabled ? `b(\`import source x from "\${b(new Uint8Array(${JSON.stringify(wasmBytes)}),'application/wasm')\}"\`)` : "false"}].map(x =>typeof x==='string'?import(x).then(()=>true,()=>false):x)).then(a=>parent.postMessage(['esms'].concat(a),'*'))<${""}/script>`;
+            window.addEventListener('message', cb, false);
+            const importMapTest = `<script nonce=${nonce || ''}>b=(s,type='text/javascript')=>URL.createObjectURL(new Blob([s],{type}));document.head.appendChild(Object.assign(document.createElement('script'),{type:'importmap',nonce:"${nonce}",innerText:\`{"imports":{"x":"\${b('')}"}}\`}));Promise.all([${supportsImportMaps ? 'true,true' : `'x',b('import.meta')`}, ${cssModulesEnabled ? `b(\`import"\${b('','text/css')}"with{type:"css"}\`)` : 'false'}, ${jsonModulesEnabled ? `b(\`import"\${b('{}','text/json')\}"with{type:"json"}\`)` : 'false'}, ${wasmModulesEnabled ? `b(\`import"\${b(new Uint8Array(${JSON.stringify(wasmBytes)}),'application/wasm')\}"\`)` : 'false'}, ${wasmModulesEnabled && sourcePhaseEnabled ? `b(\`import source x from "\${b(new Uint8Array(${JSON.stringify(wasmBytes)}),'application/wasm')\}"\`)` : 'false'}].map(x =>typeof x==='string'?import(x).then(()=>true,()=>false):x)).then(a=>parent.postMessage(['esms'].concat(a),'*'))<${''}/script>`;
             // Safari will call onload eagerly on head injection, but we don't want the Wechat
             // path to trigger before setting srcdoc, therefore we track the timing
             let readyForOnload = false, onloadCalledWhileNotReady = false;
@@ -305,8 +316,8 @@ var esModuleShims_debug = {};
                 // But iframe sandboxes don't support contentDocument so we do this as a fallback
                 const doc = iframe.contentDocument;
                 if (doc && doc.head.childNodes.length === 0) {
-                    const s = doc.createElement("script");
-                    if (nonce) s.setAttribute("nonce", nonce);
+                    const s = doc.createElement('script');
+                    if (nonce) s.setAttribute('nonce', nonce);
                     s.innerHTML = importMapTest.slice(15 + (nonce ? nonce.length : 0), -9);
                     doc.head.appendChild(s);
                 }
@@ -318,16 +329,16 @@ var esModuleShims_debug = {};
             // setting src to a blob URL results in a navigation event in webviews
             // document.write gives usability warnings
             readyForOnload = true;
-            if ("srcdoc" in iframe) iframe.srcdoc = importMapTest;
+            if ('srcdoc' in iframe) iframe.srcdoc = importMapTest;
             else iframe.contentDocument.write(importMapTest);
             // retrigger onload for Safari only if necessary
             if (onloadCalledWhileNotReady) doOnload();
         });
     });
     featureDetectionPromise = featureDetectionPromise.then(()=>{
-        console.info(`es-module-shims: detected native support - ${supportsDynamicImport ? "" : "no "}dynamic import, ${supportsImportMeta ? "" : "no "}import meta, ${supportsImportMaps ? "" : "no "}import maps`);
+        console.info(`es-module-shims: detected native support - ${supportsDynamicImport ? '' : 'no '}dynamic import, ${supportsImportMeta ? '' : 'no '}import meta, ${supportsImportMaps ? '' : 'no '}import maps`);
     });
-    /* es-module-lexer 1.5.0 */ let e, a, r, i = 2 << 19;
+    /* es-module-lexer 1.5.2 */ let e, a, r, i = 2 << 19;
     const s = 1 === new Uint8Array(new Uint16Array([
         1
     ]).buffer)[0] ? function(e, a) {
@@ -353,8 +364,8 @@ var esModuleShims_debug = {};
                 "use asm";
                 var i = new e.Int8Array(r), s = new e.Int16Array(r), f = new e.Int32Array(r), t = new e.Uint8Array(r), c = new e.Uint16Array(r), n = 1040;
                 function b() {
-                    var e = 0, a = 0, r = 0, t = 0, b = 0, u = 0;
-                    u = n;
+                    var e = 0, a = 0, r = 0, t = 0, b = 0, o = 0;
+                    o = n;
                     n = n + 10240 | 0;
                     i[804] = 1;
                     i[803] = 0;
@@ -364,8 +375,8 @@ var esModuleShims_debug = {};
                     i[805] = 0;
                     f[68] = 0;
                     i[802] = 0;
-                    f[70] = u + 2048;
-                    f[71] = u;
+                    f[70] = o + 2048;
+                    f[71] = o;
                     i[806] = 0;
                     e = (f[3] | 0) + -2 | 0;
                     f[72] = e;
@@ -640,7 +651,7 @@ var esModuleShims_debug = {};
                                                             }
                                                         }while (0);
                                                         r: do {
-                                                            if ((b | 0) == 66 ? (0, !(o(e) | 0)) : 0) {
+                                                            if ((b | 0) == 66 ? (0, !(u(e) | 0)) : 0) {
                                                                 switch(a << 16 >> 16){
                                                                     case 0:
                                                                         break r;
@@ -726,11 +737,11 @@ var esModuleShims_debug = {};
                             }
                         }
                     }while (0);
-                    n = u;
+                    n = o;
                     return e | 0;
                 }
                 function k() {
-                    var e = 0, a = 0, r = 0, t = 0, c = 0, n = 0, b = 0, k = 0, l = 0, o = 0, h = 0, d = 0, C = 0, g = 0;
+                    var e = 0, a = 0, r = 0, t = 0, c = 0, n = 0, b = 0, k = 0, l = 0, u = 0, h = 0, d = 0, C = 0, g = 0;
                     k = f[72] | 0;
                     l = f[65] | 0;
                     g = k + 12 | 0;
@@ -857,8 +868,8 @@ var esModuleShims_debug = {};
                                                                 }
                                                             }
                                                         }while (0);
-                                                        if ((C | 0) == 31 ? (o = f[72] | 0, q(d) | 0, h = f[72] | 0, h >>> 0 > o >>> 0) : 0) {
-                                                            O(e, k, o, h);
+                                                        if ((C | 0) == 31 ? (u = f[72] | 0, q(d) | 0, h = f[72] | 0, h >>> 0 > u >>> 0) : 0) {
+                                                            O(e, k, u, h);
                                                             f[72] = (f[72] | 0) + -2;
                                                             break e;
                                                         }
@@ -970,7 +981,7 @@ var esModuleShims_debug = {};
                             e = f[72] | 0;
                             if (g ? (m(e + 2 | 0, 60, 6) | 0) == 0 : 0) {
                                 f[72] = e + 8;
-                                u(k, w(1) | 0, 0);
+                                o(k, w(1) | 0, 0);
                                 e = (l | 0) == 0 ? 240 : l + 16 | 0;
                                 while(1){
                                     e = f[e >> 2] | 0;
@@ -1144,7 +1155,7 @@ var esModuleShims_debug = {};
                                     f[72] = e + 8;
                                     e = w(1) | 0;
                                     if (W(e) | 0) {
-                                        u(c, e, 0);
+                                        o(c, e, 0);
                                         break e;
                                     } else {
                                         T();
@@ -1207,7 +1218,7 @@ var esModuleShims_debug = {};
                                 a = b;
                             }
                             if ((n | 0) == 53) {
-                                u(c, t, r);
+                                o(c, t, r);
                                 break;
                             } else if ((n | 0) == 55) {
                                 T();
@@ -1217,7 +1228,143 @@ var esModuleShims_debug = {};
                     }while (0);
                     return;
                 }
-                function u(e, a, r) {
+                function u(e) {
+                    e = e | 0;
+                    var a = 0, r = 0;
+                    e: do {
+                        switch(s[e >> 1] | 0){
+                            case 100:
+                                switch(s[e + -2 >> 1] | 0){
+                                    case 105:
+                                        {
+                                            a = $(e + -4 | 0, 98, 2) | 0;
+                                            break e;
+                                        }
+                                    case 108:
+                                        {
+                                            a = $(e + -4 | 0, 102, 3) | 0;
+                                            break e;
+                                        }
+                                    default:
+                                        {
+                                            a = 0;
+                                            break e;
+                                        }
+                                }
+                            case 101:
+                                switch(s[e + -2 >> 1] | 0){
+                                    case 115:
+                                        switch(s[e + -4 >> 1] | 0){
+                                            case 108:
+                                                {
+                                                    a = B(e + -6 | 0, 101) | 0;
+                                                    break e;
+                                                }
+                                            case 97:
+                                                {
+                                                    a = B(e + -6 | 0, 99) | 0;
+                                                    break e;
+                                                }
+                                            default:
+                                                {
+                                                    a = 0;
+                                                    break e;
+                                                }
+                                        }
+                                    case 116:
+                                        {
+                                            a = $(e + -4 | 0, 108, 4) | 0;
+                                            break e;
+                                        }
+                                    case 117:
+                                        {
+                                            a = $(e + -4 | 0, 116, 6) | 0;
+                                            break e;
+                                        }
+                                    default:
+                                        {
+                                            a = 0;
+                                            break e;
+                                        }
+                                }
+                            case 102:
+                                {
+                                    if ((s[e + -2 >> 1] | 0) == 111) {
+                                        r = e + -4 | 0;
+                                        if ((r | 0) != (f[3] | 0) ? (a = s[r >> 1] | 0, !(E(a) | 0)) : 0) if (a << 16 >> 16 == 101) switch(s[e + -6 >> 1] | 0){
+                                            case 99:
+                                                {
+                                                    a = $(e + -8 | 0, 128, 6) | 0;
+                                                    break e;
+                                                }
+                                            case 112:
+                                                {
+                                                    a = $(e + -8 | 0, 140, 2) | 0;
+                                                    break e;
+                                                }
+                                            default:
+                                                {
+                                                    a = 0;
+                                                    break e;
+                                                }
+                                        }
+                                        else a = 0;
+                                        else a = 1;
+                                    } else a = 0;
+                                    break;
+                                }
+                            case 107:
+                                {
+                                    a = $(e + -2 | 0, 144, 4) | 0;
+                                    break;
+                                }
+                            case 110:
+                                {
+                                    a = e + -2 | 0;
+                                    if (B(a, 105) | 0) a = 1;
+                                    else a = $(a, 152, 5) | 0;
+                                    break;
+                                }
+                            case 111:
+                                {
+                                    a = B(e + -2 | 0, 100) | 0;
+                                    break;
+                                }
+                            case 114:
+                                {
+                                    a = $(e + -2 | 0, 162, 7) | 0;
+                                    break;
+                                }
+                            case 116:
+                                {
+                                    a = $(e + -2 | 0, 176, 4) | 0;
+                                    break;
+                                }
+                            case 119:
+                                switch(s[e + -2 >> 1] | 0){
+                                    case 101:
+                                        {
+                                            a = B(e + -4 | 0, 110) | 0;
+                                            break e;
+                                        }
+                                    case 111:
+                                        {
+                                            a = $(e + -4 | 0, 184, 3) | 0;
+                                            break e;
+                                        }
+                                    default:
+                                        {
+                                            a = 0;
+                                            break e;
+                                        }
+                                }
+                            default:
+                                a = 0;
+                        }
+                    }while (0);
+                    return a | 0;
+                }
+                function o(e, a, r) {
                     e = e | 0;
                     a = a | 0;
                     r = r | 0;
@@ -1348,137 +1495,6 @@ var esModuleShims_debug = {};
                     }while (0);
                     return;
                 }
-                function o(e) {
-                    e = e | 0;
-                    e: do {
-                        switch(s[e >> 1] | 0){
-                            case 100:
-                                switch(s[e + -2 >> 1] | 0){
-                                    case 105:
-                                        {
-                                            e = $(e + -4 | 0, 98, 2) | 0;
-                                            break e;
-                                        }
-                                    case 108:
-                                        {
-                                            e = $(e + -4 | 0, 102, 3) | 0;
-                                            break e;
-                                        }
-                                    default:
-                                        {
-                                            e = 0;
-                                            break e;
-                                        }
-                                }
-                            case 101:
-                                switch(s[e + -2 >> 1] | 0){
-                                    case 115:
-                                        switch(s[e + -4 >> 1] | 0){
-                                            case 108:
-                                                {
-                                                    e = B(e + -6 | 0, 101) | 0;
-                                                    break e;
-                                                }
-                                            case 97:
-                                                {
-                                                    e = B(e + -6 | 0, 99) | 0;
-                                                    break e;
-                                                }
-                                            default:
-                                                {
-                                                    e = 0;
-                                                    break e;
-                                                }
-                                        }
-                                    case 116:
-                                        {
-                                            e = $(e + -4 | 0, 108, 4) | 0;
-                                            break e;
-                                        }
-                                    case 117:
-                                        {
-                                            e = $(e + -4 | 0, 116, 6) | 0;
-                                            break e;
-                                        }
-                                    default:
-                                        {
-                                            e = 0;
-                                            break e;
-                                        }
-                                }
-                            case 102:
-                                {
-                                    if ((s[e + -2 >> 1] | 0) == 111 ? (s[e + -4 >> 1] | 0) == 101 : 0) switch(s[e + -6 >> 1] | 0){
-                                        case 99:
-                                            {
-                                                e = $(e + -8 | 0, 128, 6) | 0;
-                                                break e;
-                                            }
-                                        case 112:
-                                            {
-                                                e = $(e + -8 | 0, 140, 2) | 0;
-                                                break e;
-                                            }
-                                        default:
-                                            {
-                                                e = 0;
-                                                break e;
-                                            }
-                                    }
-                                    else e = 0;
-                                    break;
-                                }
-                            case 107:
-                                {
-                                    e = $(e + -2 | 0, 144, 4) | 0;
-                                    break;
-                                }
-                            case 110:
-                                {
-                                    e = e + -2 | 0;
-                                    if (B(e, 105) | 0) e = 1;
-                                    else e = $(e, 152, 5) | 0;
-                                    break;
-                                }
-                            case 111:
-                                {
-                                    e = B(e + -2 | 0, 100) | 0;
-                                    break;
-                                }
-                            case 114:
-                                {
-                                    e = $(e + -2 | 0, 162, 7) | 0;
-                                    break;
-                                }
-                            case 116:
-                                {
-                                    e = $(e + -2 | 0, 176, 4) | 0;
-                                    break;
-                                }
-                            case 119:
-                                switch(s[e + -2 >> 1] | 0){
-                                    case 101:
-                                        {
-                                            e = B(e + -4 | 0, 110) | 0;
-                                            break e;
-                                        }
-                                    case 111:
-                                        {
-                                            e = $(e + -4 | 0, 184, 3) | 0;
-                                            break e;
-                                        }
-                                    default:
-                                        {
-                                            e = 0;
-                                            break e;
-                                        }
-                                }
-                            default:
-                                e = 0;
-                        }
-                    }while (0);
-                    return e | 0;
-                }
                 function h() {
                     var e = 0, a = 0, r = 0, i = 0;
                     a = f[73] | 0;
@@ -1587,7 +1603,7 @@ var esModuleShims_debug = {};
                         t = r;
                     } else {
                         t = 1 == (s | 0);
-                        e = t ? 2 : 1;
+                        e = t ? 1 : 2;
                         t = t ? r + 2 | 0 : 0;
                     }
                     f[c + 12 >> 2] = t;
@@ -2283,7 +2299,7 @@ var esModuleShims_debug = {};
                     return a <= 65535 ? String.fromCharCode(a) : (a -= 65536, String.fromCharCode(55296 + (a >> 10), 56320 + (1023 & a)));
                 }();
             case 116:
-                return "	";
+                return "\t";
             case 98:
                 return "\b";
             case 118:
@@ -2359,10 +2375,10 @@ var esModuleShims_debug = {};
         }
         // parentUrl if present will be the last argument
         let parentUrl = args[args.length - 1];
-        if (typeof parentUrl !== "string") parentUrl = baseUrl;
+        if (typeof parentUrl !== 'string') parentUrl = baseUrl;
         // needed for shim check
         await initPromise;
-        if (importHook) await importHook(id, typeof args[1] !== "string" ? args[1] : {}, parentUrl);
+        if (importHook) await importHook(id, typeof args[1] !== 'string' ? args[1] : {}, parentUrl);
         if (acceptingImportMaps || shimMode || !baselinePassthrough) {
             if (hasDocument) processScriptsAndPreloads(true);
             if (!shimMode) acceptingImportMaps = false;
@@ -2376,7 +2392,7 @@ var esModuleShims_debug = {};
             args[_key] = arguments[_key];
         }
         return topLevelLoad(await importHandler(...args), {
-            credentials: "same-origin"
+            credentials: 'same-origin'
         });
     }
     // import.source()
@@ -2386,7 +2402,7 @@ var esModuleShims_debug = {};
         }
         const url = await importHandler(...args);
         const load = getOrCreateLoad(url, {
-            credentials: "same-origin"
+            credentials: 'same-origin'
         }, null, null);
         lastLoad = undefined;
         if (firstPolyfillLoad && !shimMode && load.n && nativelyLoaded) {
@@ -2416,7 +2432,7 @@ var esModuleShims_debug = {};
     importShim.resolve = resolveSync;
     importShim.getImportMap = ()=>JSON.parse(JSON.stringify(importMap));
     importShim.addImportMap = (importMapIn)=>{
-        if (!shimMode) throw new Error("Unsupported in polyfill mode.");
+        if (!shimMode) throw new Error('Unsupported in polyfill mode.');
         importMap = resolveAndComposeImportMap(importMapIn, baseUrl, importMap);
     };
     const registry = importShim._r = {};
@@ -2425,7 +2441,7 @@ var esModuleShims_debug = {};
         seen[load.u] = 1;
         await load.L;
         await Promise.all(load.d.map((param)=>{
-            let { l: dep , s: sourcePhase  } = param;
+            let { l: dep, s: sourcePhase } = param;
             if (dep.b || seen[dep.u]) return;
             if (sourcePhase) return dep.f;
             return loadAll(dep, seen);
@@ -2434,26 +2450,27 @@ var esModuleShims_debug = {};
     }
     let importMap = {
         imports: {},
-        scopes: {}
+        scopes: {},
+        integrity: {}
     };
     let baselinePassthrough;
     const initPromise = featureDetectionPromise.then(()=>{
         baselinePassthrough = esmsInitOptions.polyfillEnable !== true && supportsDynamicImport && supportsImportMeta && supportsImportMaps && (!jsonModulesEnabled || supportsJsonAssertions) && (!cssModulesEnabled || supportsCssAssertions) && (!wasmModulesEnabled || supportsWasmModules) && (!sourcePhaseEnabled || supportsSourcePhase) && !importMapSrcOrLazy;
-        console.info(`es-module-shims: init ${shimMode ? "shim mode" : "polyfill mode"}, ${baselinePassthrough ? "baseline passthrough" : "polyfill engaged"}`);
-        if (sourcePhaseEnabled && typeof WebAssembly !== "undefined" && !Object.getPrototypeOf(WebAssembly.Module).name) {
+        console.info(`es-module-shims: init ${shimMode ? 'shim mode' : 'polyfill mode'}, ${baselinePassthrough ? 'baseline passthrough' : 'polyfill engaged'}`);
+        if (sourcePhaseEnabled && typeof WebAssembly !== 'undefined' && !Object.getPrototypeOf(WebAssembly.Module).name) {
             const s = Symbol();
             const brand = (m)=>Object.defineProperty(m, s, {
                     writable: false,
                     configurable: false,
-                    value: "WebAssembly.Module"
+                    value: 'WebAssembly.Module'
                 });
             class AbstractModuleSource {
                 get [Symbol.toStringTag]() {
                     if (this[s]) return this[s];
-                    throw new TypeError("Not an AbstractModuleSource");
+                    throw new TypeError('Not an AbstractModuleSource');
                 }
             }
-            const { Module: wasmModule , compile: wasmCompile , compileStreaming: wasmCompileStreaming  } = WebAssembly;
+            const { Module: wasmModule, compile: wasmCompile, compileStreaming: wasmCompileStreaming } = WebAssembly;
             WebAssembly.Module = Object.setPrototypeOf(Object.assign(function Module() {
                 for(var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++){
                     args[_key] = arguments[_key];
@@ -2476,18 +2493,18 @@ var esModuleShims_debug = {};
         }
         if (hasDocument) {
             if (!supportsImportMaps) {
-                const supports = HTMLScriptElement.supports || ((type)=>type === "classic" || type === "module");
-                HTMLScriptElement.supports = (type)=>type === "importmap" || supports(type);
+                const supports = HTMLScriptElement.supports || ((type)=>type === 'classic' || type === 'module');
+                HTMLScriptElement.supports = (type)=>type === 'importmap' || supports(type);
             }
             if (shimMode || !baselinePassthrough) {
                 new MutationObserver((mutations)=>{
                     for (const mutation of mutations){
-                        if (mutation.type !== "childList") continue;
+                        if (mutation.type !== 'childList') continue;
                         for (const node of mutation.addedNodes){
-                            if (node.tagName === "SCRIPT") {
-                                if (node.type === (shimMode ? "module-shim" : "module")) processScript(node, true);
-                                if (node.type === (shimMode ? "importmap-shim" : "importmap")) processImportMap(node, true);
-                            } else if (node.tagName === "LINK" && node.rel === (shimMode ? "modulepreload-shim" : "modulepreload")) {
+                            if (node.tagName === 'SCRIPT') {
+                                if (node.type === (shimMode ? 'module-shim' : 'module')) processScript(node, true);
+                                if (node.type === (shimMode ? 'importmap-shim' : 'importmap')) processImportMap(node, true);
+                            } else if (node.tagName === 'LINK' && node.rel === (shimMode ? 'modulepreload-shim' : 'modulepreload')) {
                                 processPreload(node);
                             }
                         }
@@ -2497,18 +2514,18 @@ var esModuleShims_debug = {};
                     subtree: true
                 });
                 processScriptsAndPreloads();
-                if (document.readyState === "complete") {
+                if (document.readyState === 'complete') {
                     readyStateCompleteCheck();
                 } else {
                     async function readyListener() {
                         await initPromise;
                         processScriptsAndPreloads();
-                        if (document.readyState === "complete") {
+                        if (document.readyState === 'complete') {
                             readyStateCompleteCheck();
-                            document.removeEventListener("readystatechange", readyListener);
+                            document.removeEventListener('readystatechange', readyListener);
                         }
                     }
-                    document.addEventListener("readystatechange", readyListener);
+                    document.addEventListener('readystatechange', readyListener);
                 }
             }
         }
@@ -2521,7 +2538,7 @@ var esModuleShims_debug = {};
         if (!shimMode) acceptingImportMaps = false;
         await initPromise;
         await importMapPromise;
-        if (importHook) await importHook(url, typeof fetchOpts !== "string" ? fetchOpts : {}, "");
+        if (importHook) await importHook(url, typeof fetchOpts !== 'string' ? fetchOpts : {}, '');
         // early analysis opt-out - no need to even fetch if we have feature support
         if (!shimMode && baselinePassthrough) {
             console.info(`es-module-shims: load skipping polyfill due to baseline passthrough applying: ${url}`);
@@ -2583,14 +2600,14 @@ var esModuleShims_debug = {};
     function resolveDeps(load, seen) {
         if (load.b || !seen[load.u]) return;
         seen[load.u] = 0;
-        for (const { l: dep , s: sourcePhase  } of load.d){
+        for (const { l: dep, s: sourcePhase } of load.d){
             if (!sourcePhase) resolveDeps(dep, seen);
         }
         const [imports, exports] = load.a;
         // "execution"
         const source = load.S;
         // edge doesnt execute sibling in order, so we fix this up by ensuring all previous executions are explicit dependencies
-        let resolvedSource = edge && lastLoad ? `import '${lastLoad}';` : "";
+        let resolvedSource = edge && lastLoad ? `import '${lastLoad}';` : '';
         // once all deps have loaded we can inline the dependency resolution blobs
         // and define this blob
         let lastIndex = 0, depIndex = 0, dynamicImportEndStack = [];
@@ -2603,29 +2620,29 @@ var esModuleShims_debug = {};
             resolvedSource += source.slice(lastIndex, originalIndex);
             lastIndex = originalIndex;
         }
-        for (const { s: start , ss: statementStart , se: statementEnd , d: dynamicImportIndex , t  } of imports){
+        for (const { s: start, ss: statementStart, se: statementEnd, d: dynamicImportIndex, t } of imports){
             // source phase
             if (t === 4) {
-                let { l: depLoad  } = load.d[depIndex++];
+                let { l: depLoad } = load.d[depIndex++];
                 pushStringTo(statementStart);
-                resolvedSource += "import ";
+                resolvedSource += 'import ';
                 lastIndex = statementStart + 14;
                 pushStringTo(start - 1);
                 resolvedSource += `/*${source.slice(start - 1, statementEnd)}*/'${createBlob(`export default importShim._s[${urlJsString(depLoad.r)}]`)}'`;
                 lastIndex = statementEnd;
             } else if (dynamicImportIndex === -1) {
-                let { l: depLoad  } = load.d[depIndex++], blobUrl = depLoad.b, cycleShell = !blobUrl;
+                let { l: depLoad } = load.d[depIndex++], blobUrl = depLoad.b, cycleShell = !blobUrl;
                 if (cycleShell) {
                     // circular shell creation
                     if (!(blobUrl = depLoad.s)) {
                         blobUrl = depLoad.s = createBlob(`export function u$_(m){${depLoad.a[1].map((param, i)=>{
-                            let { s , e  } = param;
+                            let { s, e } = param;
                             const q = depLoad.S[s] === '"' || depLoad.S[s] === "'";
-                            return `e$_${i}=m${q ? `[` : "."}${depLoad.S.slice(s, e)}${q ? `]` : ""}`;
-                        }).join(",")}}${depLoad.a[1].length ? `let ${depLoad.a[1].map((_, i)=>`e$_${i}`).join(",")};` : ""}export {${depLoad.a[1].map((param, i)=>{
-                            let { s , e  } = param;
+                            return `e$_${i}=m${q ? `[` : '.'}${depLoad.S.slice(s, e)}${q ? `]` : ''}`;
+                        }).join(',')}}${depLoad.a[1].length ? `let ${depLoad.a[1].map((_, i)=>`e$_${i}`).join(',')};` : ''}export {${depLoad.a[1].map((param, i)=>{
+                            let { s, e } = param;
                             return `e$_${i} as ${depLoad.S.slice(s, e)}`;
-                        }).join(",")}}\n//# sourceURL=${depLoad.r}?cycle`);
+                        }).join(',')}}\n//# sourceURL=${depLoad.r}?cycle`);
                     }
                 }
                 pushStringTo(start - 1);
@@ -2647,19 +2664,19 @@ var esModuleShims_debug = {};
                 lastIndex = statementEnd;
             } else {
                 pushStringTo(statementStart + 6);
-                resolvedSource += `Shim${t === 5 ? ".source" : ""}(`;
+                resolvedSource += `Shim${t === 5 ? '.source' : ''}(`;
                 dynamicImportEndStack.push(statementEnd - 1);
                 lastIndex = start;
             }
         }
         // support progressive cycle binding updates (try statement avoids tdz errors)
-        if (load.s) resolvedSource += `\n;import{u$_}from'${load.s}';try{u$_({${exports.filter((e)=>e.ln).map((param)=>{
-            let { s , e , ln  } = param;
+        if (load.s && (imports.length === 0 || imports[imports.length - 1].d === -1)) resolvedSource += `\n;import{u$_}from'${load.s}';try{u$_({${exports.filter((e)=>e.ln).map((param)=>{
+            let { s, e, ln } = param;
             return `${source.slice(s, e)}:${ln}`;
-        }).join(",")}})}catch(_){};\n`;
+        }).join(',')}})}catch(_){};\n`;
         function pushSourceURL(commentPrefix, commentStart) {
             const urlStart = commentStart + commentPrefix.length;
-            const commentEnd = source.indexOf("\n", urlStart);
+            const commentEnd = source.indexOf('\n', urlStart);
             const urlEnd = commentEnd !== -1 ? commentEnd : source.length;
             pushStringTo(urlStart);
             resolvedSource += new URL(source.slice(urlStart, urlEnd), load.r).href;
@@ -2685,8 +2702,8 @@ var esModuleShims_debug = {};
         load.b = lastLoad = createBlob(resolvedSource);
         load.S = undefined;
     }
-    const sourceURLCommentPrefix = "\n//# sourceURL=";
-    const sourceMapURLCommentPrefix = "\n//# sourceMappingURL=";
+    const sourceURLCommentPrefix = '\n//# sourceURL=';
+    const sourceMapURLCommentPrefix = '\n//# sourceMappingURL=';
     const jsContentType = /^(text|application)\/(x-)?javascript(;|$)/;
     const wasmContentType = /^(application)\/wasm(;|$)/;
     const jsonContentType = /^(text|application)\/json(;|$)/;
@@ -2722,19 +2739,22 @@ var esModuleShims_debug = {};
         return res;
     }
     async function fetchModule(url, fetchOpts, parent) {
-        const res = await doFetch(url, fetchOpts, parent);
+        const mapIntegrity = importMap.integrity[url];
+        const res = await doFetch(url, mapIntegrity && !fetchOpts.integrity ? Object.assign({}, fetchOpts, {
+            integrity: mapIntegrity
+        }) : fetchOpts, parent);
         const r = res.url;
-        const contentType = res.headers.get("content-type");
+        const contentType = res.headers.get('content-type');
         if (jsContentType.test(contentType)) return {
             r,
             s: await res.text(),
             sp: null,
-            t: "js"
+            t: 'js'
         };
         else if (wasmContentType.test(contentType)) {
             const module = await (sourceCache[r] || (sourceCache[r] = WebAssembly.compileStreaming(res)));
             sourceCache[r] = module;
-            let s = "", i = 0, importObj = "";
+            let s = '', i = 0, importObj = '';
             for (const impt of WebAssembly.Module.imports(module)){
                 const specifier = urlJsString(impt.module);
                 s += `import * as impt${i} from ${specifier};\n`;
@@ -2748,23 +2768,23 @@ var esModuleShims_debug = {};
             return {
                 r,
                 s,
-                t: "wasm"
+                t: 'wasm'
             };
         } else if (jsonContentType.test(contentType)) return {
             r,
             s: `export default ${await res.text()}`,
             sp: null,
-            t: "json"
+            t: 'json'
         };
         else if (cssContentType.test(contentType)) {
             return {
                 r,
                 s: `var s=new CSSStyleSheet();s.replaceSync(${JSON.stringify((await res.text()).replace(cssUrlRegEx, (_match, quotes, relUrl1, relUrl2)=>{
-                    if (quotes === void 0) quotes = "";
+                    if (quotes === void 0) quotes = '';
                     return `url(${quotes}${resolveUrl(relUrl1 || relUrl2, url)}${quotes})`;
                 }))});export default s;`,
                 ss: null,
-                t: "css"
+                t: 'css'
             };
         } else throw Error(`Unsupported Content-Type "${contentType}" loading ${url}${fromParent(parent)}. Modules must be served with a valid MIME type like application/javascript.`);
     }
@@ -2806,10 +2826,10 @@ var esModuleShims_debug = {};
             if (!load.S) {
                 // preload fetch options override fetch options (race)
                 let t;
-                ({ r: load.r , s: load.S , t  } = await (fetchCache[url] || fetchModule(url, fetchOpts, parent)));
+                ({ r: load.r, s: load.S, t } = await (fetchCache[url] || fetchModule(url, fetchOpts, parent)));
                 if (t && !shimMode) {
-                    if (t === "css" && !cssModulesEnabled || t === "json" && !jsonModulesEnabled || t === "wasm" && !wasmModulesEnabled) throw featErr(`${t}-modules`);
-                    if (t === "css" && !supportsCssAssertions || t === "json" && !supportsJsonAssertions || t === "wasm" && !supportsWasmModules) load.n = true;
+                    if (t === 'css' && !cssModulesEnabled || t === 'json' && !jsonModulesEnabled || t === 'wasm' && !wasmModulesEnabled) throw featErr(`${t}-modules`);
+                    if (t === 'css' && !supportsCssAssertions || t === 'json' && !supportsJsonAssertions || t === 'wasm' && !supportsWasmModules) load.n = true;
                 }
             }
             try {
@@ -2826,18 +2846,18 @@ var esModuleShims_debug = {};
         })();
         return load;
     }
-    const featErr = (feat)=>Error(`${feat} feature must be enabled via <script type="esms-options">{ "polyfillEnable": ["${feat}"] }<${""}/script>`);
+    const featErr = (feat)=>Error(`${feat} feature must be enabled via <script type="esms-options">{ "polyfillEnable": ["${feat}"] }<${''}/script>`);
     function linkLoad(load, fetchOpts) {
         if (load.L) return;
         load.L = load.f.then(async ()=>{
             let childFetchOpts = fetchOpts;
             load.d = (await Promise.all(load.a[0].map(async (param)=>{
-                let { n , d , t  } = param;
+                let { n, d, t } = param;
                 const sourcePhase = t >= 4;
-                if (sourcePhase && !sourcePhaseEnabled) throw featErr("source-phase");
+                if (sourcePhase && !sourcePhaseEnabled) throw featErr('source-phase');
                 if (d >= 0 && !supportsDynamicImport || d === -2 && !supportsImportMeta || sourcePhase && !supportsSourcePhase) load.n = true;
                 if (d !== -1 || !n) return;
-                const { r , b  } = await resolve(n, load.r || load.u);
+                const { r, b } = await resolve(n, load.r || load.u);
                 if (b && (!supportsImportMaps || importMapSrcOrLazy)) load.n = true;
                 if (d !== -1) return;
                 if (skip && skip(r) && !sourcePhase) return {
@@ -2862,18 +2882,18 @@ var esModuleShims_debug = {};
     function processScriptsAndPreloads(mapsOnly) {
         if (mapsOnly === void 0) mapsOnly = false;
         console.info(`es-module-shims: processing scripts`);
-        if (!mapsOnly) for (const link of document.querySelectorAll(shimMode ? "link[rel=modulepreload-shim]" : "link[rel=modulepreload]"))processPreload(link);
-        for (const script of document.querySelectorAll(shimMode ? "script[type=importmap-shim]" : "script[type=importmap]"))processImportMap(script);
-        if (!mapsOnly) for (const script of document.querySelectorAll(shimMode ? "script[type=module-shim]" : "script[type=module]"))processScript(script);
+        if (!mapsOnly) for (const link of document.querySelectorAll(shimMode ? 'link[rel=modulepreload-shim]' : 'link[rel=modulepreload]'))processPreload(link);
+        for (const script of document.querySelectorAll(shimMode ? 'script[type=importmap-shim]' : 'script[type=importmap]'))processImportMap(script);
+        if (!mapsOnly) for (const script of document.querySelectorAll(shimMode ? 'script[type=module-shim]' : 'script[type=module]'))processScript(script);
     }
     function getFetchOpts(script) {
         const fetchOpts = {};
         if (script.integrity) fetchOpts.integrity = script.integrity;
         if (script.referrerPolicy) fetchOpts.referrerPolicy = script.referrerPolicy;
         if (script.fetchPriority) fetchOpts.priority = script.fetchPriority;
-        if (script.crossOrigin === "use-credentials") fetchOpts.credentials = "include";
-        else if (script.crossOrigin === "anonymous") fetchOpts.credentials = "omit";
-        else fetchOpts.credentials = "same-origin";
+        if (script.crossOrigin === 'use-credentials') fetchOpts.credentials = 'include';
+        else if (script.crossOrigin === 'anonymous') fetchOpts.credentials = 'omit';
+        else fetchOpts.credentials = 'same-origin';
         return fetchOpts;
     }
     let lastStaticLoadPromise = Promise.resolve();
@@ -2881,23 +2901,23 @@ var esModuleShims_debug = {};
     function domContentLoadedCheck() {
         if (--domContentLoadedCnt === 0 && !noLoadEventRetriggers && (shimMode || !baselinePassthrough)) {
             console.info(`es-module-shims: DOMContentLoaded refire`);
-            document.dispatchEvent(new Event("DOMContentLoaded"));
+            document.dispatchEvent(new Event('DOMContentLoaded'));
         }
     }
     let loadCnt = 1;
     function loadCheck() {
         if (--loadCnt === 0 && globalLoadEventRetrigger && !noLoadEventRetriggers && (shimMode || !baselinePassthrough)) {
             console.info(`es-module-shims: load refire`);
-            window.dispatchEvent(new Event("load"));
+            window.dispatchEvent(new Event('load'));
         }
     }
     // this should always trigger because we assume es-module-shims is itself a domcontentloaded requirement
     if (hasDocument) {
-        document.addEventListener("DOMContentLoaded", async ()=>{
+        document.addEventListener('DOMContentLoaded', async ()=>{
             await initPromise;
             domContentLoadedCheck();
         });
-        window.addEventListener("load", async ()=>{
+        window.addEventListener('load', async ()=>{
             await initPromise;
             loadCheck();
         });
@@ -2906,11 +2926,11 @@ var esModuleShims_debug = {};
     function readyStateCompleteCheck() {
         if (--readyStateCompleteCnt === 0 && !noLoadEventRetriggers && (shimMode || !baselinePassthrough)) {
             console.info(`es-module-shims: readystatechange complete refire`);
-            document.dispatchEvent(new Event("readystatechange"));
+            document.dispatchEvent(new Event('readystatechange'));
         }
     }
     const hasNext = (script)=>script.nextSibling || script.parentNode && hasNext(script.parentNode);
-    const epCheck = (script, ready)=>script.ep || !ready && (!script.src && !script.innerHTML || !hasNext(script)) || script.getAttribute("noshim") !== null || !(script.ep = true);
+    const epCheck = (script, ready)=>script.ep || !ready && (!script.src && !script.innerHTML || !hasNext(script)) || script.getAttribute('noshim') !== null || !(script.ep = true);
     function processImportMap(script, ready) {
         if (ready === void 0) ready = readyStateCompleteCnt > 0;
         if (epCheck(script, ready)) return;
@@ -2934,16 +2954,16 @@ var esModuleShims_debug = {};
         if (ready === void 0) ready = readyStateCompleteCnt > 0;
         if (epCheck(script, ready)) return;
         // does this load block readystate complete
-        const isBlockingReadyScript = script.getAttribute("async") === null && readyStateCompleteCnt > 0;
+        const isBlockingReadyScript = script.getAttribute('async') === null && readyStateCompleteCnt > 0;
         // does this load block DOMContentLoaded
         const isDomContentLoadedScript = domContentLoadedCnt > 0;
         const isLoadScript = loadCnt > 0;
         if (isLoadScript) loadCnt++;
         if (isBlockingReadyScript) readyStateCompleteCnt++;
         if (isDomContentLoadedScript) domContentLoadedCnt++;
-        console.info(`es-module-shims: processing ${script.src || "<inline>"}`);
+        console.info(`es-module-shims: processing ${script.src || '<inline>'}`);
         const loadPromise = topLevelLoad(script.src || baseUrl, getFetchOpts(script), !script.src && script.innerHTML, !shimMode, isBlockingReadyScript && lastStaticLoadPromise).catch(throwError);
-        if (!noLoadEventRetriggers) loadPromise.then(()=>script.dispatchEvent(new Event("load")));
+        if (!noLoadEventRetriggers) loadPromise.then(()=>script.dispatchEvent(new Event('load')));
         if (isBlockingReadyScript) lastStaticLoadPromise = loadPromise.then(readyStateCompleteCheck);
         if (isDomContentLoadedScript) loadPromise.then(domContentLoadedCheck);
         if (isLoadScript) loadPromise.then(loadCheck);

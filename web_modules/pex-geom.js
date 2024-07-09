@@ -65,10 +65,11 @@ import { s as set3, t as toString$4, a as set$2, b as sub, n as normalize, d as 
 /**
  * Updates a bounding box from a list of points.
  * @param {import("./types.js").aabb} a
- * @param {import("pex-math/types/types").vec3[] | import("pex-math/types/types").TypedArray} points
+ * @param {import("./types.js").vec3[] | import("./types.js").TypedArray} points
  * @returns {import("./types.js").aabb}
  */ function fromPoints$1(a, points) {
-    const isFlatArray = !points[0]?.length;
+    var _points_;
+    const isFlatArray = !((_points_ = points[0]) == null ? void 0 : _points_.length);
     const l = points.length / (isFlatArray ? 3 : 1);
     for(let i = 0; i < l; i++){
         if (isFlatArray) {
@@ -82,8 +83,8 @@ import { s as set3, t as toString$4, a as set$2, b as sub, n as normalize, d as 
 /**
  * Returns a list of 8 points from a bounding box.
  * @param {import("./types.js").aabb} a
- * @param {import("pex-math/types/types").vec3[]} [points]
- * @returns {import("pex-math/types/types").vec3[]}
+ * @param {import("./types.js").vec3[]} [points]
+ * @returns {import("./types.js").vec3[]}
  */ function getCorners$1(a, points) {
     if (points === void 0) points = Array.from({
         length: 8
@@ -101,8 +102,8 @@ import { s as set3, t as toString$4, a as set$2, b as sub, n as normalize, d as 
 /**
  * Returns the center of a bounding box.
  * @param {import("./types.js").aabb} a
- * @param {import("pex-math/types/types").vec3} out
- * @returns {import("pex-math/types/types").vec3}
+ * @param {import("./types.js").vec3} out
+ * @returns {import("./types.js").vec3}
  */ function center$1(a, out) {
     if (out === void 0) out = [
         0,
@@ -117,8 +118,8 @@ import { s as set3, t as toString$4, a as set$2, b as sub, n as normalize, d as 
 /**
  * Returns the size of a bounding box.
  * @param {import("./types.js").aabb} a
- * @param {import("pex-math/types/types").vec3} out
- * @returns {import("pex-math/types/types").vec3}
+ * @param {import("./types.js").vec3} out
+ * @returns {import("./types.js").vec3}
  */ function size$1(a, out) {
     if (out === void 0) out = [
         0,
@@ -133,7 +134,7 @@ import { s as set3, t as toString$4, a as set$2, b as sub, n as normalize, d as 
 /**
  * Checks if a point is inside a bounding box.
  * @param {import("./types.js").aabb} a
- * @param {import("pex-math/types/types").vec3} p
+ * @param {import("./types.js").vec3} p
  * @returns {boolean}
  */ function containsPoint$1(a, param) {
     let [x, y, z] = param;
@@ -160,9 +161,9 @@ import { s as set3, t as toString$4, a as set$2, b as sub, n as normalize, d as 
 /**
  * Includes a point in a bounding box.
  * @param {import("./types.js").aabb} a
- * @param {import("pex-math/types/types").vec3} p
+ * @param {import("./types.js").vec3} p
  * @param {number} [i=0] offset in the point array
- * @returns {import("pex-math/types/types").vec3}
+ * @returns {import("./types.js").vec3}
  */ function includePoint$1(a, p, i) {
     if (i === void 0) i = 0;
     a[0][0] = Math.min(a[0][0], p[i + 0]);
@@ -231,7 +232,7 @@ const TEMP_0$1 = create$4();
 /**
  * Returns on which side a point is.
  * @param {import("./types.js").plane} plane
- * @param {import("pex-math/types/types").vec3} point
+ * @param {import("./types.js").vec3} point
  * @returns {number}
  */ function side(param, point) {
     let [planePoint, planeNormal] = param;
@@ -304,7 +305,7 @@ const EPSILON = 1e-6;
  * @see {@link https://www.cs.princeton.edu/courses/archive/fall00/cs426/lectures/raycast/sld017.htm}
  * @param {import("./types.js").ray} ray
  * @param {import("./types.js").plane} plane
- * @param {import("pex-math/types/types").vec3} out
+ * @param {import("./types.js").vec3} out
  * @returns {number}
  */ function hitTestPlane(param, param1, out) {
     let [origin, direction] = param;
@@ -325,7 +326,7 @@ const EPSILON = 1e-6;
  * @see {@link http://geomalgorithms.com/a06-_intersect-2.html#intersect3D_RayTriangle()}
  * @param {import("./types.js").ray} ray
  * @param {import("./types.js").triangle} triangle
- * @param {import("pex-math/types/types").vec3} out
+ * @param {import("./types.js").vec3} out
  * @returns {number}
  */ function hitTestTriangle(param, param1, out) {
     let [origin, direction] = param;
@@ -481,7 +482,7 @@ var ray = /*#__PURE__*/Object.freeze({
 /**
  * Updates a rectangle from a list of points.
  * @param {import("./types.js").rect} a
- * @param {import("pex-math/types/types").vec2[] | import("pex-math/types/types").TypedArray} points
+ * @param {import("./types.js").vec2[] | import("./types.js").TypedArray} points
  * @returns {import("./types.js").rect}
  */ function fromPoints(a, points) {
     const isTypedArray = !Array.isArray(points);
@@ -493,8 +494,8 @@ var ray = /*#__PURE__*/Object.freeze({
 /**
  * Returns a list of 4 points from a rectangle.
  * @param {import("./types.js").rect} a
- * @param {import("pex-math/types/types").vec2[]} points
- * @returns {import("pex-math/types/types").vec2[]}
+ * @param {import("./types.js").vec2[]} points
+ * @returns {import("./types.js").vec2[]}
  */ function getCorners(a, points) {
     if (points === void 0) points = [];
     points[0] = a[0].slice();
@@ -524,7 +525,7 @@ var ray = /*#__PURE__*/Object.freeze({
 /**
  * Sets the size of a rectangle using width and height.
  * @param {import("./types.js").rect} a
- * @param {import("pex-math/types/types").vec2} size
+ * @param {import("./types.js").vec2} size
  * @returns {import("./types.js").rect}
  */ function setSize(a, size) {
     a[1][0] = a[0][0] + size[0];
@@ -534,8 +535,8 @@ var ray = /*#__PURE__*/Object.freeze({
 /**
  * Returns the size of a rectangle.
  * @param {import("./types.js").rect} a
- * @param {import("pex-math/types/types").vec2} out
- * @returns {import("pex-math/types/types").vec2}
+ * @param {import("./types.js").vec2} out
+ * @returns {import("./types.js").vec2}
  */ function size(a, out) {
     if (out === void 0) out = [];
     out[0] = width(a);
@@ -566,7 +567,7 @@ var ray = /*#__PURE__*/Object.freeze({
 /**
  * Sets the position of a rectangle.
  * @param {import("./types.js").rect} a
- * @param {import("pex-math/types/types").vec2} p
+ * @param {import("./types.js").vec2} p
  * @returns {import("./types.js").rect}
  */ function setPosition(a, param) {
     let [x, y] = param;
@@ -581,7 +582,7 @@ var ray = /*#__PURE__*/Object.freeze({
 /**
  * Returns the center of a rectangle.
  * @param {import("./types.js").rect} a
- * @param {import("pex-math/types/types").vec2} out
+ * @param {import("./types.js").vec2} out
  * @returns {import("./types.js").rect}
  */ function center(a, out) {
     if (out === void 0) out = [];
@@ -592,7 +593,7 @@ var ray = /*#__PURE__*/Object.freeze({
 /**
  * Checks if a point is inside a rectangle.
  * @param {import("./types.js").rect} a
- * @param {import("pex-math/types/types").vec2} p
+ * @param {import("./types.js").vec2} p
  * @returns {boolean}
  */ function containsPoint(a, param) {
     let [x, y] = param;
@@ -609,7 +610,7 @@ var ray = /*#__PURE__*/Object.freeze({
 /**
  * Includes a point in a rectangle.
  * @param {import("./types.js").rect} a
- * @param {import("pex-math/types/types").vec2} p
+ * @param {import("./types.js").vec2} p
  * @returns {import("./types.js").rect}
  */ function includePoint(a, param) {
     let [x, y] = param;
@@ -636,8 +637,8 @@ var ray = /*#__PURE__*/Object.freeze({
 /**
  * Maps a point into the dimensions of a rectangle.
  * @param {import("./types.js").rect} a
- * @param {import("pex-math/types/types").vec2} p
- * @returns {import("pex-math/types/types").vec2}
+ * @param {import("./types.js").vec2} p
+ * @returns {import("./types.js").vec2}
  */ function mapPoint(a, p) {
     const minx = a[0][0];
     const miny = a[0][1];
@@ -650,8 +651,8 @@ var ray = /*#__PURE__*/Object.freeze({
 /**
  * Clamps a point into the dimensions of a rectangle.
  * @param {import("./types.js").rect} a
- * @param {import("pex-math/types/types").vec2} p
- * @returns {import("pex-math/types/types").vec2}
+ * @param {import("./types.js").vec2} p
+ * @returns {import("./types.js").vec2}
  */ function clampPoint(a, p) {
     const minx = a[0][0];
     const miny = a[0][1];

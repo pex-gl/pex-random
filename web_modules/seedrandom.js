@@ -38,9 +38,9 @@ alea$1.exports;
             };
             // Apply the seeding algorithm from Baagoe.
             me.c = 1;
-            me.s0 = mash(" ");
-            me.s1 = mash(" ");
-            me.s2 = mash(" ");
+            me.s0 = mash(' ');
+            me.s1 = mash(' ');
+            me.s2 = mash(' ');
             me.s0 -= mash(seed);
             if (me.s0 < 0) {
                 me.s0 += 1;
@@ -72,7 +72,7 @@ alea$1.exports;
             };
             prng.quick = prng;
             if (state) {
-                if (typeof state == "object") copy(state, xg);
+                if (typeof state == 'object') copy(state, xg);
                 prng.state = function() {
                     return copy(xg, {});
                 };
@@ -99,15 +99,10 @@ alea$1.exports;
         }
         if (module && module.exports) {
             module.exports = impl;
-        } else if (define && define.amd) {
-            define(function() {
-                return impl;
-            });
         } else {
             this.alea = impl;
         }
-    })(commonjsGlobal, module, typeof undefined == "function"  // present with an AMD loader
-    );
+    })(commonjsGlobal, module);
 })(alea$1);
 var aleaExports = alea$1.exports;
 
@@ -119,7 +114,7 @@ xor128$1.exports;
     // George Marsaglia.  See http://www.jstatsoft.org/v08/i14/paper
     (function(global, module, define) {
         function XorGen(seed) {
-            var me = this, strseed = "";
+            var me = this, strseed = '';
             me.x = 0;
             me.y = 0;
             me.z = 0;
@@ -165,7 +160,7 @@ xor128$1.exports;
             prng.int32 = xg.next;
             prng.quick = prng;
             if (state) {
-                if (typeof state == "object") copy(state, xg);
+                if (typeof state == 'object') copy(state, xg);
                 prng.state = function() {
                     return copy(xg, {});
                 };
@@ -174,15 +169,10 @@ xor128$1.exports;
         }
         if (module && module.exports) {
             module.exports = impl;
-        } else if (define && define.amd) {
-            define(function() {
-                return impl;
-            });
         } else {
             this.xor128 = impl;
         }
-    })(commonjsGlobal, module, typeof undefined == "function"  // present with an AMD loader
-    );
+    })(commonjsGlobal, module);
 })(xor128$1);
 var xor128Exports = xor128$1.exports;
 
@@ -194,7 +184,7 @@ xorwow$1.exports;
     // George Marsaglia.  See http://www.jstatsoft.org/v08/i14/paper
     (function(global, module, define) {
         function XorGen(seed) {
-            var me = this, strseed = "";
+            var me = this, strseed = '';
             // Set up generator function.
             me.next = function() {
                 var t = me.x ^ me.x >>> 2;
@@ -247,7 +237,7 @@ xorwow$1.exports;
             prng.int32 = xg.next;
             prng.quick = prng;
             if (state) {
-                if (typeof state == "object") copy(state, xg);
+                if (typeof state == 'object') copy(state, xg);
                 prng.state = function() {
                     return copy(xg, {});
                 };
@@ -256,15 +246,10 @@ xorwow$1.exports;
         }
         if (module && module.exports) {
             module.exports = impl;
-        } else if (define && define.amd) {
-            define(function() {
-                return impl;
-            });
         } else {
             this.xorwow = impl;
         }
-    })(commonjsGlobal, module, typeof undefined == "function"  // present with an AMD loader
-    );
+    })(commonjsGlobal, module);
 })(xorwow$1);
 var xorwowExports = xorwow$1.exports;
 
@@ -306,7 +291,7 @@ xorshift7$1.exports;
                     X[0] = seed;
                 } else {
                     // Seed state using a string.
-                    seed = "" + seed;
+                    seed = '' + seed;
                     for(j = 0; j < seed.length; ++j){
                         X[j & 7] = X[j & 7] << 15 ^ seed.charCodeAt(j) + X[j + 1 & 7] << 13;
                     }
@@ -353,15 +338,10 @@ xorshift7$1.exports;
         }
         if (module && module.exports) {
             module.exports = impl;
-        } else if (define && define.amd) {
-            define(function() {
-                return impl;
-            });
         } else {
             this.xorshift7 = impl;
         }
-    })(commonjsGlobal, module, typeof undefined == "function"  // present with an AMD loader
-    );
+    })(commonjsGlobal, module);
 })(xorshift7$1);
 var xorshift7Exports = xorshift7$1.exports;
 
@@ -422,7 +402,7 @@ xor4096$1.exports;
                     seed = null;
                 } else {
                     // String seeds are mixed into v and X one character at a time.
-                    seed = seed + "\x00";
+                    seed = seed + '\0';
                     v = 0;
                     limit = Math.max(limit, seed.length);
                 }
@@ -495,15 +475,10 @@ xor4096$1.exports;
         }
         if (module && module.exports) {
             module.exports = impl;
-        } else if (define && define.amd) {
-            define(function() {
-                return impl;
-            });
         } else {
             this.xor4096 = impl;
         }
-    })(commonjsGlobal, module, typeof undefined == "function"  // present with an AMD loader
-    );
+    })(commonjsGlobal, module);
 })(xor4096$1);
 var xor4096Exports = xor4096$1.exports;
 
@@ -516,7 +491,7 @@ tychei$1.exports;
     // See https://eden.dei.uc.pt/~sneves/pubs/2011-snfa2.pdf
     (function(global, module, define) {
         function XorGen(seed) {
-            var me = this, strseed = "";
+            var me = this, strseed = '';
             // Set up generator function.
             me.next = function() {
                 var b = me.b, c = me.c, d = me.d, a = me.a;
@@ -581,7 +556,7 @@ tychei$1.exports;
             prng.int32 = xg.next;
             prng.quick = prng;
             if (state) {
-                if (typeof state == "object") copy(state, xg);
+                if (typeof state == 'object') copy(state, xg);
                 prng.state = function() {
                     return copy(xg, {});
                 };
@@ -590,15 +565,10 @@ tychei$1.exports;
         }
         if (module && module.exports) {
             module.exports = impl;
-        } else if (define && define.amd) {
-            define(function() {
-                return impl;
-            });
         } else {
             this.tychei = impl;
         }
-    })(commonjsGlobal, module, typeof undefined == "function"  // present with an AMD loader
-    );
+    })(commonjsGlobal, module);
 })(tychei$1);
 var tycheiExports = tychei$1.exports;
 
@@ -609,7 +579,7 @@ var seedrandom$1 = {exports: {}};
         //
         // The following constants are related to IEEE 754 limits.
         //
-        var width = 256, chunks = 6, digits = 52, rngname = "random", startdenom = math.pow(width, chunks), significance = math.pow(2, digits), overflow = significance * 2, mask = width - 1, nodecrypto; // node.js crypto module, initialized at the bottom.
+        var width = 256, chunks = 6, digits = 52, rngname = 'random', startdenom = math.pow(width, chunks), significance = math.pow(2, digits), overflow = significance * 2, mask = width - 1, nodecrypto; // node.js crypto module, initialized at the bottom.
         //
         // seedrandom()
         // This is the seedrandom function described above.
@@ -669,7 +639,7 @@ var seedrandom$1 = {exports: {}};
                     math[rngname] = prng;
                     return seed;
                 } else return prng;
-            })(prng, shortseed, "global" in options ? options.global : this == math, options.state);
+            })(prng, shortseed, 'global' in options ? options.global : this == math, options.state);
         }
         //
         // ARC4
@@ -729,14 +699,14 @@ var seedrandom$1 = {exports: {}};
         //
         function flatten(obj, depth) {
             var result = [], typ = typeof obj, prop;
-            if (depth && typ == "object") {
+            if (depth && typ == 'object') {
                 for(prop in obj){
                     try {
                         result.push(flatten(obj[prop], depth - 1));
                     } catch (e) {}
                 }
             }
-            return result.length ? result : typ == "string" ? obj : obj + "\x00";
+            return result.length ? result : typ == 'string' ? obj : obj + '\0';
         }
         //
         // mixkey()
@@ -744,7 +714,7 @@ var seedrandom$1 = {exports: {}};
         // returns a shortened string seed that is equivalent to the result key.
         //
         function mixkey(seed, key) {
-            var stringseed = seed + "", smear, j = 0;
+            var stringseed = seed + '', smear, j = 0;
             while(j < stringseed.length){
                 key[mask & j] = mask & (smear ^= key[mask & j] * 19) + stringseed.charCodeAt(j++);
             }
@@ -804,12 +774,12 @@ var seedrandom$1 = {exports: {}};
             } catch (ex) {}
         } else {
             // When included as a plain script, set up Math.seedrandom global.
-            math["seed" + rngname] = seedrandom;
+            math['seed' + rngname] = seedrandom;
         }
     // End anonymous scope, and pass initial values.
     })(// global: `self` in browsers (including strict mode and web workers),
     // otherwise `this` in Node and other environments
-    typeof self !== "undefined" ? self : commonjsGlobal, [], Math // math: package containing random, pow, and seedrandom
+    typeof self !== 'undefined' ? self : commonjsGlobal, [], Math // math: package containing random, pow, and seedrandom
     );
 })(seedrandom$1);
 var seedrandomExports = seedrandom$1.exports;

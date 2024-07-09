@@ -36,12 +36,13 @@
     "simplex-noise": "4.0.1"
   },
   "devDependencies": {
-    "es-module-shims": "^1.9.0",
-    "pex-geom": "^3.0.1",
-    "pex-math": "^4.1.0"
+    "es-module-shims": "^1.10.0",
+    "pex-geom": "^3.0.2",
+    "pex-math": "^4.1.1"
   },
   "engines": {
-    "node": ">=20.0.0",
-    "npm": ">=9.6.4"
+    "node": ">=22.0.0",
+    "npm": ">=10.5.1",
+    "snowdev": ">=2.2.x"
   }
 }
