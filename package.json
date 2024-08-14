@@ -1,6 +1,6 @@
 {
   "name": "pex-random",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Random value generators (float, int, vector and noise) for PEX.",
   "keywords": [
     "pex",
