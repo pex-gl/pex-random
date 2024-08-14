@@ -68,8 +68,7 @@ import { s as set3, t as toString$4, a as set$2, b as sub, n as normalize, d as 
  * @param {import("./types.js").vec3[] | import("./types.js").TypedArray} points
  * @returns {import("./types.js").aabb}
  */ function fromPoints$1(a, points) {
-    var _points_;
-    const isFlatArray = !((_points_ = points[0]) == null ? void 0 : _points_.length);
+    const isFlatArray = !points[0]?.length;
     const l = points.length / (isFlatArray ? 3 : 1);
     for(let i = 0; i < l; i++){
         if (isFlatArray) {

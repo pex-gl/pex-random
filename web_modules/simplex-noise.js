@@ -6,7 +6,7 @@ Which is based on example code by Stefan Gustavson (stegu@itn.liu.se).
 With Optimisations by Peter Eastman (peastman@drizzle.stanford.edu).
 Better rank ordering method by Stefan Gustavson in 2012.
 
- Copyright (c) 2022 Jonas Wagner
+ Copyright (c) 2024 Jonas Wagner
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -25,14 +25,16 @@ Better rank ordering method by Stefan Gustavson in 2012.
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
- */ 
-// 
-const F2 =  0.5 * (Math.sqrt(3.0) - 1.0);
-const G2 =  (3.0 - Math.sqrt(3.0)) / 6.0;
+ */ // these __PURE__ comments help uglifyjs with dead code removal
+//
+const SQRT3 = /*#__PURE__*/ Math.sqrt(3.0);
+const SQRT5 = /*#__PURE__*/ Math.sqrt(5.0);
+const F2 = 0.5 * (SQRT3 - 1.0);
+const G2 = (3.0 - SQRT3) / 6.0;
 const F3 = 1.0 / 3.0;
 const G3 = 1.0 / 6.0;
-const F4 =  (Math.sqrt(5.0) - 1.0) / 4.0;
-const G4 =  (5.0 - Math.sqrt(5.0)) / 20.0;
+const F4 = (SQRT5 - 1.0) / 4.0;
+const G4 = (5.0 - SQRT5) / 20.0;
 // I'm really not sure why this | 0 (basically a coercion to int)
 // is making this faster but I get ~5 million ops/sec more on the
 // benchmarks across the board or a ~10% speedup.

@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "seedrandom": "^3.0.5",
-    "simplex-noise": "4.0.1"
+    "simplex-noise": "^4.0.3"
   },
   "devDependencies": {
     "es-module-shims": "^1.10.0",
