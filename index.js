@@ -1,6 +1,12 @@
 import seedrandom from "seedrandom";
 import { createNoise2D, createNoise3D, createNoise4D } from "simplex-noise";
 
+const createNoise = (rng) => ({
+  noise2D: createNoise2D(rng),
+  noise3D: createNoise3D(rng),
+  noise4D: createNoise4D(rng),
+});
+
 /**
  * @alias pex-random
  */
@@ -9,6 +15,9 @@ class Random {
    * @private
    */
   static #instanceCount = 0;
+
+  #noiseSeed;
+  #simplex;
 
   /**
    * @private
@@ -38,11 +47,19 @@ class Random {
    */
   seed(s) {
     this.rng = seedrandom(s);
-    this.simplex = {
-      noise2D: createNoise2D(this.rng),
-      noise3D: createNoise3D(this.rng),
-      noise4D: createNoise4D(this.rng),
-    };
+    // Separate PRNG so noise never shifts other values.
+    // Array keeps 0 and "0" distinct, as in seedrandom. No seed: unpredictable noise.
+    this.#noiseSeed = s == null ? undefined : [s, "noise"];
+    // Expensive: built on first noise call.
+    this.#simplex = null;
+  }
+
+  /**
+   * @private
+   */
+  get simplex() {
+    this.#simplex ||= createNoise(seedrandom(this.#noiseSeed));
+    return this.#simplex;
   }
 
   /**

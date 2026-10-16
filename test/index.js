@@ -1,10 +1,13 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
 
+import seedrandom from "seedrandom";
 import { aabb, rect } from "pex-geom";
 import { vec2, vec3, quat } from "pex-math";
 
 import random from "../index.js";
+import runSequences from "./sequences.js";
+import sequences from "./fixtures/sequences.json" with { type: "json" };
 
 const ITERATIONS = 1e3;
 
@@ -70,6 +73,38 @@ describe("seed()", () => {
       assert.notEqual(a, b);
       assert.equal(c, d);
     }
+  });
+  it("should return the seeded PRNG values regardless of noise calls", () => {
+    const rng = seedrandom("pex");
+    const localRandom = random.create("pex");
+    for (let i = 0; i < ITERATIONS; i++) {
+      localRandom.noise2(i, i);
+      assert.equal(localRandom.float(), rng());
+    }
+  });
+  it("should return the same noise regardless of other calls", () => {
+    const a = random.create(42);
+    const b = random.create(42);
+    for (let i = 0; i < ITERATIONS; i++) b.float();
+    assert.equal(a.noise2(1.5, -2.5), b.noise2(1.5, -2.5));
+  });
+  it("should return different noise for number and string seeds", () => {
+    assert.notEqual(
+      random.create(0).noise2(0.3, 0.7),
+      random.create("0").noise2(0.3, 0.7),
+    );
+  });
+  it("should return the same values for mixed call sequences", () => {
+    assert.deepEqual(runSequences(random), sequences);
+  });
+  it("should reset noise when reseeding", () => {
+    const localRandom = random.create("a");
+    const a = localRandom.noise2(0.3, 0.7);
+    localRandom.seed("b");
+    const b = localRandom.noise2(0.3, 0.7);
+    localRandom.seed("a");
+    assert.notEqual(a, b);
+    assert.equal(localRandom.noise2(0.3, 0.7), a);
   });
   it("should not change Math.random", () => {
     for (let i = 0; i < ITERATIONS; i++) {
