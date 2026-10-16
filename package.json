@@ -30,14 +30,15 @@
       "default": "./index.js"
     }
   },
-  "main": "index.js",
-  "types": "types/index.d.ts",
+  "main": "./index.js",
+  "types": "./types/index.d.ts",
+  "sideEffects": false,
   "scripts": {
     "build": "snowdev build",
     "dev": "snowdev dev",
     "release": "snowdev release",
-    "test": "node --test --experimental-test-coverage",
-    "test:watch": "node --test --watch"
+    "test": "node --experimental-test-coverage test",
+    "test:watch": "node --watch --experimental-test-coverage test"
   },
   "dependencies": {
     "seedrandom": "^3.0.5",
@@ -48,9 +49,9 @@
     "pex-geom": "^3.0.2",
     "pex-math": "^4.1.1"
   },
+  "packageManager": "npm@11.3.0",
   "engines": {
-    "node": ">=22.0.0",
-    "npm": ">=10.5.1",
-    "snowdev": ">=2.2.x"
+    "node": ">=24.0.0",
+    "snowdev": ">=3.0.0-alpha.3"
   }
 }

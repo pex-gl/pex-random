@@ -1,12 +1,28 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
 
+import seedrandom from "seedrandom";
 import { aabb, rect } from "pex-geom";
 import { vec2, vec3, quat } from "pex-math";
 
 import random from "../index.js";
+import runSequences from "./sequences.js";
+import sequences from "./fixtures/sequences.json" with { type: "json" };
 
 const ITERATIONS = 1e3;
+
+// Several points: a single one often matches across seeds as simplex only
+// picks from a few gradients.
+const NOISE_POINTS = [
+  [0.1, 0.2, 0.3, 0.4],
+  [3.7, -1.2, 5.3, 2.9],
+  [-8.1, 6.4, -2.2, 7.7],
+  [12.5, -9.3, 4.6, -6.8],
+];
+const sampleNoise = (seed, sample) => {
+  random.seed(seed);
+  return NOISE_POINTS.map(sample);
+};
 
 describe("random.create()", () => {
   it("should return different values from the default PRNG", () => {
@@ -70,6 +86,54 @@ describe("seed()", () => {
       assert.notEqual(a, b);
       assert.equal(c, d);
     }
+  });
+  it("should return the seeded PRNG values regardless of noise calls", () => {
+    const rng = seedrandom("pex");
+    const localRandom = random.create("pex");
+    for (let i = 0; i < ITERATIONS; i++) {
+      localRandom.noise2(i, i);
+      assert.equal(localRandom.float(), rng());
+    }
+  });
+  it("should return the same noise regardless of other calls", () => {
+    const a = random.create(42);
+    const b = random.create(42);
+    for (let i = 0; i < ITERATIONS; i++) b.float();
+    assert.equal(a.noise2(1.5, -2.5), b.noise2(1.5, -2.5));
+  });
+  it("should return different noise for number and string seeds", () => {
+    assert.notEqual(
+      random.create(0).noise2(0.3, 0.7),
+      random.create("0").noise2(0.3, 0.7),
+    );
+  });
+  it("should keep noise tables when reseeding with the same seed", () => {
+    const localRandom = random.create("a");
+    const simplex = localRandom.simplex;
+    localRandom.seed("a");
+    assert.equal(localRandom.simplex, simplex);
+    localRandom.seed("b");
+    assert.notEqual(localRandom.simplex, simplex);
+  });
+  it("should return unpredictable noise without a seed", () => {
+    const localRandom = random.create();
+    const sample = (p) => localRandom.noise2(p[0], p[1]);
+    localRandom.seed();
+    const a = NOISE_POINTS.map(sample);
+    localRandom.seed();
+    assert.notDeepEqual(NOISE_POINTS.map(sample), a);
+  });
+  it("should return the same values for mixed call sequences", () => {
+    assert.deepEqual(runSequences(random), sequences);
+  });
+  it("should reset noise when reseeding", () => {
+    const localRandom = random.create("a");
+    const a = localRandom.noise2(0.3, 0.7);
+    localRandom.seed("b");
+    const b = localRandom.noise2(0.3, 0.7);
+    localRandom.seed("a");
+    assert.notEqual(a, b);
+    assert.equal(localRandom.noise2(0.3, 0.7), a);
   });
   it("should not change Math.random", () => {
     for (let i = 0; i < ITERATIONS; i++) {
@@ -344,16 +408,10 @@ describe("noise2(x, y)", () => {
       assert.equal(r1, r2);
     }
   });
-  // TODO: failing test because of seed collision
-  it("should return different values for the same position and different seeds", async () => {
+  it("should return different values for the same positions and different seeds", () => {
+    const sample = (p) => random.noise2(p[0], p[1]);
     for (let i = 0; i < ITERATIONS; i++) {
-      const x = random.float();
-      const y = random.float();
-      random.seed(i);
-      const r1 = random.noise2(x, y);
-      random.seed(i + 1);
-      const r2 = random.noise2(x, y);
-      assert.notEqual(r1, r2);
+      assert.notDeepEqual(sampleNoise(i, sample), sampleNoise(i + 1, sample));
     }
   });
 });
@@ -377,16 +435,10 @@ describe("noise3(x, y, z)", () => {
       assert.equal(r1, r2);
     }
   });
-  it("should return different values for the same position and different seeds", () => {
+  it("should return different values for the same positions and different seeds", () => {
+    const sample = (p) => random.noise3(p[0], p[1], p[2]);
     for (let i = 0; i < ITERATIONS; i++) {
-      const x = random.float();
-      const y = random.float();
-      const z = random.float();
-      random.seed(i);
-      const r1 = random.noise3(x, y, z);
-      random.seed(i + 1);
-      const r2 = random.noise3(x, y, z);
-      assert.notEqual(r1, r2);
+      assert.notDeepEqual(sampleNoise(i, sample), sampleNoise(i + 1, sample));
     }
   });
 });
@@ -412,17 +464,10 @@ describe("noise4(x, y, z)", () => {
       assert.equal(r1, r2);
     }
   });
-  it("should return different values for the same position and different seeds", () => {
+  it("should return different values for the same positions and different seeds", () => {
+    const sample = (p) => random.noise4(...p);
     for (let i = 0; i < ITERATIONS; i++) {
-      const x = random.float();
-      const y = random.float();
-      const z = random.float();
-      const w = random.float();
-      random.seed(i);
-      const r1 = random.noise4(x, y, z, w);
-      random.seed(i + 1);
-      const r2 = random.noise4(x, y, z, w);
-      assert.notEqual(r1, r2);
+      assert.notDeepEqual(sampleNoise(i, sample), sampleNoise(i + 1, sample));
     }
   });
 });
@@ -448,17 +493,10 @@ describe("fbm(x, y, z)", () => {
       assert.equal(r1, r2);
     }
   });
-  it("should return different values for the same position and different seeds", () => {
+  it("should return different values for the same positions and different seeds", () => {
+    const sample = (p) => random.fbm({}, ...p);
     for (let i = 0; i < ITERATIONS; i++) {
-      const x = random.float();
-      const y = random.float();
-      const z = random.float();
-      const w = random.float();
-      random.seed(i);
-      const r1 = random.fbm({}, x, y, z, w);
-      random.seed(i + 1);
-      const r2 = random.fbm({}, x, y, z, w);
-      assert.notEqual(r1, r2);
+      assert.notDeepEqual(sampleNoise(i, sample), sampleNoise(i + 1, sample));
     }
   });
 });
