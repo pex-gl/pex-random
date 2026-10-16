@@ -109,62 +109,70 @@ class Random {
   /**
    * Get a vec2 included in a radius.
    * @param {number} [r=1] radius
+   * @param {import("./types.js").vec2} [out=[]]
    * @returns {import("./types.js").vec2}
    */
-  vec2(r = 1) {
+  vec2(r = 1, out = []) {
     const x = 2 * this.rng() - 1;
     const y = 2 * this.rng() - 1;
     const rr = this.rng() * r;
     const len = Math.sqrt(x * x + y * y);
-    return [(rr * x) / len, (rr * y) / len];
+    out[0] = (rr * x) / len;
+    out[1] = (rr * y) / len;
+    return out;
   }
 
   /**
    * Get a vec3 included in a radius.
    * @param {number} [r=1] radius
+   * @param {import("./types.js").vec3} [out=[]]
    * @returns {import("./types.js").vec3}
    */
-  vec3(r = 1) {
+  vec3(r = 1, out = []) {
     const x = 2 * this.rng() - 1;
     const y = 2 * this.rng() - 1;
     const z = 2 * this.rng() - 1;
     const rr = this.rng() * r;
     const len = Math.sqrt(x * x + y * y + z * z);
-    return [(rr * x) / len, (rr * y) / len, (rr * z) / len];
+    out[0] = (rr * x) / len;
+    out[1] = (rr * y) / len;
+    out[2] = (rr * z) / len;
+    return out;
   }
 
   /**
    * Get a vec2 included in a rectangle.
    * @param {number} rect rectangle
+   * @param {import("./types.js").vec2} [out=[]]
    * @returns {import("./types.js").vec2}
    */
-  vec2InRect(rect) {
-    return [
-      rect[0][0] + this.rng() * (rect[1][0] - rect[0][0]),
-      rect[0][1] + this.rng() * (rect[1][1] - rect[0][1]),
-    ];
+  vec2InRect(rect, out = []) {
+    out[0] = rect[0][0] + this.rng() * (rect[1][0] - rect[0][0]);
+    out[1] = rect[0][1] + this.rng() * (rect[1][1] - rect[0][1]);
+    return out;
   }
 
   /**
    * Get a vec3 included in a rectangle bbox.
    * @param {number} bbox rectangle bbox
+   * @param {import("./types.js").vec3} [out=[]]
    * @returns {import("./types.js").vec3}
    */
-  vec3InAABB(bbox) {
-    return [
-      bbox[0][0] + this.rng() * (bbox[1][0] - bbox[0][0]),
-      bbox[0][1] + this.rng() * (bbox[1][1] - bbox[0][1]),
-      bbox[0][2] + this.rng() * (bbox[1][2] - bbox[0][2]),
-    ];
+  vec3InAABB(bbox, out = []) {
+    out[0] = bbox[0][0] + this.rng() * (bbox[1][0] - bbox[0][0]);
+    out[1] = bbox[0][1] + this.rng() * (bbox[1][1] - bbox[0][1]);
+    out[2] = bbox[0][2] + this.rng() * (bbox[1][2] - bbox[0][2]);
+    return out;
   }
 
   /**
    * Get a random quaternion.
    * @see [Graphics Gems III, Edited by David Kirk, III.6 UNIFORM RANDOM ROTATIONS]
    * @see [Steve LaValle]{@link https://web.archive.org/web/20211105205926/http://planning.cs.uiuc.edu/node198.html}
+   * @param {import("./types.js").quat} [out=[]]
    * @returns {import("./types.js").quat}
    */
-  quat() {
+  quat(out = []) {
     // Let X0, X1, and X2 be three independent random variables that are uniformly distributed between 0 and 1.
     const x0 = this.rng();
 
@@ -177,12 +185,11 @@ class Random {
     const r2 = Math.sqrt(x0);
 
     // Then return the unit quaternion with components [s1 r1, c1 r1, s2 r2, c2 r2]
-    return [
-      Math.sin(theta1) * r1,
-      Math.cos(theta1) * r1,
-      Math.sin(theta2) * r2,
-      Math.cos(theta2) * r2,
-    ];
+    out[0] = Math.sin(theta1) * r1;
+    out[1] = Math.cos(theta1) * r1;
+    out[2] = Math.sin(theta2) * r2;
+    out[3] = Math.cos(theta2) * r2;
+    return out;
   }
 
   /**

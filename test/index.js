@@ -381,6 +381,33 @@ describe("quat()", () => {
     }
   });
 });
+describe("out", () => {
+  const RECT = [
+    [0, 0],
+    [1, 2],
+  ];
+  const AABB = [
+    [0, 0, 0],
+    [1, 2, 3],
+  ];
+  for (const [name, args] of [
+    ["vec2", [2]],
+    ["vec3", [2]],
+    ["vec2InRect", [RECT]],
+    ["vec3InAABB", [AABB]],
+    ["quat", []],
+  ]) {
+    it(`${name} should write to and return out with the same values`, () => {
+      const a = random.create("out");
+      const b = random.create("out");
+      for (let i = 0; i < ITERATIONS; i++) {
+        const out = [];
+        assert.equal(a[name](...args, out), out);
+        assert.deepEqual(out, b[name](...args));
+      }
+    });
+  }
+});
 describe("element(list)", () => {
   it("should return element from the list", () => {
     const list = ["a", "b", "c", "d", "e", "f"];
