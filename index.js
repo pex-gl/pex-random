@@ -16,7 +16,7 @@ class Random {
    */
   static #instanceCount = 0;
 
-  #noiseSeed;
+  #seed;
   #simplex;
 
   /**
@@ -47,9 +47,11 @@ class Random {
    */
   seed(s) {
     this.rng = seedrandom(s);
-    // Separate PRNG so noise never shifts other values.
-    // Array keeps 0 and "0" distinct, as in seedrandom. No seed: unpredictable noise.
-    this.#noiseSeed = s == null ? undefined : [s, "noise"];
+
+    // Same seed: keep the noise tables. No seed: always unpredictable.
+    if (s != null && Object.is(s, this.#seed)) return;
+    this.#seed = s;
+
     // Expensive: built on first noise call.
     this.#simplex = null;
   }
@@ -58,7 +60,11 @@ class Random {
    * @private
    */
   get simplex() {
-    this.#simplex ||= createNoise(seedrandom(this.#noiseSeed));
+    // Separate PRNG so noise never shifts other values.
+    // Array keeps 0 and "0" distinct, as in seedrandom. "\0" avoids collisions with typed seeds.
+    this.#simplex ||= createNoise(
+      seedrandom(this.#seed == null ? undefined : [this.#seed, "\0noise"]),
+    );
     return this.#simplex;
   }
 
