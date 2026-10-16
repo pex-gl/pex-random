@@ -23,6 +23,7 @@
   "contributors": [
     "Damien Seguin (https://github.com/dmnsgn)"
   ],
+  "sideEffects": false,
   "type": "module",
   "exports": {
     ".": {
@@ -32,7 +33,6 @@
   },
   "main": "./index.js",
   "types": "./types/index.d.ts",
-  "sideEffects": false,
   "scripts": {
     "build": "snowdev build",
     "dev": "snowdev dev",
@@ -45,9 +45,17 @@
     "simplex-noise": "^4.0.3"
   },
   "devDependencies": {
-    "es-module-shims": "^1.10.0",
-    "pex-geom": "^3.0.2",
-    "pex-math": "^4.1.1"
+    "es-module-shims": "^2.8.4",
+    "pex-geom": "^3.1.2",
+    "pex-math": "^4.4.0"
+  },
+  "peerDependencies": {
+    "pex-math": "^4.4.0"
+  },
+  "peerDependenciesMeta": {
+    "pex-math": {
+      "optional": true
+    }
   },
   "packageManager": "npm@11.3.0",
   "engines": {

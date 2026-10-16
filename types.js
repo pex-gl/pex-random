@@ -8,8 +8,4 @@
  * @property {Function} [noise]
  */
 
-/** @typedef {import("pex-math").vec2} vec2  */
-/** @typedef {import("pex-math").vec3} vec3  */
-/** @typedef {import("pex-math").quat} quat  */
-
 export {};

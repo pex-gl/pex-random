@@ -157,8 +157,8 @@ class Random {
   /**
    * Get a vec2 included in a radius.
    * @param {number} [r=1] radius
-   * @param {import("./types.js").vec2} [out=[]]
-   * @returns {import("./types.js").vec2}
+   * @param {import("pex-math").Vec2} [out=[]]
+   * @returns {import("pex-math").Vec2}
    */
   vec2(r = 1, out = []) {
     const x = 2 * this.rng() - 1;
@@ -173,8 +173,8 @@ class Random {
   /**
    * Get a vec3 included in a radius.
    * @param {number} [r=1] radius
-   * @param {import("./types.js").vec3} [out=[]]
-   * @returns {import("./types.js").vec3}
+   * @param {import("pex-math").Vec3} [out=[]]
+   * @returns {import("pex-math").Vec3}
    */
   vec3(r = 1, out = []) {
     const x = 2 * this.rng() - 1;
@@ -191,8 +191,8 @@ class Random {
   /**
    * Get a vec2 included in a rectangle.
    * @param {number} rect rectangle
-   * @param {import("./types.js").vec2} [out=[]]
-   * @returns {import("./types.js").vec2}
+   * @param {import("pex-math").Vec2} [out=[]]
+   * @returns {import("pex-math").Vec2}
    */
   vec2InRect(rect, out = []) {
     out[0] = rect[0][0] + this.rng() * (rect[1][0] - rect[0][0]);
@@ -203,8 +203,8 @@ class Random {
   /**
    * Get a vec3 included in a rectangle bbox.
    * @param {number} bbox rectangle bbox
-   * @param {import("./types.js").vec3} [out=[]]
-   * @returns {import("./types.js").vec3}
+   * @param {import("pex-math").Vec3} [out=[]]
+   * @returns {import("pex-math").Vec3}
    */
   vec3InAABB(bbox, out = []) {
     out[0] = bbox[0][0] + this.rng() * (bbox[1][0] - bbox[0][0]);
@@ -217,8 +217,8 @@ class Random {
    * Get a random quaternion.
    * @see [Graphics Gems III, Edited by David Kirk, III.6 UNIFORM RANDOM ROTATIONS]
    * @see [Steve LaValle]{@link https://web.archive.org/web/20211105205926/http://planning.cs.uiuc.edu/node198.html}
-   * @param {import("./types.js").quat} [out=[]]
-   * @returns {import("./types.js").quat}
+   * @param {import("pex-math").Quat} [out=[]]
+   * @returns {import("pex-math").Quat}
    */
   quat(out = []) {
     // Let X0, X1, and X2 be three independent random variables that are uniformly distributed between 0 and 1.
@@ -296,8 +296,8 @@ class Random {
    * @param {number} x
    * @param {number} y
    * @param {number} [z=0] e.g. time
-   * @param {import("./types.js").vec2} [out=[]]
-   * @returns {import("./types.js").vec2} each component in the interval [-1, 1]
+   * @param {import("pex-math").Vec2} [out=[]]
+   * @returns {import("pex-math").Vec2} each component in the interval [-1, 1]
    */
   vec2Noise(x, y, z = 0, out = []) {
     const [nx, ny] = this.simplexVec2;
@@ -312,8 +312,8 @@ class Random {
    * @param {number} y
    * @param {number} z
    * @param {number} [w=0] e.g. time
-   * @param {import("./types.js").vec3} [out=[]]
-   * @returns {import("./types.js").vec3} each component in the interval [-1, 1]
+   * @param {import("pex-math").Vec3} [out=[]]
+   * @returns {import("pex-math").Vec3} each component in the interval [-1, 1]
    */
   vec3Noise(x, y, z, w = 0, out = []) {
     const [nx, ny, nz] = this.simplexVec3;
@@ -329,8 +329,8 @@ class Random {
    * @param {number} x
    * @param {number} y
    * @param {number} [t=0] time
-   * @param {import("./types.js").vec2} [out=[]]
-   * @returns {import("./types.js").vec2}
+   * @param {import("pex-math").Vec2} [out=[]]
+   * @returns {import("pex-math").Vec2}
    */
   curl2(x, y, t = 0, out = []) {
     // Bridson et al. eq. 2.
@@ -347,8 +347,8 @@ class Random {
    * @param {number} y
    * @param {number} z
    * @param {number} [t=0] time
-   * @param {import("./types.js").vec3} [out=[]]
-   * @returns {import("./types.js").vec3}
+   * @param {import("pex-math").Vec3} [out=[]]
+   * @returns {import("pex-math").Vec3}
    */
   curl3(x, y, z, t = 0, out = []) {
     // Bridson et al. eq. 1. Not normalized: it would break divergence-free.
