@@ -125,12 +125,6 @@ Notes:
 <dl>
 <dt><a href="#FBMOptions">FBMOptions</a></dt>
 <dd></dd>
-<dt><a href="#vec2">vec2</a> : <code>module:pex-math~vec2</code></dt>
-<dd></dd>
-<dt><a href="#vec3">vec3</a> : <code>module:pex-math~vec3</code></dt>
-<dd></dd>
-<dt><a href="#quat">quat</a> : <code>module:pex-math~quat</code></dt>
-<dd></dd>
 </dl>
 
 <a name="module_pex-random"></a>
@@ -155,16 +149,20 @@ Notes:
   - [.seed(s)](#pex-random+seed)
   - [.float([min], [max])](#pex-random+float) ⇒ <code>number</code>
   - [.int([min], [max])](#pex-random+int) ⇒ <code>number</code>
-  - [.vec2([r])](#pex-random+vec2) ⇒ [<code>vec2</code>](#vec2)
-  - [.vec3([r])](#pex-random+vec3) ⇒ [<code>vec3</code>](#vec3)
-  - [.vec2InRect(rect)](#pex-random+vec2InRect) ⇒ [<code>vec2</code>](#vec2)
-  - [.vec3InAABB(bbox)](#pex-random+vec3InAABB) ⇒ [<code>vec3</code>](#vec3)
-  - [.quat()](#pex-random+quat) ⇒ [<code>quat</code>](#quat)
+  - [.vec2([r], [out])](#pex-random+vec2) ⇒ <code>module:pex-math~Vec2</code>
+  - [.vec3([r], [out])](#pex-random+vec3) ⇒ <code>module:pex-math~Vec3</code>
+  - [.vec2InRect(rect, [out])](#pex-random+vec2InRect) ⇒ <code>module:pex-math~Vec2</code>
+  - [.vec3InAABB(bbox, [out])](#pex-random+vec3InAABB) ⇒ <code>module:pex-math~Vec3</code>
+  - [.quat([out])](#pex-random+quat) ⇒ <code>module:pex-math~Quat</code>
   - [.chance([probability])](#pex-random+chance) ⇒ <code>boolean</code>
-  - [.element(list)](#pex-random+element) ⇒ <code>\*</code>
+  - [.element(list)](#pex-random+element) ⇒ <code>any</code>
   - [.noise2(x, y)](#pex-random+noise2) ⇒ <code>number</code>
   - [.noise3(x, y, z)](#pex-random+noise3) ⇒ <code>number</code>
   - [.noise4(x, y, z, w)](#pex-random+noise4) ⇒ <code>number</code>
+  - [.vec2Noise(x, y, [z], [out])](#pex-random+vec2Noise) ⇒ <code>module:pex-math~Vec2</code>
+  - [.vec3Noise(x, y, z, [w], [out])](#pex-random+vec3Noise) ⇒ <code>module:pex-math~Vec3</code>
+  - [.curl2(x, y, [t], [out])](#pex-random+curl2) ⇒ <code>module:pex-math~Vec2</code>
+  - [.curl3(x, y, z, [t], [out])](#pex-random+curl3) ⇒ <code>module:pex-math~Vec3</code>
   - [.fbm(options, ...d)](#pex-random+fbm) ⇒ <code>number</code>
 
 <a name="new_pex-random_new"></a>
@@ -235,55 +233,59 @@ Get an int between min and max. Defaults to:
 
 <a name="pex-random+vec2"></a>
 
-### pex-random.vec2([r]) ⇒ [<code>vec2</code>](#vec2)
+### pex-random.vec2([r], [out]) ⇒ <code>module:pex-math~Vec2</code>
 
 Get a vec2 included in a radius.
 
 **Kind**: instance method of [<code>pex-random</code>](#pex-random)
 
-| Param | Type                | Default        | Description |
-| ----- | ------------------- | -------------- | ----------- |
-| [r]   | <code>number</code> | <code>1</code> | radius      |
+| Param | Type                              | Default         | Description |
+| ----- | --------------------------------- | --------------- | ----------- |
+| [r]   | <code>number</code>               | <code>1</code>  | Radius      |
+| [out] | <code>module:pex-math~Vec2</code> | <code>[]</code> |             |
 
 <a name="pex-random+vec3"></a>
 
-### pex-random.vec3([r]) ⇒ [<code>vec3</code>](#vec3)
+### pex-random.vec3([r], [out]) ⇒ <code>module:pex-math~Vec3</code>
 
 Get a vec3 included in a radius.
 
 **Kind**: instance method of [<code>pex-random</code>](#pex-random)
 
-| Param | Type                | Default        | Description |
-| ----- | ------------------- | -------------- | ----------- |
-| [r]   | <code>number</code> | <code>1</code> | radius      |
+| Param | Type                              | Default         | Description |
+| ----- | --------------------------------- | --------------- | ----------- |
+| [r]   | <code>number</code>               | <code>1</code>  | Radius      |
+| [out] | <code>module:pex-math~Vec3</code> | <code>[]</code> |             |
 
 <a name="pex-random+vec2InRect"></a>
 
-### pex-random.vec2InRect(rect) ⇒ [<code>vec2</code>](#vec2)
+### pex-random.vec2InRect(rect, [out]) ⇒ <code>module:pex-math~Vec2</code>
 
 Get a vec2 included in a rectangle.
 
 **Kind**: instance method of [<code>pex-random</code>](#pex-random)
 
-| Param | Type                | Description |
-| ----- | ------------------- | ----------- |
-| rect  | <code>number</code> | rectangle   |
+| Param | Type                              | Default         | Description |
+| ----- | --------------------------------- | --------------- | ----------- |
+| rect  | <code>number</code>               |                 | Rectangle   |
+| [out] | <code>module:pex-math~Vec2</code> | <code>[]</code> |             |
 
 <a name="pex-random+vec3InAABB"></a>
 
-### pex-random.vec3InAABB(bbox) ⇒ [<code>vec3</code>](#vec3)
+### pex-random.vec3InAABB(bbox, [out]) ⇒ <code>module:pex-math~Vec3</code>
 
 Get a vec3 included in a rectangle bbox.
 
 **Kind**: instance method of [<code>pex-random</code>](#pex-random)
 
-| Param | Type                | Description    |
-| ----- | ------------------- | -------------- |
-| bbox  | <code>number</code> | rectangle bbox |
+| Param | Type                              | Default         | Description    |
+| ----- | --------------------------------- | --------------- | -------------- |
+| bbox  | <code>number</code>               |                 | Rectangle bbox |
+| [out] | <code>module:pex-math~Vec3</code> | <code>[]</code> |                |
 
 <a name="pex-random+quat"></a>
 
-### pex-random.quat() ⇒ [<code>quat</code>](#quat)
+### pex-random.quat([out]) ⇒ <code>module:pex-math~Quat</code>
 
 Get a random quaternion.
 
@@ -293,11 +295,16 @@ Get a random quaternion.
 - [Graphics Gems III, Edited by David Kirk, III.6 UNIFORM RANDOM ROTATIONS]
 - [Steve LaValle](https://web.archive.org/web/20211105205926/http://planning.cs.uiuc.edu/node198.html)
 
+| Param | Type                              | Default         |
+| ----- | --------------------------------- | --------------- |
+| [out] | <code>module:pex-math~Quat</code> | <code>[]</code> |
+
 <a name="pex-random+chance"></a>
 
 ### pex-random.chance([probability]) ⇒ <code>boolean</code>
 
-Returns a chance of an event occuring according to a given probability between 0 and 1.
+Returns a chance of an event occuring according to a given probability
+between 0 and 1.
 
 **Kind**: instance method of [<code>pex-random</code>](#pex-random)
 
@@ -307,7 +314,7 @@ Returns a chance of an event occuring according to a given probability between 0
 
 <a name="pex-random+element"></a>
 
-### pex-random.element(list) ⇒ <code>\*</code>
+### pex-random.element(list) ⇒ <code>any</code>
 
 Gets a random element from a list.
 
@@ -324,7 +331,7 @@ Gets a random element from a list.
 Samples the noise field in 2 dimensions.
 
 **Kind**: instance method of [<code>pex-random</code>](#pex-random)
-**Returns**: <code>number</code> - in the interval [-1, 1]
+**Returns**: <code>number</code> - In the interval [-1, 1]
 
 | Param | Type                |
 | ----- | ------------------- |
@@ -338,7 +345,7 @@ Samples the noise field in 2 dimensions.
 Samples the noise field in 3 dimensions.
 
 **Kind**: instance method of [<code>pex-random</code>](#pex-random)
-**Returns**: <code>number</code> - in the interval [-1, 1]
+**Returns**: <code>number</code> - In the interval [-1, 1]
 
 | Param | Type                |
 | ----- | ------------------- |
@@ -353,7 +360,7 @@ Samples the noise field in 3 dimensions.
 Samples the noise field in 4 dimensions.
 
 **Kind**: instance method of [<code>pex-random</code>](#pex-random)
-**Returns**: <code>number</code> - in the interval [-1, 1]
+**Returns**: <code>number</code> - In the interval [-1, 1]
 
 | Param | Type                |
 | ----- | ------------------- |
@@ -362,19 +369,86 @@ Samples the noise field in 4 dimensions.
 | z     | <code>number</code> |
 | w     | <code>number</code> |
 
+<a name="pex-random+vec2Noise"></a>
+
+### pex-random.vec2Noise(x, y, [z], [out]) ⇒ <code>module:pex-math~Vec2</code>
+
+Samples a vector noise field in 2 dimensions.
+
+**Kind**: instance method of [<code>pex-random</code>](#pex-random)
+**Returns**: <code>module:pex-math~Vec2</code> - Each component in the interval [-1, 1]
+
+| Param | Type                              | Default         | Description |
+| ----- | --------------------------------- | --------------- | ----------- |
+| x     | <code>number</code>               |                 |             |
+| y     | <code>number</code>               |                 |             |
+| [z]   | <code>number</code>               | <code>0</code>  | E.g. time   |
+| [out] | <code>module:pex-math~Vec2</code> | <code>[]</code> |             |
+
+<a name="pex-random+vec3Noise"></a>
+
+### pex-random.vec3Noise(x, y, z, [w], [out]) ⇒ <code>module:pex-math~Vec3</code>
+
+Samples a vector noise field in 3 dimensions.
+
+**Kind**: instance method of [<code>pex-random</code>](#pex-random)
+**Returns**: <code>module:pex-math~Vec3</code> - Each component in the interval [-1, 1]
+
+| Param | Type                              | Default         | Description |
+| ----- | --------------------------------- | --------------- | ----------- |
+| x     | <code>number</code>               |                 |             |
+| y     | <code>number</code>               |                 |             |
+| z     | <code>number</code>               |                 |             |
+| [w]   | <code>number</code>               | <code>0</code>  | E.g. time   |
+| [out] | <code>module:pex-math~Vec3</code> | <code>[]</code> |             |
+
+<a name="pex-random+curl2"></a>
+
+### pex-random.curl2(x, y, [t], [out]) ⇒ <code>module:pex-math~Vec2</code>
+
+Samples a divergence-free curl noise field in 2 dimensions.
+
+**Kind**: instance method of [<code>pex-random</code>](#pex-random)
+**See**: [Bridson et al., Curl-Noise for Procedural Fluid Flow](https://doi.org/10.1145/1239451.1239497)
+
+| Param | Type                              | Default         | Description |
+| ----- | --------------------------------- | --------------- | ----------- |
+| x     | <code>number</code>               |                 |             |
+| y     | <code>number</code>               |                 |             |
+| [t]   | <code>number</code>               | <code>0</code>  | Time        |
+| [out] | <code>module:pex-math~Vec2</code> | <code>[]</code> |             |
+
+<a name="pex-random+curl3"></a>
+
+### pex-random.curl3(x, y, z, [t], [out]) ⇒ <code>module:pex-math~Vec3</code>
+
+Samples a divergence-free curl noise field in 3 dimensions.
+
+**Kind**: instance method of [<code>pex-random</code>](#pex-random)
+**See**: [Bridson et al., Curl-Noise for Procedural Fluid Flow](https://doi.org/10.1145/1239451.1239497)
+
+| Param | Type                              | Default         | Description |
+| ----- | --------------------------------- | --------------- | ----------- |
+| x     | <code>number</code>               |                 |             |
+| y     | <code>number</code>               |                 |             |
+| z     | <code>number</code>               |                 |             |
+| [t]   | <code>number</code>               | <code>0</code>  | Time        |
+| [out] | <code>module:pex-math~Vec3</code> | <code>[]</code> |             |
+
 <a name="pex-random+fbm"></a>
 
 ### pex-random.fbm(options, ...d) ⇒ <code>number</code>
 
-Fractional Brownian motion (also called fractal Brownian motion) noise. Default to 1/f noise with 8 octaves.
+Fractional Brownian motion (also called fractal Brownian motion) noise.
+Default to 1/f noise with 8 octaves.
 
 **Kind**: instance method of [<code>pex-random</code>](#pex-random)
-**Returns**: <code>number</code> - in the interval [-1, 1]
+**Returns**: <code>number</code> - In the interval [-1, 1]
 
 | Param   | Type                                   | Description  |
 | ------- | -------------------------------------- | ------------ |
 | options | [<code>FBMOptions</code>](#FBMOptions) |              |
-| ...d    | <code>number</code>                    | x, y, z?, w? |
+| ...d    | <code>number</code>                    | X, y, z?, w? |
 
 <a name="FBMOptions"></a>
 
@@ -391,22 +465,6 @@ Fractional Brownian motion (also called fractal Brownian motion) noise. Default 
 | [frequency]  | <code>number</code>   | <code>1</code>    |
 | [amplitude]  | <code>number</code>   | <code>gain</code> |
 | [noise]      | <code>function</code> |                   |
-
-<a name="vec2"></a>
-
-## vec2 : <code>module:pex-math~vec2</code>
-
-**Kind**: global typedef
-<a name="vec3"></a>
-
-## vec3 : <code>module:pex-math~vec3</code>
-
-**Kind**: global typedef
-<a name="quat"></a>
-
-## quat : <code>module:pex-math~quat</code>
-
-**Kind**: global typedef
 
 <!-- api-end -->
 

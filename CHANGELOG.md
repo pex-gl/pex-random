@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+# [3.0.0](https://github.com/pex-gl/pex-random/compare/v2.1.2...v3.0.0) (2026-10-16)
+
+* perf!: derive noise from its own seeded PRNG ([a85fc4a](https://github.com/pex-gl/pex-random/commit/a85fc4a422b9e327b031ecf3d5ccc52c4eeeb68a))
+
+### Features
+
+* add optional out to vec2, vec3, vec2InRect, vec3InAABB and quat ([6a6ea5c](https://github.com/pex-gl/pex-random/commit/6a6ea5c727352af4849ca386b4911768d44ea98f))
+* add vector and curl noise ([3ec0eb5](https://github.com/pex-gl/pex-random/commit/3ec0eb5b38b26e0e1955e77f4fc94fa6145a3816)), closes [#8](https://github.com/pex-gl/pex-random/issues/8)
+
+### Performance Improvements
+
+* keep noise tables when reseeding with the same seed ([728ddd4](https://github.com/pex-gl/pex-random/commit/728ddd47fe3ba000fe61b7e2a3d720a37fdafd23))
+
+### BREAKING CHANGES
+
+* values for a given seed differ from v2 for all methods, including noise.
+
 ## [2.1.2](https://github.com/pex-gl/pex-random/compare/v2.1.1...v2.1.2) (2024-08-14)
 
 
