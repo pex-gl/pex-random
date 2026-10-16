@@ -1,11 +1,9 @@
 import seedrandom from "seedrandom";
 import { createNoise2D, createNoise3D, createNoise4D } from "simplex-noise";
 
-const createNoise = (rng) => ({
-  noise2D: createNoise2D(rng),
-  noise3D: createNoise3D(rng),
-  noise4D: createNoise4D(rng),
-});
+// Larger than simplex-noise 3D/4D seams, which would spike the curl.
+// See https://github.com/jwagner/simplex-noise.js/issues/9
+const CURL_EPSILON = 1e-2;
 
 /**
  * @alias pex-random
@@ -16,8 +14,28 @@ class Random {
    */
   static #instanceCount = 0;
 
+  static #createNoise(rng) {
+    return {
+      noise2D: createNoise2D(rng),
+      noise3D: createNoise3D(rng),
+      noise4D: createNoise4D(rng),
+    };
+  }
+
+  static #derivative(noise, axis, x, y, z, w) {
+    const dx = axis == 0 ? CURL_EPSILON : 0;
+    const dy = axis == 1 ? CURL_EPSILON : 0;
+    const dz = axis == 2 ? CURL_EPSILON : 0;
+    return (
+      (noise(x + dx, y + dy, z + dz, w) - noise(x - dx, y - dy, z - dz, w)) /
+      (2 * CURL_EPSILON)
+    );
+  }
+
   #seed;
   #simplex;
+  #simplexVec2;
+  #simplexVec3;
 
   /**
    * @private
@@ -54,6 +72,15 @@ class Random {
 
     // Expensive: built on first noise call.
     this.#simplex = null;
+    this.#simplexVec2 = null;
+    this.#simplexVec3 = null;
+  }
+
+  #noiseRng(channel = "") {
+    // Array keeps 0 and "0" distinct, as in seedrandom. "\0" avoids collisions with typed seeds.
+    return seedrandom(
+      this.#seed == null ? undefined : [this.#seed, `\0noise${channel}`],
+    );
   }
 
   /**
@@ -61,11 +88,32 @@ class Random {
    */
   get simplex() {
     // Separate PRNG so noise never shifts other values.
-    // Array keeps 0 and "0" distinct, as in seedrandom. "\0" avoids collisions with typed seeds.
-    this.#simplex ||= createNoise(
-      seedrandom(this.#seed == null ? undefined : [this.#seed, "\0noise"]),
-    );
+    this.#simplex ||= Random.#createNoise(this.#noiseRng());
     return this.#simplex;
+  }
+
+  /**
+   * @private
+   */
+  get simplexVec2() {
+    // One seed per channel for uncorrelated components. Extra dimension for time.
+    this.#simplexVec2 ||= [
+      this.simplex.noise3D,
+      createNoise3D(this.#noiseRng(1)),
+    ];
+    return this.#simplexVec2;
+  }
+
+  /**
+   * @private
+   */
+  get simplexVec3() {
+    this.#simplexVec3 ||= [
+      this.simplex.noise4D,
+      createNoise4D(this.#noiseRng(1)),
+      createNoise4D(this.#noiseRng(2)),
+    ];
+    return this.#simplexVec3;
   }
 
   /**
@@ -241,6 +289,80 @@ class Random {
    */
   noise4(x, y, z, w) {
     return this.simplex.noise4D(x, y, z, w);
+  }
+
+  /**
+   * Samples a vector noise field in 2 dimensions.
+   * @param {number} x
+   * @param {number} y
+   * @param {number} [z=0] e.g. time
+   * @param {import("./types.js").vec2} [out=[]]
+   * @returns {import("./types.js").vec2} each component in the interval [-1, 1]
+   */
+  vec2Noise(x, y, z = 0, out = []) {
+    const [nx, ny] = this.simplexVec2;
+    out[0] = nx(x, y, z);
+    out[1] = ny(x, y, z);
+    return out;
+  }
+
+  /**
+   * Samples a vector noise field in 3 dimensions.
+   * @param {number} x
+   * @param {number} y
+   * @param {number} z
+   * @param {number} [w=0] e.g. time
+   * @param {import("./types.js").vec3} [out=[]]
+   * @returns {import("./types.js").vec3} each component in the interval [-1, 1]
+   */
+  vec3Noise(x, y, z, w = 0, out = []) {
+    const [nx, ny, nz] = this.simplexVec3;
+    out[0] = nx(x, y, z, w);
+    out[1] = ny(x, y, z, w);
+    out[2] = nz(x, y, z, w);
+    return out;
+  }
+
+  /**
+   * Samples a divergence-free curl noise field in 2 dimensions.
+   * @see [Bridson et al., Curl-Noise for Procedural Fluid Flow]{@link https://doi.org/10.1145/1239451.1239497}
+   * @param {number} x
+   * @param {number} y
+   * @param {number} [t=0] time
+   * @param {import("./types.js").vec2} [out=[]]
+   * @returns {import("./types.js").vec2}
+   */
+  curl2(x, y, t = 0, out = []) {
+    // Bridson et al. eq. 2.
+    const noise = this.simplex.noise3D;
+    out[0] = Random.#derivative(noise, 1, x, y, t);
+    out[1] = -Random.#derivative(noise, 0, x, y, t);
+    return out;
+  }
+
+  /**
+   * Samples a divergence-free curl noise field in 3 dimensions.
+   * @see [Bridson et al., Curl-Noise for Procedural Fluid Flow]{@link https://doi.org/10.1145/1239451.1239497}
+   * @param {number} x
+   * @param {number} y
+   * @param {number} z
+   * @param {number} [t=0] time
+   * @param {import("./types.js").vec3} [out=[]]
+   * @returns {import("./types.js").vec3}
+   */
+  curl3(x, y, z, t = 0, out = []) {
+    // Bridson et al. eq. 1. Not normalized: it would break divergence-free.
+    const [nx, ny, nz] = this.simplexVec3;
+    out[0] =
+      Random.#derivative(nz, 1, x, y, z, t) -
+      Random.#derivative(ny, 2, x, y, z, t);
+    out[1] =
+      Random.#derivative(nx, 2, x, y, z, t) -
+      Random.#derivative(nz, 0, x, y, z, t);
+    out[2] =
+      Random.#derivative(ny, 0, x, y, z, t) -
+      Random.#derivative(nx, 1, x, y, z, t);
+    return out;
   }
 
   /**

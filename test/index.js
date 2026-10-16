@@ -115,6 +115,16 @@ describe("seed()", () => {
     localRandom.seed("b");
     assert.notEqual(localRandom.simplex, simplex);
   });
+  it("should keep vector noise tables when reseeding with the same seed", () => {
+    for (const key of ["simplexVec2", "simplexVec3"]) {
+      const localRandom = random.create("a");
+      const tables = localRandom[key];
+      localRandom.seed("a");
+      assert.equal(localRandom[key], tables);
+      localRandom.seed("b");
+      assert.notEqual(localRandom[key], tables);
+    }
+  });
   it("should return unpredictable noise without a seed", () => {
     const localRandom = random.create();
     const sample = (p) => localRandom.noise2(p[0], p[1]);
@@ -498,6 +508,153 @@ describe("noise4(x, y, z)", () => {
     }
   });
 });
+describe("vec2Noise(x, y, z, out)", () => {
+  it("should return components between -1..1", () => {
+    for (let i = 0; i < ITERATIONS; i++) {
+      const x = random.float();
+      const y = random.float();
+      const r = random.vec2Noise(x, y);
+      assert.equal(r.length, 2);
+      for (const c of r) assert(c >= -1 && c <= 1);
+    }
+  });
+  it("should return the same value for the same x,y", () => {
+    for (let i = 0; i < ITERATIONS; i++) {
+      const x = random.float();
+      const y = random.float();
+      assert.deepEqual(random.vec2Noise(x, y), random.vec2Noise(x, y));
+    }
+  });
+  it("should extend noise3 with its first component", () => {
+    for (const [x, y, z] of NOISE_POINTS) {
+      assert.equal(random.vec2Noise(x, y, z)[0], random.noise3(x, y, z));
+    }
+  });
+  it("should return uncorrelated components", () => {
+    for (const [x, y, z] of NOISE_POINTS) {
+      const [a, b] = random.vec2Noise(x, y, z);
+      assert.notEqual(a, b);
+    }
+  });
+  it("should default z to 0", () => {
+    assert.deepEqual(random.vec2Noise(0.1, 0.2), random.vec2Noise(0.1, 0.2, 0));
+  });
+  it("should write to and return out", () => {
+    const out = [0, 0];
+    assert.equal(random.vec2Noise(0.1, 0.2, 0.3, out), out);
+    assert.deepEqual(out, random.vec2Noise(0.1, 0.2, 0.3));
+  });
+  it("should return different values for the same positions and different seeds", () => {
+    const sample = (p) => random.vec2Noise(p[0], p[1], p[2]);
+    for (let i = 0; i < ITERATIONS; i++) {
+      assert.notDeepEqual(sampleNoise(i, sample), sampleNoise(i + 1, sample));
+    }
+  });
+});
+describe("vec3Noise(x, y, z, w, out)", () => {
+  it("should return components between -1..1", () => {
+    for (let i = 0; i < ITERATIONS; i++) {
+      const x = random.float();
+      const y = random.float();
+      const z = random.float();
+      const r = random.vec3Noise(x, y, z);
+      assert.equal(r.length, 3);
+      for (const c of r) assert(c >= -1 && c <= 1);
+    }
+  });
+  it("should return the same value for the same x,y,z", () => {
+    for (let i = 0; i < ITERATIONS; i++) {
+      const x = random.float();
+      const y = random.float();
+      const z = random.float();
+      assert.deepEqual(random.vec3Noise(x, y, z), random.vec3Noise(x, y, z));
+    }
+  });
+  it("should extend noise4 with its first component", () => {
+    for (const p of NOISE_POINTS) {
+      assert.equal(random.vec3Noise(...p)[0], random.noise4(...p));
+    }
+  });
+  it("should return uncorrelated components", () => {
+    for (const p of NOISE_POINTS) {
+      const [a, b, c] = random.vec3Noise(...p);
+      assert.notEqual(a, b);
+      assert.notEqual(b, c);
+      assert.notEqual(a, c);
+    }
+  });
+  it("should default w to 0", () => {
+    assert.deepEqual(
+      random.vec3Noise(0.1, 0.2, 0.3),
+      random.vec3Noise(0.1, 0.2, 0.3, 0),
+    );
+  });
+  it("should write to and return out", () => {
+    const out = [0, 0, 0];
+    assert.equal(random.vec3Noise(0.1, 0.2, 0.3, 0.4, out), out);
+    assert.deepEqual(out, random.vec3Noise(0.1, 0.2, 0.3, 0.4));
+  });
+  it("should return different values for the same positions and different seeds", () => {
+    const sample = (p) => random.vec3Noise(...p);
+    for (let i = 0; i < ITERATIONS; i++) {
+      assert.notDeepEqual(sampleNoise(i, sample), sampleNoise(i + 1, sample));
+    }
+  });
+});
+for (const n of [2, 3]) {
+  const curl = (...args) => random[`curl${n}`](...args);
+  const points = NOISE_POINTS.map((p) => p.slice(0, n));
+  // Curl stencil step: div(curl) = 0 then holds exactly, regardless of noise seams.
+  const H = 1e-2;
+  const divergence = (p, t) =>
+    p.reduce((sum, _, i) => {
+      const p0 = [...p];
+      const p1 = [...p];
+      p0[i] -= H;
+      p1[i] += H;
+      return sum + (curl(...p1, t)[i] - curl(...p0, t)[i]) / (2 * H);
+    }, 0);
+
+  describe(`curl${n}(...p, t, out)`, () => {
+    it("should return the same value for the same position", () => {
+      for (let i = 0; i < ITERATIONS; i++) {
+        const p = Array.from({ length: n }, () => random.float());
+        assert.deepEqual(curl(...p), curl(...p));
+      }
+    });
+    it("should be divergence-free", () => {
+      for (const p of points) {
+        for (const t of [0, 1.7]) {
+          const magnitude = Math.hypot(...curl(...p, t));
+          assert(magnitude > 0);
+          assert(Math.abs(divergence(p, t)) < magnitude * 1e-12);
+        }
+      }
+    });
+    it("should default t to 0", () => {
+      for (const p of points) assert.deepEqual(curl(...p), curl(...p, 0));
+    });
+    it("should evolve smoothly over time", () => {
+      for (const p of points) {
+        const a = curl(...p, 0);
+        const b = curl(...p, 1e-3);
+        assert.notDeepEqual(a, b);
+        assert(Math.hypot(...a.map((v, i) => v - b[i])) < 1e-1);
+      }
+    });
+    it("should write to and return out", () => {
+      const out = new Array(n).fill(0);
+      assert.equal(curl(...points[0], 0.4, out), out);
+      assert.deepEqual(out, curl(...points[0], 0.4));
+    });
+    it("should return different values for the same positions and different seeds", () => {
+      const sample = (p) => curl(...p.slice(0, n));
+      for (let i = 0; i < ITERATIONS; i++) {
+        assert.notDeepEqual(sampleNoise(i, sample), sampleNoise(i + 1, sample));
+      }
+    });
+  });
+}
 describe("fbm(x, y, z)", () => {
   it("should return value between -1..1", () => {
     for (let i = 0; i < ITERATIONS; i++) {

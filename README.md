@@ -43,10 +43,64 @@ console.log(localSeededRandom.float());
 // => predictable, always returns: 0.8071179636424909
 ```
 
+### Vector and curl noise
+
+- `vec2Noise(x, y, z?, out?)` / `vec3Noise(x, y, z, w?, out?)`: one independent noise per component, in [-1, 1]. For displacement, wind, colour.
+- `curl2(x, y, t?, out?)` / `curl3(x, y, z, t?, out?)`: divergence-free velocity ([Bridson et al. 2007](https://www.cs.ubc.ca/~rbridson/docs/bridson-siggraph2007-curlnoise.pdf)). Particles swirl without piling up or leaving holes.
+- The last coordinate animates the field: pass time.
+
+```js
+import random from "pex-random";
+import { vec2 } from "pex-math";
+
+const field = random.create("flow");
+const frequency = 0.01;
+const speed = 1;
+const velocity = [];
+const particles = Array.from({ length: 1000 }, () => ({
+  position: field.vec2InRect([
+    [0, 0],
+    [512, 512],
+  ]),
+  age: 0,
+}));
+
+let time = 0;
+const update = (dt) => {
+  time += dt * 0.2;
+  for (const particle of particles) {
+    const [x, y] = particle.position;
+    field.curl2(x * frequency, y * frequency, time, velocity);
+    vec2.addScaled(particle.position, velocity, speed);
+
+    // Unbounded field: respawn after a lifetime.
+    if ((particle.age += dt) > 3) {
+      field.vec2InRect(
+        [
+          [0, 0],
+          [512, 512],
+        ],
+        particle.position,
+      );
+      particle.age = 0;
+    }
+  }
+};
+```
+
 Notes:
 
-- noise2/3/4: coordinates must be [between -2^31 and 2^31](https://github.com/jwagner/simplex-noise.js/#400). Eg. using `Date.now()` is not viable but `performance.now()` is.
+- noise2/3/4, vector and curl noise: coordinates must be [between -2^31 and 2^31](https://github.com/jwagner/simplex-noise.js/#400). Eg. using `Date.now()` is not viable but `performance.now()` is.
 - [similar seeds might not result in different starting values](https://github.com/davidbau/seedrandom/issues/48#issuecomment-331904087)
+- Move particles with `curl2/3`, not `vec2Noise/vec3Noise`. Plain noise has sinks: particles collapse into lines and points.
+- 2D particles: use `curl2`. The xy of `curl3` is not divergence-free in 2D.
+- Don't normalize the curl: it breaks divergence-free. Scale it by a constant instead.
+- Spatially varying strength: don't multiply the velocity by a mask `A(p)`, use `A · curl3(p) + cross(∇A, vec3Noise(p))`.
+- Turbulence: sum `curl3` at several frequencies, each scaled by any amplitude. Still divergence-free.
+- Time morphs the field in place: swirls form and fade, they don't travel. To scroll it, offset the coordinates instead (`curl2(x + t, y)`).
+- Curl vectors are longer than noise values: typical length ~2–4, rare peaks ~14. Scale them before adding to positions (e.g. `× 0.5` moves ~1–2 units per step).
+- Frequency sets the swirl size, not the curl length: `curl2(x * f, y * f)` returns similar lengths for any `f`. Multiply the result by `f` for smaller swirls to move faster, as in a real fluid.
+- `vec3Noise` returns shorter vectors than `vec2Noise` (~0.4 vs ~0.7 on average, 4D vs 3D simplex): rescale when switching.
 
 ## API
 
