@@ -115,6 +115,14 @@ describe("seed()", () => {
     localRandom.seed("b");
     assert.notEqual(localRandom.simplex, simplex);
   });
+  it("should return unpredictable noise without a seed", () => {
+    const localRandom = random.create();
+    const sample = (p) => localRandom.noise2(p[0], p[1]);
+    localRandom.seed();
+    const a = NOISE_POINTS.map(sample);
+    localRandom.seed();
+    assert.notDeepEqual(NOISE_POINTS.map(sample), a);
+  });
   it("should return the same values for mixed call sequences", () => {
     assert.deepEqual(runSequences(random), sequences);
   });
